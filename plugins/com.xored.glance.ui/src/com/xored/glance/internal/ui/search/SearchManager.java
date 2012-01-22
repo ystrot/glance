@@ -66,20 +66,16 @@ public class SearchManager {
 
 	public void startup() {
 		PlatformUI.getWorkbench().addWindowListener(new IWindowListener() {
-			@Override
             public void windowOpened(final IWorkbenchWindow window) {
 				setStatusLine(window, true);
 			}
 
-			@Override
             public void windowDeactivated(final IWorkbenchWindow window) {
 			}
 
-			@Override
             public void windowClosed(final IWorkbenchWindow window) {
 			}
 
-			@Override
             public void windowActivated(final IWorkbenchWindow window) {
 			}
 		});
@@ -358,19 +354,16 @@ public class SearchManager {
 
 	private class SearchListener implements ISearchListener {
 
-		@Override
         public void allFound(final Match[] matches) {
 			if (panel != null)
 				panel.allFound(matches);
 		}
 
-		@Override
         public void finished() {
 			if (panel != null)
 				panel.finished();
 		}
 
-		@Override
         public void firstFound(final Match match) {
 			if (panel != null)
 				panel.firstFound(match);
@@ -378,8 +371,7 @@ public class SearchManager {
 	}
 
 	private class SourceListener implements ISourceProviderListener {
-		@Override
-        public void sourceChanged(final TextSourceMaker source) {
+		public void sourceChanged(final TextSourceMaker source) {
 			update(source, false);
 		}
 	}
@@ -394,30 +386,25 @@ public class SearchManager {
 			return panel.equals(SearchManager.this.panel);
 		}
 
-		@Override
         public void ruleChanged(final SearchRule rule) {
 			if (isCurrent())
 				find(rule, SearchManager.FIND_HERE);
 		}
 
-		@Override
         public void findNext() {
 			if (isCurrent())
 				find(rule, SearchManager.FIND_NEXT);
 		}
 
-		@Override
         public void findPrevious() {
 			if (isCurrent())
 				find(rule, SearchManager.FIND_PREVIOUS);
 		}
 
-		@Override
         public void close() {
 			dispose(panel);
 		}
 
-		@Override
         public void indexCanceled() {
 			if (monitor != null) {
 				monitor.setCanceled(true);

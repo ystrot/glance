@@ -82,7 +82,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		getPreferences().addPropertyChangeListener(this);
 	}
 
-	@Override
     public void setIndexingState(final int state) {
 		indexState = state;
 
@@ -101,7 +100,6 @@ public abstract class SearchPanel implements ISearchPanel,
 			}
 		} else {
 			UIUtils.asyncExec(toolBar, new Runnable() {
-				@Override
                 public void run() {
 					updateInfo(null);
 				}
@@ -109,12 +107,10 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	@Override
     public void updateIndexingPercent(final double percent) {
 		indexPercent = percent;
 	}
 
-	@Override
     public void newTask(final String name) {
 		this.taskName = name;
 		indexPercent = 0;
@@ -136,7 +132,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		final Display display = PlatformUI.getWorkbench().getDisplay();
 		final Color[] color = new Color[1];
 		display.syncExec(new Runnable() {
-			@Override
             public void run() {
 				color[0] = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			}
@@ -203,7 +198,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	@Override
     public void propertyChange(final PropertyChangeEvent event) {
 		final String property = event.getProperty();
 		if (property != null && property.startsWith(SEARCH_PREFIX)) {
@@ -224,7 +218,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		initSize(container);
 	}
 
-	@Override
     public Control getControl() {
 		return container;
 	}
@@ -234,28 +227,23 @@ public abstract class SearchPanel implements ISearchPanel,
 		return container;
 	}
 
-	@Override
     public void firstFound(final Match match) {
 		UIUtils.asyncExec(title, new Runnable() {
-			@Override
             public void run() {
 				setBackground(match != null);
 			}
 		});
 	}
 
-	@Override
     public void allFound(final Match[] matches) {
 		result = matches;
 		UIUtils.asyncExec(title, new Runnable() {
-			@Override
             public void run() {
 				setBackground(result.length > 0);
 			}
 		});
 	}
 
-	@Override
     public void finished() {
 	}
 
@@ -469,12 +457,10 @@ public abstract class SearchPanel implements ISearchPanel,
 	/**
 	 * @return the rule
 	 */
-	@Override
     public SearchRule getRule() {
 		return rule;
 	}
 
-	@Override
     public void setFocus(String text) {
 		if (isReady()) {
 			if (text == null || text.length() == 0)
@@ -488,7 +474,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	@Override
     public void setEnabled(final boolean enabled) {
 		if (isReady()) {
 			title.setEnabled(enabled);
@@ -500,12 +485,10 @@ public abstract class SearchPanel implements ISearchPanel,
 		return title != null && !title.isDisposed();
 	}
 
-	@Override
     public void addPanelListener(final ISearchPanelListener listener) {
 		listeners.add(listener);
 	}
 
-	@Override
     public void removePanelListener(final ISearchPanelListener listener) {
 		listeners.remove(listener);
 	}
@@ -527,7 +510,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	@Override
     public void findNext() {
 		updateHistory();
 		final Object[] objects = listeners.getListeners();
@@ -537,7 +519,6 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	@Override
     public void findPrevious() {
 		updateHistory();
 		final Object[] objects = listeners.getListeners();
@@ -676,7 +657,6 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	private final ListenerList listeners = new ListenerList();
 	private final ModifyListener modifyListener = new ModifyListener() {
-		@Override
         public void modifyText(final ModifyEvent e) {
 			textChanged();
 		}

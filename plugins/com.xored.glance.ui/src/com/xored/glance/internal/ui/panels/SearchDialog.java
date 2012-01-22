@@ -11,6 +11,7 @@
  *******************************************************************************/
 package com.xored.glance.internal.ui.panels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -74,8 +75,7 @@ public class SearchDialog extends PopupDialog {
 		progress.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		// factory.applyTo(info);
 		// factory.applyTo(progress);
-		final Color color = parent.getDisplay().getSystemColor(
-				SWT.COLOR_WIDGET_DARK_SHADOW);
+		final Color color = parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
 		info.setForeground(color);
 		progress.setForeground(color);
 		info.setText(HELP_TEXT);
@@ -110,9 +110,7 @@ public class SearchDialog extends PopupDialog {
 	protected void configureShell(final Shell shell) {
 		super.configureShell(shell);
 		shell.addDisposeListener(new DisposeListener() {
-
-			@Override
-            public void widgetDisposed(final DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				handleClose();
 			}
 		});
@@ -133,16 +131,14 @@ public class SearchDialog extends PopupDialog {
 	 * @return The Control representing the horizontal separator.
 	 */
 	private Control createHorizontalSeparator(final Composite parent) {
-		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL
-				| SWT.LINE_DOT);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
-				false).applyTo(separator);
+		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.LINE_DOT);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(separator);
 		return separator;
 	}
 
 	@Override
 	protected List<Control> getForegroundColorExclusions() {
-        final List<Control> list = super.getForegroundColorExclusions();
+		final List<Control> list = copyControls(super.getForegroundColorExclusions());
 		if (info != null)
 			list.add(info);
 		if (separator != null)
@@ -152,10 +148,18 @@ public class SearchDialog extends PopupDialog {
 
 	@Override
 	protected List<Control> getBackgroundColorExclusions() {
-        final List<Control> list = super.getBackgroundColorExclusions();
+		final List<Control> list = copyControls(super.getBackgroundColorExclusions());
 		if (separator != null)
 			list.add(separator);
 		return list;
+	}
+
+	private List<Control> copyControls(List<?> list) {
+		List<Control> result = new ArrayList<Control>(list.size());
+		for (Control control : result) {
+			result.add(control);
+		}
+		return result;
 	}
 
 	protected void applyBackgroundColor(final Color color) {
@@ -170,11 +174,9 @@ public class SearchDialog extends PopupDialog {
 	private Label progress;
 	private Control separator;
 
-	private static final GridDataFactory LAYOUTDATA_GRAB_BOTH = GridDataFactory
-			.fillDefaults().grab(true, true);
-	private static final GridLayoutFactory POPUP_LAYOUT_FACTORY = GridLayoutFactory
-			.fillDefaults().margins(POPUP_MARGINWIDTH, POPUP_MARGINHEIGHT)
-			.spacing(POPUP_HORIZONTALSPACING, POPUP_VERTICALSPACING);
+	private static final GridDataFactory LAYOUTDATA_GRAB_BOTH = GridDataFactory.fillDefaults().grab(true, true);
+	private static final GridLayoutFactory POPUP_LAYOUT_FACTORY = GridLayoutFactory.fillDefaults()
+			.margins(POPUP_MARGINWIDTH, POPUP_MARGINHEIGHT).spacing(POPUP_HORIZONTALSPACING, POPUP_VERTICALSPACING);
 
 	protected static final String HELP_TEXT = "Enter search text";
 

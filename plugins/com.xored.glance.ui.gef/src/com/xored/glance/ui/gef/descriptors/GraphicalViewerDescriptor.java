@@ -79,7 +79,6 @@ public class GraphicalViewerDescriptor implements ITextSourceDescriptor {
         return new IEditorReference[0];
     }
 
-    @SuppressWarnings("restriction")
     private static Map<Control, IWorkbenchPart> getPartMap() {
         final Map<Control, IWorkbenchPart> map = new HashMap<Control, IWorkbenchPart>();
         for (final IEditorReference ref : getEditorReference()) {
