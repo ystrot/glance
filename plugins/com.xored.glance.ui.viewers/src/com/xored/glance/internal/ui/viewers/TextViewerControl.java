@@ -32,7 +32,7 @@ import com.xored.glance.ui.sources.SourceSelection;
 public class TextViewerControl extends BaseTextSource implements
 		ISelectionChangedListener {
 
-	public TextViewerControl(TextViewer viewer) {
+    public TextViewerControl(final TextViewer viewer) {
 		this.viewer = viewer;
 		listeners = new ListenerList();
 		blocks = new ColoredTextViewerBlock[] { new ColoredTextViewerBlock(
@@ -40,15 +40,18 @@ public class TextViewerControl extends BaseTextSource implements
 		viewer.addSelectionChangedListener(this);
 	}
 
-	public void addTextSourceListener(ITextSourceListener listener) {
+    @Override
+    public void addTextSourceListener(final ITextSourceListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeTextSourceListener(ITextSourceListener listener) {
+    @Override
+    public void removeTextSourceListener(final ITextSourceListener listener) {
 		listeners.remove(listener);
 	}
 
-	public void dispose() {
+    @Override
+    public void dispose() {
 		if (!disposed) {
 		    if (getBlock().getSelected() != null){
 		        selectText(getBlock().getSelected());
@@ -60,26 +63,28 @@ public class TextViewerControl extends BaseTextSource implements
 		}
 	}
 
-	private void selectText(Match match){
-	    TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
+    private void selectText(final Match match) {
+        final TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
         viewer.setSelection(selection, true);
 	}
 	
-	public void selectionChanged(SelectionChangedEvent event) {
-		ISelection selection = event.getSelection();
+    @Override
+    public void selectionChanged(final SelectionChangedEvent event) {
+        final ISelection selection = event.getSelection();
 		if (selection instanceof TextSelection) {
-			TextSelection tSelection = (TextSelection) selection;
-			SourceSelection sSelection = new SourceSelection(getBlock(),
+            final TextSelection tSelection = (TextSelection) selection;
+            final SourceSelection sSelection = new SourceSelection(getBlock(),
 					tSelection.getOffset(), tSelection.getLength());
-			Object[] objects = listeners.getListeners();
-			for (Object object : objects) {
-				ITextSourceListener listener = (ITextSourceListener) object;
+            final Object[] objects = listeners.getListeners();
+            for (final Object object : objects) {
+                final ITextSourceListener listener = (ITextSourceListener) object;
 				listener.selectionChanged(sSelection);
 			}
 		}
 	}
 
-	public boolean isDisposed() {
+    @Override
+    public boolean isDisposed() {
 		return disposed;
 	}
 
@@ -87,17 +92,19 @@ public class TextViewerControl extends BaseTextSource implements
 		return blocks[0];
 	}
 
-	public ITextBlock[] getBlocks() {
+    @Override
+    public ITextBlock[] getBlocks() {
 		return blocks;
 	}
 
-	public SourceSelection getSelection() {
-		Point selection = viewer.getSelectedRange();
+    @Override
+    public SourceSelection getSelection() {
+        final Point selection = viewer.getSelectedRange();
 		return new SourceSelection(getBlock(), selection.x, selection.y);
 	}
 
-	public void select(Match match) {
-
+    @Override
+    public void select(final Match match) {
 	    getBlock().setSelected(match);
 	    
 		if (match != null){
@@ -105,8 +112,9 @@ public class TextViewerControl extends BaseTextSource implements
 		}
 	}
 
-	public void show(Match[] matches) {
-		getBlock().setMatches(matches);
+    @Override
+    public void show(final Match[] matches) {
+        getBlock().setMatches(matches);
 	}
 
 	private final ListenerList listeners;
