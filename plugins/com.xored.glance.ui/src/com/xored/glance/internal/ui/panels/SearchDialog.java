@@ -37,13 +37,13 @@ import org.eclipse.swt.widgets.Text;
  */
 public class SearchDialog extends PopupDialog {
 
-	public SearchDialog(Shell parent) {
+	public SearchDialog(final Shell parent) {
 		super(parent, SWT.RESIZE, true, false, false, true, false, null, null);
 	}
 
 	@Override
-	protected Control createContents(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
+	protected Control createContents(final Composite parent) {
+		final Composite composite = new Composite(parent, SWT.NONE);
 		POPUP_LAYOUT_FACTORY.applyTo(composite);
 		LAYOUTDATA_GRAB_BOTH.applyTo(composite);
 
@@ -57,9 +57,9 @@ public class SearchDialog extends PopupDialog {
 	}
 
 	@Override
-	protected Control createInfoTextArea(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
+	protected Control createInfoTextArea(final Composite parent) {
+		final Composite composite = new Composite(parent, SWT.NONE);
+		final GridLayout layout = new GridLayout(3, false);
 		layout.horizontalSpacing = 0;
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
@@ -74,7 +74,7 @@ public class SearchDialog extends PopupDialog {
 		progress.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		// factory.applyTo(info);
 		// factory.applyTo(progress);
-		Color color = parent.getDisplay().getSystemColor(
+		final Color color = parent.getDisplay().getSystemColor(
 				SWT.COLOR_WIDGET_DARK_SHADOW);
 		info.setForeground(color);
 		progress.setForeground(color);
@@ -83,21 +83,21 @@ public class SearchDialog extends PopupDialog {
 	}
 
 	@Override
-	protected void setInfoText(String text) {
+	protected void setInfoText(final String text) {
 		info.setText(text);
 	}
 
-	protected void applyColors(Composite composite) {
+	protected void applyColors(final Composite composite) {
 		applyForegroundColor(getForeground(), composite);
 		applyBackgroundColor(getBackground(), composite);
 	}
 
-	protected void applyFonts(Composite composite) {
+	protected void applyFonts(final Composite composite) {
 		Dialog.applyDialogFont(composite);
 
 		if (info != null) {
-			Font font = info.getFont();
-			FontData[] fontDatas = font.getFontData();
+			final Font font = info.getFont();
+			final FontData[] fontDatas = font.getFontData();
 			for (int i = 0; i < fontDatas.length; i++) {
 				fontDatas[i].setHeight(fontDatas[i].getHeight() * 9 / 10);
 			}
@@ -107,11 +107,12 @@ public class SearchDialog extends PopupDialog {
 	}
 
 	@Override
-	protected void configureShell(Shell shell) {
+	protected void configureShell(final Shell shell) {
 		super.configureShell(shell);
 		shell.addDisposeListener(new DisposeListener() {
 
-			public void widgetDisposed(DisposeEvent e) {
+			@Override
+            public void widgetDisposed(final DisposeEvent e) {
 				handleClose();
 			}
 		});
@@ -131,8 +132,8 @@ public class SearchDialog extends PopupDialog {
 	 *            The parent composite.
 	 * @return The Control representing the horizontal separator.
 	 */
-	private Control createHorizontalSeparator(Composite parent) {
-		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL
+	private Control createHorizontalSeparator(final Composite parent) {
+		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL
 				| SWT.LINE_DOT);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
 				false).applyTo(separator);
@@ -141,8 +142,7 @@ public class SearchDialog extends PopupDialog {
 
 	@Override
 	protected List<Control> getForegroundColorExclusions() {
-		@SuppressWarnings("unchecked")
-		List<Control> list = super.getForegroundColorExclusions();
+        final List<Control> list = super.getForegroundColorExclusions();
 		if (info != null)
 			list.add(info);
 		if (separator != null)
@@ -152,14 +152,13 @@ public class SearchDialog extends PopupDialog {
 
 	@Override
 	protected List<Control> getBackgroundColorExclusions() {
-		@SuppressWarnings("unchecked")
-		List<Control> list = super.getBackgroundColorExclusions();
+        final List<Control> list = super.getBackgroundColorExclusions();
 		if (separator != null)
 			list.add(separator);
 		return list;
 	}
 
-	protected void applyBackgroundColor(Color color) {
+	protected void applyBackgroundColor(final Color color) {
 		applyBackgroundColor(color, titleArea);
 	}
 

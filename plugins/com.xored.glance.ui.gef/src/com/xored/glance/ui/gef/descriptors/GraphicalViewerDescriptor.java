@@ -27,6 +27,7 @@ import com.xored.glance.ui.gef.sources.GraphicalViewerTextSource;
 import com.xored.glance.ui.sources.ITextSource;
 import com.xored.glance.ui.sources.ITextSourceDescriptor;
 
+@SuppressWarnings("restriction")
 public class GraphicalViewerDescriptor implements ITextSourceDescriptor {
 
     protected GraphicalViewer viewer;
