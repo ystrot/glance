@@ -14,6 +14,8 @@ import com.xored.glance.internal.ui.search.SearchRule;
  */
 public interface ISearchPanel extends ISearchListener {
 
+    public static int INDEXING_STATE_DISABLE = 0;
+
 	public static int INDEXING_STATE_INITIAL = 1;
 
 	public static int INDEXING_STATE_IN_PROGRESS = 2;

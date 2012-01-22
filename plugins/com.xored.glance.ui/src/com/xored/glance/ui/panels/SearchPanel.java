@@ -82,11 +82,12 @@ public abstract class SearchPanel implements ISearchPanel,
 		getPreferences().addPropertyChangeListener(this);
 	}
 
-	public void setIndexingState(int state) {
+	@Override
+    public void setIndexingState(final int state) {
 		indexState = state;
 
 		if (updateInfoThread != null) {
-			UpdateInfoThread thread = updateInfoThread;
+			final UpdateInfoThread thread = updateInfoThread;
 			thread.requestStop();
 			updateInfoThread = null;
 		}
@@ -95,23 +96,26 @@ public abstract class SearchPanel implements ISearchPanel,
 			try {
 				updateInfoThread = new UpdateInfoThread();
 				updateInfoThread.start();
-			} catch (CoreException e) {
+			} catch (final CoreException e) {
 				GlancePlugin.log(e.getStatus());
 			}
 		} else {
 			UIUtils.asyncExec(toolBar, new Runnable() {
-				public void run() {
+				@Override
+                public void run() {
 					updateInfo(null);
 				}
 			});
 		}
 	}
 
-	public void updateIndexingPercent(double percent) {
+	@Override
+    public void updateIndexingPercent(final double percent) {
 		indexPercent = percent;
 	}
 
-	public void newTask(String name) {
+	@Override
+    public void newTask(final String name) {
 		this.taskName = name;
 		indexPercent = 0;
 	}
@@ -122,7 +126,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		try {
 			url = FileLocator.resolve(url);
 			return url;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new CoreException(GlancePlugin.createStatus(
 					"Can't find wait image", e));
 		}
@@ -132,7 +136,8 @@ public abstract class SearchPanel implements ISearchPanel,
 		final Display display = PlatformUI.getWorkbench().getDisplay();
 		final Color[] color = new Color[1];
 		display.syncExec(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				color[0] = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			}
 		});
@@ -153,7 +158,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 
 		@Override
-		protected void updateImage(Image image) {
+		protected void updateImage(final Image image) {
 			updateInfo(image);
 		}
 
@@ -162,16 +167,24 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	private void updateInfo(Image image) {
+	private void updateInfo(final Image image) {
 		if (bIndexing == null || bIndexing.isDisposed()) {
 			return;
 		}
 
-		if (indexState == INDEXING_STATE_INITIAL) {
+        if (indexState == INDEXING_STATE_DISABLE) {
+            bIndexing.setToolTipText("Index component");
+            bIndexing.setSelection(false);
+            bIndexing.setEnabled(false);
+            if (bIndexing.getImage() == null) {
+                bIndexing.setImage(GlancePlugin.createImage(GlancePlugin.IMG_START_INDEXING));
+            }
+        } else if (indexState == INDEXING_STATE_INITIAL) {
 			bIndexing.setToolTipText("Index component");
 			bIndexing.setSelection(false);
 			bIndexing.setImage(GlancePlugin
 					.createImage(GlancePlugin.IMG_START_INDEXING));
+            bIndexing.setEnabled(true);
 		} else if (indexState == INDEXING_STATE_FINISHED) {
 			bIndexing.setToolTipText("Index finished");
 			bIndexing.setSelection(false);
@@ -190,16 +203,17 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	public void propertyChange(PropertyChangeEvent event) {
-		String property = event.getProperty();
+	@Override
+    public void propertyChange(final PropertyChangeEvent event) {
+		final String property = event.getProperty();
 		if (property != null && property.startsWith(SEARCH_PREFIX)) {
 			updateRule();
 		}
 	}
 
-	public void createContent(Composite parent) {
-		Composite container = createContainer(parent);
-		GridLayout layout = new GridLayout(3, false);
+	public void createContent(final Composite parent) {
+		final Composite container = createContainer(parent);
+		final GridLayout layout = new GridLayout(3, false);
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 2;
 		layout.marginWidth = 0;
@@ -210,44 +224,50 @@ public abstract class SearchPanel implements ISearchPanel,
 		initSize(container);
 	}
 
-	public Control getControl() {
+	@Override
+    public Control getControl() {
 		return container;
 	}
 
-	protected Composite createContainer(Composite parent) {
+	protected Composite createContainer(final Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		return container;
 	}
 
-	public void firstFound(final Match match) {
+	@Override
+    public void firstFound(final Match match) {
 		UIUtils.asyncExec(title, new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				setBackground(match != null);
 			}
 		});
 	}
 
-	public void allFound(Match[] matches) {
+	@Override
+    public void allFound(final Match[] matches) {
 		result = matches;
 		UIUtils.asyncExec(title, new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				setBackground(result.length > 0);
 			}
 		});
 	}
 
-	public void finished() {
+	@Override
+    public void finished() {
 	}
 
-	protected Label createIcon(Composite parent) {
+	protected Label createIcon(final Composite parent) {
 		final Label label = new Label(parent, SWT.NONE);
 		label.setImage(GlancePlugin.createImage(GlancePlugin.IMG_SEARCH));
 		return label;
 	}
 
-	protected Control createText(Composite parent, int style) {
+	protected Control createText(final Composite parent, final int style) {
 		title = new Combo(parent, style | SWT.DROP_DOWN);
-		String text = rule.getText();
+		final String text = rule.getText();
 		title.setText(text);
 		loadHistory();
 		if (text != null && text.length() > 0 && result.length == 0)
@@ -255,7 +275,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		title.addModifyListener(modifyListener);
 		title.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == '\r') {
 					if (e.stateMask == 0)
 						findNext();
@@ -272,7 +292,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		return title;
 	}
 
-	protected ToolBar createToolBar(Composite parent) {
+	protected ToolBar createToolBar(final Composite parent) {
 		toolBar = new ToolBar(parent, SWT.FLAT);
 		GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(
 				toolBar);
@@ -288,35 +308,35 @@ public abstract class SearchPanel implements ISearchPanel,
 		return toolBar;
 	}
 
-	protected ToolItem createNextItem(ToolBar bar) {
+	protected ToolItem createNextItem(final ToolBar bar) {
 		bNext = createTool(bar, "Next", GlancePlugin.IMG_NEXT,
 				new SelectionAdapter() {
 					@Override
-					public void selected(SelectionEvent e) {
+					public void selected(final SelectionEvent e) {
 						findNext();
 					}
 				});
 		return bNext;
 	}
 
-	protected ToolItem createPreviousItem(ToolBar bar) {
+	protected ToolItem createPreviousItem(final ToolBar bar) {
 		bPrev = createTool(bar, "Previous", GlancePlugin.IMG_PREV,
 				new SelectionAdapter() {
 					@Override
-					public void selected(SelectionEvent e) {
+					public void selected(final SelectionEvent e) {
 						findPrevious();
 					}
 				});
 		return bPrev;
 	}
 
-	private void createIndexing(ToolBar bar) {
+	private void createIndexing(final ToolBar bar) {
 		bIndexing = new ToolItem(bar, SWT.CHECK);
 		bIndexing.setDisabledImage(GlancePlugin
 				.createImage(GlancePlugin.IMG_INDEXING_FINISHED));
 		bIndexing.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void selected(SelectionEvent e) {
+			public void selected(final SelectionEvent e) {
 				if (indexState == INDEXING_STATE_INITIAL) {
 					SearchManager.getIntance().index();
 				} else if (indexState != INDEXING_STATE_FINISHED) {
@@ -326,8 +346,8 @@ public abstract class SearchPanel implements ISearchPanel,
 		});
 	}
 
-	private ToolItem createTool(ToolBar bar, String tip, String image,
-			SelectionListener listener) {
+	private ToolItem createTool(final ToolBar bar, final String tip, final String image,
+			final SelectionListener listener) {
 		final ToolItem item = new ToolItem(bar, SWT.PUSH);
 		item.setToolTipText(tip);
 		item.setImage(GlancePlugin.createImage(image));
@@ -335,31 +355,31 @@ public abstract class SearchPanel implements ISearchPanel,
 		return item;
 	}
 
-	protected ToolItem createSettingsMenu(ToolBar bar) {
-		ToolItem settings = new ToolItem(bar, SWT.PUSH);
+	protected ToolItem createSettingsMenu(final ToolBar bar) {
+		final ToolItem settings = new ToolItem(bar, SWT.PUSH);
 		settings.setImage(JFaceResources.getImage(PopupDialog.POPUP_IMG_MENU));
 		settings.setDisabledImage(JFaceResources
 				.getImage(PopupDialog.POPUP_IMG_MENU_DISABLED));
 		settings.setToolTipText("Settings"); //$NON-NLS-1$
 		settings.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void selected(SelectionEvent e) {
+			public void selected(final SelectionEvent e) {
 				showSettings();
 			}
 		});
 		return settings;
 	}
 
-	protected ToolItem createClose(ToolBar bar) {
-		ToolItem close = new ToolItem(bar, SWT.PUSH);
-		ImageDescriptor image = PlatformUI.getWorkbench().getSharedImages()
+	protected ToolItem createClose(final ToolBar bar) {
+		final ToolItem close = new ToolItem(bar, SWT.PUSH);
+		final ImageDescriptor image = PlatformUI.getWorkbench().getSharedImages()
 				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE);
 		if (image != null)
 			close.setImage(image.createImage());
 		close.setToolTipText("Close"); //$NON-NLS-1$
 		close.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void selected(SelectionEvent e) {
+			public void selected(final SelectionEvent e) {
 				closePanel();
 			}
 		});
@@ -367,19 +387,19 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected void showSettings() {
-		MenuManager manager = new MenuManager();
+		final MenuManager manager = new MenuManager();
 		fillMenu(manager);
-		Menu menu = manager.createContextMenu(getControl());
+		final Menu menu = manager.createContextMenu(getControl());
 
-		Point location = getControl().getDisplay().getCursorLocation();
+		final Point location = getControl().getDisplay().getCursorLocation();
 		menu.setLocation(location);
 		menu.setVisible(true);
 	}
 
-	protected void fillMenu(IMenuManager menu) {
+	protected void fillMenu(final IMenuManager menu) {
 		menu.add(new Separator());
 		newAction(menu, SEARCH_CASE_SENSITIVE, LABEL_CASE_SENSITIVE, true);
-		boolean regExp = newAction(menu, SEARCH_REGEXP, LABEL_REGEXP, true)
+		final boolean regExp = newAction(menu, SEARCH_REGEXP, LABEL_REGEXP, true)
 				.isChecked();
 		newAction(menu, SEARCH_CAMEL_CASE, LABEL_CAMEL_CASE, !regExp);
 		newAction(menu, SEARCH_WORD_PREFIX, LABEL_WORD_PREFIX, !regExp);
@@ -409,14 +429,14 @@ public abstract class SearchPanel implements ISearchPanel,
 		});
 	}
 
-	private CheckAction newAction(IMenuManager menu, String name, String label,
-			boolean enable) {
+	private CheckAction newAction(final IMenuManager menu, final String name, final String label,
+			final boolean enable) {
 		return newAction(menu, name, label, enable, null);
 	}
 
-	private CheckAction newAction(IMenuManager menu, String name, String label,
-			boolean enable, String path) {
-		CheckAction action = new CheckAction(name, label);
+	private CheckAction newAction(final IMenuManager menu, final String name, final String label,
+			final boolean enable, final String path) {
+		final CheckAction action = new CheckAction(name, label);
 		if (path != null) {
 			action.setImageDescriptor(GlancePlugin.getImageDescriptor(path));
 		}
@@ -426,8 +446,8 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected void textChanged() {
-		String text = title.getText();
-		boolean empty = text.length() == 0;
+		final String text = title.getText();
+		final boolean empty = text.length() == 0;
 		if (empty)
 			textEmpty();
 		if (bNext != null && !bNext.isDisposed())
@@ -449,11 +469,13 @@ public abstract class SearchPanel implements ISearchPanel,
 	/**
 	 * @return the rule
 	 */
-	public SearchRule getRule() {
+	@Override
+    public SearchRule getRule() {
 		return rule;
 	}
 
-	public void setFocus(String text) {
+	@Override
+    public void setFocus(String text) {
 		if (isReady()) {
 			if (text == null || text.length() == 0)
 				text = rule.getText();
@@ -466,7 +488,8 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-	public void setEnabled(boolean enabled) {
+	@Override
+    public void setEnabled(final boolean enabled) {
 		if (isReady()) {
 			title.setEnabled(enabled);
 			titleEnabled = enabled;
@@ -477,45 +500,49 @@ public abstract class SearchPanel implements ISearchPanel,
 		return title != null && !title.isDisposed();
 	}
 
-	public void addPanelListener(ISearchPanelListener listener) {
+	@Override
+    public void addPanelListener(final ISearchPanelListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removePanelListener(ISearchPanelListener listener) {
+	@Override
+    public void removePanelListener(final ISearchPanelListener listener) {
 		listeners.remove(listener);
 	}
 
-	private void fireRuleChanged(SearchRule rule) {
+	private void fireRuleChanged(final SearchRule rule) {
 		historyDirty = true;
-		Object[] objects = listeners.getListeners();
-		for (Object object : objects) {
-			ISearchPanelListener listener = (ISearchPanelListener) object;
+		final Object[] objects = listeners.getListeners();
+		for (final Object object : objects) {
+			final ISearchPanelListener listener = (ISearchPanelListener) object;
 			listener.ruleChanged(rule);
 		}
 	}
 
 	protected void fireIndexCanceled() {
-		Object[] objects = listeners.getListeners();
-		for (Object object : objects) {
-			ISearchPanelListener listener = (ISearchPanelListener) object;
+		final Object[] objects = listeners.getListeners();
+		for (final Object object : objects) {
+			final ISearchPanelListener listener = (ISearchPanelListener) object;
 			listener.indexCanceled();
 		}
 	}
 
-	public void findNext() {
+	@Override
+    public void findNext() {
 		updateHistory();
-		Object[] objects = listeners.getListeners();
-		for (Object object : objects) {
-			ISearchPanelListener listener = (ISearchPanelListener) object;
+		final Object[] objects = listeners.getListeners();
+		for (final Object object : objects) {
+			final ISearchPanelListener listener = (ISearchPanelListener) object;
 			listener.findNext();
 		}
 	}
 
-	public void findPrevious() {
+	@Override
+    public void findPrevious() {
 		updateHistory();
-		Object[] objects = listeners.getListeners();
-		for (Object object : objects) {
-			ISearchPanelListener listener = (ISearchPanelListener) object;
+		final Object[] objects = listeners.getListeners();
+		for (final Object object : objects) {
+			final ISearchPanelListener listener = (ISearchPanelListener) object;
 			listener.findPrevious();
 		}
 	}
@@ -523,9 +550,9 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected void fireClose() {
 		updateHistory();
 		saveHistory();
-		Object[] objects = listeners.getListeners();
-		for (Object object : objects) {
-			ISearchPanelListener listener = (ISearchPanelListener) object;
+		final Object[] objects = listeners.getListeners();
+		for (final Object object : objects) {
+			final ISearchPanelListener listener = (ISearchPanelListener) object;
 			listener.close();
 		}
 		getPreferences().removePropertyChangeListener(this);
@@ -548,17 +575,17 @@ public abstract class SearchPanel implements ISearchPanel,
 		return preferredHeight;
 	}
 
-	private void initSize(Composite composite) {
-		Point size = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+	private void initSize(final Composite composite) {
+		final Point size = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		preferredWidth = size.x;
 		preferredHeight = size.y;
 		preferredWidth -= title.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
-		int widthInChars = getPreferences().getInt(PANEL_TEXT_SIZE);
+		final int widthInChars = getPreferences().getInt(PANEL_TEXT_SIZE);
 		preferredWidth += getTextWidth(title, widthInChars) + 15;
 	}
 
-	protected int getTextWidth(Control control, int width) {
-		GC gc = new GC(control);
+	protected int getTextWidth(final Control control, final int width) {
+		final GC gc = new GC(control);
 		try {
 			gc.setFont(title.getFont());
 			return gc.getFontMetrics().getAverageCharWidth() * width;
@@ -575,13 +602,13 @@ public abstract class SearchPanel implements ISearchPanel,
 			title.removeModifyListener(modifyListener);
 			try {
 				String findString = title.getText();
-				Point sel = title.getSelection();
+				final Point sel = title.getSelection();
 				findString = fixItem(findString);
 				if (findString != null) {
 					findHistory.remove(findString);
 					findHistory.add(0, findString);
 					title.removeAll();
-					for (String string : findHistory) {
+					for (final String string : findHistory) {
 						title.add(string);
 					}
 					title.setText(findString);
@@ -595,9 +622,9 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	private void saveHistory() {
-		StringBuffer buffer = new StringBuffer();
+		final StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < findHistory.size() && i < 8; i++) {
-			String item = findHistory.get(i);
+			final String item = findHistory.get(i);
 			if (i > 0) {
 				buffer.append("\n");
 			}
@@ -608,19 +635,19 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	private void loadHistory() {
 		findHistory = new ArrayList<String>();
-		String content = getPreferences().getString(HISTORY);
-		String[] items = content.split("\n");
-		for (String item : items) {
+		final String content = getPreferences().getString(HISTORY);
+		final String[] items = content.split("\n");
+		for (final String item : items) {
 			findHistory.add(item);
 			title.add(item);
 		}
 	}
 
-	private String fixItem(String item) {
+	private String fixItem(final String item) {
 		if (item.length() == 0) {
 			return null;
 		}
-		int index = item.indexOf("\n");
+		final int index = item.indexOf("\n");
 		if (index == 0) {
 			return null;
 		} else if (index > 0) {
@@ -634,7 +661,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		return GlancePlugin.getDefault().getPreferenceStore();
 	}
 
-	protected void setBackground(boolean found) {
+	protected void setBackground(final boolean found) {
 		title.setBackground(found ? GOOD_COLOR : BAD_COLOR);
 	}
 
@@ -649,7 +676,8 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	private final ListenerList listeners = new ListenerList();
 	private final ModifyListener modifyListener = new ModifyListener() {
-		public void modifyText(ModifyEvent e) {
+		@Override
+        public void modifyText(final ModifyEvent e) {
 			textChanged();
 		}
 	};

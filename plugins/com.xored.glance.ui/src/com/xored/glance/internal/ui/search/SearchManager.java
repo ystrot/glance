@@ -56,7 +56,7 @@ public class SearchManager {
 	}
 
 	public boolean activate() {
-		TextSourceMaker source = TextSourceManager.getInstance().getSource();
+		final TextSourceMaker source = TextSourceManager.getInstance().getSource();
 		if (update(source, true)) {
 			forceFocus();
 			return true;
@@ -66,38 +66,42 @@ public class SearchManager {
 
 	public void startup() {
 		PlatformUI.getWorkbench().addWindowListener(new IWindowListener() {
-			public void windowOpened(IWorkbenchWindow window) {
+			@Override
+            public void windowOpened(final IWorkbenchWindow window) {
 				setStatusLine(window, true);
 			}
 
-			public void windowDeactivated(IWorkbenchWindow window) {
+			@Override
+            public void windowDeactivated(final IWorkbenchWindow window) {
 			}
 
-			public void windowClosed(IWorkbenchWindow window) {
+			@Override
+            public void windowClosed(final IWorkbenchWindow window) {
 			}
 
-			public void windowActivated(IWorkbenchWindow window) {
+			@Override
+            public void windowActivated(final IWorkbenchWindow window) {
 			}
 		});
-		for (IWorkbenchWindow window : PlatformUI.getWorkbench()
+		for (final IWorkbenchWindow window : PlatformUI.getWorkbench()
 				.getWorkbenchWindows()) {
 			setStatusLine(window, true);
 		}
 	}
 
-	public void setStatusLine(IWorkbenchWindow window, boolean open) {
-		ISearchPanel panel = SearchStatusLine.getSearchLine(window);
+	public void setStatusLine(final IWorkbenchWindow window, final boolean open) {
+		final ISearchPanel panel = SearchStatusLine.getSearchLine(window);
 		if (!open) {
 			panel.closePanel();
 			return;
 		}
 		panels.add(panel);
-		SearchPanelListener listener = new SearchPanelListener(panel);
+		final SearchPanelListener listener = new SearchPanelListener(panel);
 		panel.addPanelListener(listener);
 		panelToListener.put(panel, listener);
 		updateSourceListener();
 
-		TextSourceMaker source = TextSourceManager.getInstance().getSource();
+		final TextSourceMaker source = TextSourceManager.getInstance().getSource();
 		if (source != null && source.getControl() != null
 				&& panel.isApplicable(source.getControl())) {
 			this.panel = panel;
@@ -107,10 +111,10 @@ public class SearchManager {
 		}
 	}
 
-	public boolean isInWindow(IWorkbenchWindow window) {
-		for (ISearchPanel panel : panels) {
+	public boolean isInWindow(final IWorkbenchWindow window) {
+		for (final ISearchPanel panel : panels) {
 			if (panel instanceof SearchStatusLine) {
-				SearchStatusLine sl = ((SearchStatusLine) panel);
+				final SearchStatusLine sl = ((SearchStatusLine) panel);
 				if (sl.getWindow() == window) {
 					return true;
 				}
@@ -131,7 +135,7 @@ public class SearchManager {
 		}
 	}
 
-	private boolean update(TextSourceMaker source, boolean openNewPanel) {
+	private boolean update(final TextSourceMaker source, final boolean openNewPanel) {
 		updatePanel(source, openNewPanel);
 		if (panel != null) {
 			rule = panel.getRule();
@@ -143,8 +147,8 @@ public class SearchManager {
 		return false;
 	}
 
-	private void updatePanel(TextSourceMaker source, boolean openNewPanel) {
-		Control control = source.getControl();
+	private void updatePanel(final TextSourceMaker source, final boolean openNewPanel) {
+		final Control control = source.getControl();
 		if (panel != null) {
 			if (panel.isApplicable(control))
 				return;
@@ -155,7 +159,7 @@ public class SearchManager {
 			creator = null;
 			panel = null;
 		}
-		for (ISearchPanel panel : panels) {
+		for (final ISearchPanel panel : panels) {
 			if (panel.isApplicable(control)) {
 				this.panel = panel;
 				break;
@@ -165,7 +169,7 @@ public class SearchManager {
 			panel = SearchPanelManager.getInstance().getPanel(control);
 			if (panel != null) {
 				panels.add(panel);
-				SearchPanelListener listener = new SearchPanelListener(panel);
+				final SearchPanelListener listener = new SearchPanelListener(panel);
 				panel.addPanelListener(listener);
 				panelToListener.put(panel, listener);
 			}
@@ -175,11 +179,11 @@ public class SearchManager {
 	private void forceFocus() {
 		String text = "";
 		if (source != null) {
-			SourceSelection selection = source.getSelection();
+			final SourceSelection selection = source.getSelection();
 			if (selection != null) {
 				text = selection.getBlock().getText();
-				int offset = selection.getOffset();
-				int length = selection.getLength();
+				final int offset = selection.getOffset();
+				final int length = selection.getLength();
 				if (text.length() > offset + length)
 					text = text.substring(offset, offset + length);
 				else
@@ -189,11 +193,11 @@ public class SearchManager {
 		panel.setFocus(text);
 	}
 
-	private void find(SearchRule rule, int type) {
+	private void find(final SearchRule rule, final int type) {
 		this.type = type;
 		if (rule != null) {
-			boolean textEquals = rule.isTextEquals(this.rule);
-			boolean settingsEqual = rule.isSettingsEqual(this.rule);
+			final boolean textEquals = rule.isTextEquals(this.rule);
+			final boolean settingsEqual = rule.isSettingsEqual(this.rule);
 			if (textEquals) {
 				if (settingsEqual) {
 					updateSelection();
@@ -209,9 +213,9 @@ public class SearchManager {
 		this.rule = rule;
 	}
 
-	protected void dispose(ISearchPanel panel) {
+	protected void dispose(final ISearchPanel panel) {
 		panels.remove(panel);
-		SearchPanelListener listener = panelToListener.remove(panel);
+		final SearchPanelListener listener = panelToListener.remove(panel);
 		panel.removePanelListener(listener);
 		if (panel == this.panel) {
 			this.panel = null;
@@ -220,7 +224,7 @@ public class SearchManager {
 				source = null;
 			}
 			if (creator != null) {
-				Control control = creator.getControl();
+				final Control control = creator.getControl();
 				if (control != null && !control.isDisposed())
 					control.forceFocus();
 				creator = null;
@@ -242,7 +246,7 @@ public class SearchManager {
 		}
 	}
 
-	protected void updateSearch(SearchRule rule, boolean paused) {
+	protected void updateSearch(final SearchRule rule, final boolean paused) {
 		getSearchEngine().setRule(rule);
 	}
 
@@ -254,7 +258,7 @@ public class SearchManager {
 		}
 	}
 
-	protected boolean setDescription(TextSourceMaker descriptor) {
+	protected boolean setDescription(final TextSourceMaker descriptor) {
 		// ignore panel controls
 		if (descriptor != null && panel != null && panel.getControl() != null) {
 			if (isParent(panel.getControl(), descriptor.getControl()))
@@ -289,13 +293,14 @@ public class SearchManager {
 			monitor = null;
 		}
 
+        final boolean indexRequired = source != null && !source.isDisposed() && source.isIndexRequired();
 		if (GlancePlugin.getDefault().getPreferenceStore().getBoolean(
 				IPreferenceConstants.PANEL_AUTO_INDEXING)
-				|| (source != null && !source.isDisposed() && source
-						.isIndexRequired())) {
+            && indexRequired) {
 			index();
 		} else {
-			panel.setIndexingState(ISearchPanel.INDEXING_STATE_INITIAL);
+            panel.setIndexingState(indexRequired ? ISearchPanel.INDEXING_STATE_INITIAL
+                    : ISearchPanel.INDEXING_STATE_DISABLE);
 		}
 	}
 
@@ -307,7 +312,9 @@ public class SearchManager {
 				public void run() {
 					panel
 							.setIndexingState(ISearchPanel.INDEXING_STATE_IN_PROGRESS);
-					source.index(monitor);
+                    if (source != null) {
+                        source.index(monitor);
+                    }
 				}
 			}.start();
 		}
@@ -324,7 +331,7 @@ public class SearchManager {
 		}
 	}
 
-	protected boolean isParent(Control parent, Control child) {
+	protected boolean isParent(final Control parent, Control child) {
 		while (child != null) {
 			if (child.equals(parent))
 				return true;
@@ -351,31 +358,35 @@ public class SearchManager {
 
 	private class SearchListener implements ISearchListener {
 
-		public void allFound(Match[] matches) {
+		@Override
+        public void allFound(final Match[] matches) {
 			if (panel != null)
 				panel.allFound(matches);
 		}
 
-		public void finished() {
+		@Override
+        public void finished() {
 			if (panel != null)
 				panel.finished();
 		}
 
-		public void firstFound(Match match) {
+		@Override
+        public void firstFound(final Match match) {
 			if (panel != null)
 				panel.firstFound(match);
 		}
 	}
 
 	private class SourceListener implements ISourceProviderListener {
-		public void sourceChanged(TextSourceMaker source) {
+		@Override
+        public void sourceChanged(final TextSourceMaker source) {
 			update(source, false);
 		}
 	}
 
 	private class SearchPanelListener implements ISearchPanelListener {
 
-		public SearchPanelListener(ISearchPanel panel) {
+		public SearchPanelListener(final ISearchPanel panel) {
 			this.panel = panel;
 		}
 
@@ -383,26 +394,31 @@ public class SearchManager {
 			return panel.equals(SearchManager.this.panel);
 		}
 
-		public void ruleChanged(SearchRule rule) {
+		@Override
+        public void ruleChanged(final SearchRule rule) {
 			if (isCurrent())
 				find(rule, SearchManager.FIND_HERE);
 		}
 
-		public void findNext() {
+		@Override
+        public void findNext() {
 			if (isCurrent())
 				find(rule, SearchManager.FIND_NEXT);
 		}
 
-		public void findPrevious() {
+		@Override
+        public void findPrevious() {
 			if (isCurrent())
 				find(rule, SearchManager.FIND_PREVIOUS);
 		}
 
-		public void close() {
+		@Override
+        public void close() {
 			dispose(panel);
 		}
 
-		public void indexCanceled() {
+		@Override
+        public void indexCanceled() {
 			if (monitor != null) {
 				monitor.setCanceled(true);
 				monitor = null;

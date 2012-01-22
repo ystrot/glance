@@ -16,7 +16,7 @@ import com.xored.glance.ui.controls.tree.TreeStructSource;
 import com.xored.glance.ui.controls.tree.content.TreeContent;
 
 public class CVSViewSource extends TreeStructSource {
-	public static Tree tree;
+	public static Tree TREE;
 
 	public CVSViewSource(Tree tree) {
 		super(tree);
@@ -24,8 +24,8 @@ public class CVSViewSource extends TreeStructSource {
 
 	@Override
 	protected TreeContent createContent() {
-		if (CVSViewSource.tree != null) {
-			return new CVSHistorySourceTree(CVSViewSource.tree);
+		if (CVSViewSource.TREE != null) {
+			return new CVSHistorySourceTree(CVSViewSource.TREE);
 		}
 		return null;
 	}

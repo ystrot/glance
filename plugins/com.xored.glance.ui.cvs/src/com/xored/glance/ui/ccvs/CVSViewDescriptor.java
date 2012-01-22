@@ -26,7 +26,7 @@ public class CVSViewDescriptor implements ITextSourceDescriptor {
 
 	public ITextSource createSource(Control control) {
 		if (control != null) {
-			CVSViewSource.tree = (Tree) control;
+			CVSViewSource.TREE = (Tree) control;
 			return new CVSViewSource((Tree) control);
 		}
 		return null;

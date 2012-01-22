@@ -38,19 +38,20 @@ import com.xored.glance.ui.utils.TextUtils;
 public abstract class StructSource implements ITextSource, IStructProvider,
 		SelectionListener {
 
-	private StructDecorator decorator;
-	private Composite composite;
+	private final StructDecorator decorator;
+	private final Composite composite;
 	protected IStructContent content;
 
-	public StructSource(Composite composite) {
+	public StructSource(final Composite composite) {
 		this.composite = composite;
 		init();
 		content = createContent();
 		decorator = new StructDecorator(composite, this);
 	}
 
-	public StructCell getCell(Item item, int column) {
-		StructCell cell = createCell(item, column);
+	@Override
+    public StructCell getCell(final Item item, final int column) {
+		final StructCell cell = createCell(item, column);
 		StyleRange[] styles = cellToStyles.get(cell);
 		if (styles == null) {
 			styles = calcStyles(cell);
@@ -60,24 +61,25 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		return cell;
 	}
 
-	public boolean isIndexRequired() {
-		return false;
+	@Override
+    public boolean isIndexRequired() {
+        return true;
 	}
 
-	private StyleRange[] calcStyles(StructCell cell) {
-		ITextBlock block = content.getContent(cell);
+	private StyleRange[] calcStyles(final StructCell cell) {
+		final ITextBlock block = content.getContent(cell);
 		blockToCell.put(block, cell);
 
-		StyleRange[] cellStyles = cell.nativeStyles();
-		StyleRange[] blockStyles = createStyles(block);
+		final StyleRange[] cellStyles = cell.nativeStyles();
+		final StyleRange[] blockStyles = createStyles(block);
 
 		if (blockStyles == null || blockStyles.length == 0)
 			return cellStyles;
 		if (cellStyles.length == 0)
 			return blockStyles;
-		Region region = new Region(0, cell.getText().length());
-		int size = cellStyles.length + blockStyles.length;
-		TextPresentation presentation = new TextPresentation(region, size);
+		final Region region = new Region(0, cell.getText().length());
+		final int size = cellStyles.length + blockStyles.length;
+		final TextPresentation presentation = new TextPresentation(region, size);
 		presentation.replaceStyleRanges(cellStyles);
 		presentation.mergeStyleRanges(blockStyles);
 		return TextUtils.getStyles(presentation);
@@ -94,41 +96,48 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		return composite;
 	}
 
-	public ITextBlock[] getBlocks() {
+	@Override
+    public ITextBlock[] getBlocks() {
 		return content.getBlocks();
 	}
 
-	public void dispose() {
+	@Override
+    public void dispose() {
 		content.dispose();
 		decorator.dispose();
 	}
 
-	public boolean isDisposed() {
+	@Override
+    public boolean isDisposed() {
 		return decorator.isDisposed();
 	}
 
-	public void index(IProgressMonitor monitor) {
+	@Override
+    public void index(final IProgressMonitor monitor) {
 		content.index(monitor);
 	}
 
-	public void widgetDefaultSelected(SelectionEvent e) {
+	@Override
+    public void widgetDefaultSelected(final SelectionEvent e) {
 		fireSelectionChanged();
 	}
 
-	public void widgetSelected(SelectionEvent e) {
+	@Override
+    public void widgetSelected(final SelectionEvent e) {
 		fireSelectionChanged();
 	}
 
 	protected void fireSelectionChanged() {
 		discardSelection();
-		SourceSelection selection = getSelection();
-		ITextSourceListener[] listeners = content.getListeners();
-		for (ITextSourceListener listener : listeners) {
+		final SourceSelection selection = getSelection();
+		final ITextSourceListener[] listeners = content.getListeners();
+		for (final ITextSourceListener listener : listeners) {
 			listener.selectionChanged(selection);
 		}
 	}
 
-	public void select(Match match) {
+	@Override
+    public void select(final Match match) {
 		if (match != null) {
 			discardSelection();
 			path = content.getPath(match.getBlock());
@@ -137,15 +146,18 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		setMatch(match);
 	}
 
-	public void show(Match[] matches) {
+	@Override
+    public void show(final Match[] matches) {
 		setMatches(matches);
 	}
 
-	public void addTextSourceListener(ITextSourceListener listener) {
+	@Override
+    public void addTextSourceListener(final ITextSourceListener listener) {
 		content.addListener(listener);
 	}
 
-	public void removeTextSourceListener(ITextSourceListener listener) {
+	@Override
+    public void removeTextSourceListener(final ITextSourceListener listener) {
 		content.removeListener(listener);
 	}
 
@@ -156,10 +168,10 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		}
 	}
 
-	private void setMatch(Match match) {
-		StructCell oldSel = updateSelection(false);
+	private void setMatch(final Match match) {
+		final StructCell oldSel = updateSelection(false);
 		selection = match;
-		StructCell newSel = updateSelection(true);
+		final StructCell newSel = updateSelection(true);
 		if (oldSel != null) {
 			decorator.redraw(oldSel);
 		}
@@ -168,10 +180,10 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		}
 	}
 
-	private StructCell updateSelection(boolean add) {
+	private StructCell updateSelection(final boolean add) {
 		if (selection != null) {
-			ITextBlock block = selection.getBlock();
-			StructCell cell = blockToCell.get(block);
+			final ITextBlock block = selection.getBlock();
+			final StructCell cell = blockToCell.get(block);
 			if (cell != null) {
 				cellToStyles.remove(cell);
 				return cell;
@@ -180,10 +192,10 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		return null;
 	}
 
-	private void setMatches(Match[] matches) {
+	private void setMatches(final Match[] matches) {
 		init();
-		for (Match match : matches) {
-			ITextBlock block = match.getBlock();
+		for (final Match match : matches) {
+			final ITextBlock block = match.getBlock();
 			List<Match> list = blockToMatches.get(block);
 			if (list == null) {
 				list = new ArrayList<Match>();
@@ -194,21 +206,21 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		decorator.redraw();
 	}
 
-	private StyleRange[] createStyles(ITextBlock block) {
-		List<StyleRange> list = new ArrayList<StyleRange>();
+	private StyleRange[] createStyles(final ITextBlock block) {
+		final List<StyleRange> list = new ArrayList<StyleRange>();
 		boolean selectionFound = false;
-		List<Match> matches = blockToMatches.get(block);
+		final List<Match> matches = blockToMatches.get(block);
 		if (matches != null) {
-			for (Match match : matches) {
-				boolean sel = match.equals(selection);
+			for (final Match match : matches) {
+				final boolean sel = match.equals(selection);
 				selectionFound = selectionFound | sel;
-				StyleRange range = createStyle(match, sel);
+				final StyleRange range = createStyle(match, sel);
 				list.add(range);
 			}
 		}
 
 		if (!selectionFound && selection != null) {
-			ITextBlock sBlock = selection.getBlock();
+			final ITextBlock sBlock = selection.getBlock();
 			if (sBlock.equals(block)) {
 				list.add(createStyle(selection, true));
 			}
@@ -216,8 +228,8 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		return list.toArray(new StyleRange[list.size()]);
 	}
 
-	private StyleRange createStyle(Match match, boolean selection) {
-		Display display = composite.getDisplay();
+	private StyleRange createStyle(final Match match, final boolean selection) {
+		final Display display = composite.getDisplay();
 		Color fgColor, bgColor;
 		if (selection) {
 			// Lighten to avoid search selection on system selection
