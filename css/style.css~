@@ -41,16 +41,3 @@
 	padding-top: 10px;
 	font-weight: bold;
 }
-
-BODY {
-	background: url('../i/dark_geometric.png');
-	color: #fff;
-}
-
-H1, H2, H2, H3, H4 {
-	color: #fff;
-}
-
-PRE {
-	color: #444;
-}
