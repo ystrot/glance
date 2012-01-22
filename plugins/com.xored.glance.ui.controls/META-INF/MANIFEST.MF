@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Glance Controls
+Bundle-SymbolicName: com.xored.glance.ui.controls;singleton:=true
+Bundle-Version: 0.9.0.qualifier
+Bundle-Vendor: xored software, Inc.
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: com.xored.glance.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jface.text
+Export-Package: com.xored.glance.ui.controls.decor,
+ com.xored.glance.ui.controls.descriptors,
+ com.xored.glance.ui.controls.items,
+ com.xored.glance.ui.controls.table,
+ com.xored.glance.ui.controls.text.styled,
+ com.xored.glance.ui.controls.tree,
+ com.xored.glance.ui.controls.tree.content
+Bundle-Activator: com.xored.glance.ui.controls.Activator
+Bundle-ActivationPolicy: lazy

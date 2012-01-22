@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="com.xored.glance.ui.sources">
+		<source
+			class="com.xored.glance.ui.controls.descriptors.StyledTextDescriptor"
+			priority="1"/>
+		<source
+			class="com.xored.glance.ui.controls.descriptors.ListeningStyledTextDescriptor"
+			priority="5"/>
+		<source
+			class="com.xored.glance.ui.controls.descriptors.TreeDescriptor"
+			priority="1"/>
+		<source
+			class="com.xored.glance.ui.controls.descriptors.TableDescriptor"
+			priority="1"/>
+	</extension>
+</plugin>

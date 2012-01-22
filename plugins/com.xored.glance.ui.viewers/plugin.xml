@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="com.xored.glance.ui.sources">
+		<source
+			class="com.xored.glance.ui.viewers.descriptors.SourceViewerDescriptor"
+			priority="3"/>
+		<source
+			class="com.xored.glance.ui.viewers.descriptors.TextViewerDescriptor"
+			priority="2"/>
+	</extension>
+
+</plugin>
