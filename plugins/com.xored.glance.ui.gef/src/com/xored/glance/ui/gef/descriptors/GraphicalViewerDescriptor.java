@@ -32,12 +32,10 @@ public class GraphicalViewerDescriptor implements ITextSourceDescriptor {
 
     protected GraphicalViewer viewer;
 
-    @Override
     public boolean isValid(final Control control) {
         return getGraphicalViewer(getEditPart(control)) != null;
     }
 
-    @Override
     public ITextSource createSource(final Control control) {
         return new GraphicalViewerTextSource(viewer);
     }

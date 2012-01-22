@@ -47,7 +47,6 @@ public class HighlightLabel extends HighlightFigure<Label> {
         g.drawText(matchString, topLeft.getCopy());
     }
 
-    @Override
     public void updateBounds() {
         if (!isVisible()) {
             return;

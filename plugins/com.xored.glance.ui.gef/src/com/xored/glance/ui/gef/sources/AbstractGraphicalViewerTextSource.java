@@ -17,29 +17,24 @@ import com.xored.glance.ui.sources.SourceSelection;
 
 public abstract class AbstractGraphicalViewerTextSource implements ITextSource {
 
-    @Override
     public void index(final IProgressMonitor monitor) {
         monitor.done();
     }
 
-    @Override
     public boolean isIndexRequired() {
         return false;
     }
 
-    @Override
     public SourceSelection getSelection() {
         return null;
     }
 
     boolean disposed = false;
 
-    @Override
     public boolean isDisposed() {
         return disposed;
     }
 
-    @Override
     public void dispose() {
         disposed = true;
     }

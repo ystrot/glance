@@ -49,7 +49,6 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		decorator = new StructDecorator(composite, this);
 	}
 
-	@Override
     public StructCell getCell(final Item item, final int column) {
 		final StructCell cell = createCell(item, column);
 		StyleRange[] styles = cellToStyles.get(cell);
@@ -61,7 +60,6 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		return cell;
 	}
 
-	@Override
     public boolean isIndexRequired() {
         return true;
 	}
@@ -96,33 +94,27 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		return composite;
 	}
 
-	@Override
     public ITextBlock[] getBlocks() {
 		return content.getBlocks();
 	}
 
-	@Override
     public void dispose() {
 		content.dispose();
 		decorator.dispose();
 	}
 
-	@Override
     public boolean isDisposed() {
 		return decorator.isDisposed();
 	}
 
-	@Override
     public void index(final IProgressMonitor monitor) {
 		content.index(monitor);
 	}
 
-	@Override
     public void widgetDefaultSelected(final SelectionEvent e) {
 		fireSelectionChanged();
 	}
 
-	@Override
     public void widgetSelected(final SelectionEvent e) {
 		fireSelectionChanged();
 	}
@@ -136,7 +128,6 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		}
 	}
 
-	@Override
     public void select(final Match match) {
 		if (match != null) {
 			discardSelection();
@@ -146,17 +137,14 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 		setMatch(match);
 	}
 
-	@Override
     public void show(final Match[] matches) {
 		setMatches(matches);
 	}
 
-	@Override
     public void addTextSourceListener(final ITextSourceListener listener) {
 		content.addListener(listener);
 	}
 
-	@Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
 		content.removeListener(listener);
 	}

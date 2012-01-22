@@ -39,17 +39,14 @@ public class TextViewerControl extends BaseTextSource implements
 		viewer.addSelectionChangedListener(this);
 	}
 
-    @Override
     public void addTextSourceListener(final ITextSourceListener listener) {
 		listeners.add(listener);
 	}
 
-    @Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
 		listeners.remove(listener);
 	}
 
-    @Override
     public void dispose() {
 		if (!disposed) {
 		    if (getBlock().getSelected() != null){
@@ -67,7 +64,6 @@ public class TextViewerControl extends BaseTextSource implements
         viewer.setSelection(selection, true);
 	}
 	
-    @Override
     public void selectionChanged(final SelectionChangedEvent event) {
         final ISelection selection = event.getSelection();
 		if (selection instanceof TextSelection) {
@@ -82,7 +78,6 @@ public class TextViewerControl extends BaseTextSource implements
 		}
 	}
 
-    @Override
     public boolean isDisposed() {
 		return disposed;
 	}
@@ -91,18 +86,15 @@ public class TextViewerControl extends BaseTextSource implements
 		return blocks[0];
 	}
 
-    @Override
     public ITextBlock[] getBlocks() {
 		return blocks;
 	}
 
-    @Override
     public SourceSelection getSelection() {
         final Point selection = viewer.getSelectedRange();
 		return new SourceSelection(getBlock(), selection.x, selection.y);
 	}
 
-    @Override
     public void select(final Match match) {
 	    getBlock().setSelected(match);
 	    
@@ -111,7 +103,6 @@ public class TextViewerControl extends BaseTextSource implements
 		}
 	}
 
-    @Override
     public void show(final Match[] matches) {
         getBlock().setMatches(matches);
 	}

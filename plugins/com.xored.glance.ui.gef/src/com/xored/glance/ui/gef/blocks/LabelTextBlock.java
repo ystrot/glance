@@ -20,12 +20,10 @@ public class LabelTextBlock extends FigureTextBlock<Label> {
         super(label);
     }
 
-    @Override
     public String getText() {
         return getFigure().getText();
     }
 
-    @Override
     public int compareTo(final ITextBlock other) {
         return -1;
     }

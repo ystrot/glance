@@ -30,7 +30,6 @@ public abstract class FigureTextBlock<T extends IFigure> implements ITextBlock, 
         figure.addFigureListener(this);
     }
 
-    @Override
     public void figureMoved(final IFigure source) {
         final Object[] objects = listeners.getListeners();
         final TextChangedEvent textEvent = new TextChangedEvent(0, getText().length(), getText());
@@ -44,12 +43,10 @@ public abstract class FigureTextBlock<T extends IFigure> implements ITextBlock, 
         return figure;
     }
 
-    @Override
     public void addTextBlockListener(final ITextBlockListener listener) {
         listeners.add(listener);
     }
 
-    @Override
     public void removeTextBlockListener(final ITextBlockListener listener) {
         listeners.remove(listener);
     }

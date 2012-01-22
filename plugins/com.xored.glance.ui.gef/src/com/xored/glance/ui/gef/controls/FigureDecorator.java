@@ -63,7 +63,6 @@ public class FigureDecorator implements IFigureDecorator {
 
     private final FigureListener figureListener = new FigureListener() {
 
-        @Override
         public void figureMoved(final IFigure source) {
             updateHighlightFigureBounds();
         }
@@ -77,13 +76,11 @@ public class FigureDecorator implements IFigureDecorator {
 
     private HighlightLayer highLightLayer;
 
-    @Override
     public void connect(final IFigure figure) {
         createHighlightLayer(figure);
         collectTextBlocks(figure, cachedBlocks);
     }
 
-    @Override
     public void disconnect() {
         cachedBlocks.clear();
         highLightLayer.removeAll();
@@ -113,7 +110,6 @@ public class FigureDecorator implements IFigureDecorator {
         return highLightLayer != null;
     }
 
-    @Override
     public void selectMatch(final Match match) {
         if (match != null && match.getBlock() instanceof FigureTextBlock<?>) {
             final FigureTextBlock<?> figureBlock = (FigureTextBlock<?>) match.getBlock();
@@ -198,12 +194,10 @@ public class FigureDecorator implements IFigureDecorator {
         return !highLightLayer.getChildren().isEmpty();
     }
 
-    @Override
     public List<ITextBlock> getTextBlocks() {
         return cachedBlocks;
     }
 
-    @Override
     public void showMatches(final Match[] matches) {
         if (isHighLighted()) {
             highLightLayer.removeAll();
@@ -221,7 +215,6 @@ public class FigureDecorator implements IFigureDecorator {
         }
     }
 
-    @Override
     public void addTextSourceListener(final ITextSourceListener listener) {
         listeners.add(listener);
 
@@ -235,7 +228,6 @@ public class FigureDecorator implements IFigureDecorator {
         }
     }
 
-    @Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
         listeners.remove(listener);
     }

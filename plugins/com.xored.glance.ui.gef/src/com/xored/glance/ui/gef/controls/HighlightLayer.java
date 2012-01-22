@@ -63,7 +63,6 @@ public class HighlightLayer extends Layer {
 
     public void refresh() {
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-            @Override
             public void run() {
                 getParent().repaint();
             }

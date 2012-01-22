@@ -50,7 +50,6 @@ public class HighlightFlow extends HighlightFigure<TextFlow> {
         g.drawText(matchString, topLeft.getCopy());
     }
 
-    @Override
     public void updateBounds() {
         if (!isVisible()) {
             return;

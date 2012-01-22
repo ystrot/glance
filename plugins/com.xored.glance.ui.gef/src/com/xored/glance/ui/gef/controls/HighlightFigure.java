@@ -36,7 +36,6 @@ public abstract class HighlightFigure<T extends Figure> extends Figure implement
         return delegate.getFont();
     }
 
-    @Override
     public IFigure getHighlightedFigure() {
         return delegate;
     }
@@ -45,7 +44,6 @@ public abstract class HighlightFigure<T extends Figure> extends Figure implement
         return selected;
     }
 
-    @Override
     public void select(final boolean sel) {
         selected = sel;
     }

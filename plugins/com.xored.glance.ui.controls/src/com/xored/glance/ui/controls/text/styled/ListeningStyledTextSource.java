@@ -55,7 +55,6 @@ public class ListeningStyledTextSource extends AbstractStyledTextSource
 		};
 	}
 
-	@Override
     public void show(final Match[] matches) {
 		this.matches = matches;
 		refresh();
@@ -67,7 +66,6 @@ public class ListeningStyledTextSource extends AbstractStyledTextSource
 	    refresh();
 	}
 
-	@Override
     public void lineGetStyle(final LineStyleEvent event) {
 		if (matches.length > 0) {
 			final int offset = event.lineOffset;

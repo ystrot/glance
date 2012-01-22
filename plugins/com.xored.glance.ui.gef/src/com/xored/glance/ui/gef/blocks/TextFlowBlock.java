@@ -20,12 +20,10 @@ public class TextFlowBlock extends FigureTextBlock<TextFlow> {
         super(flow);
     }
 
-    @Override
     public String getText() {
         return getFigure().getText();
     }
 
-    @Override
     public int compareTo(final ITextBlock o) {
         return -1;
     }
