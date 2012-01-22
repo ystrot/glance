@@ -47,22 +47,30 @@ public class SourceViewerControl extends BaseTextSource implements
 
 	public static String SELECTED_ANNOTATION_TYPE = ColorManager.ANNOTATION_SELECTED_ID;
 	   
-	public SourceViewerControl(SourceViewer viewer) {
+	public SourceViewerControl(final SourceViewer viewer) {
 		this.viewer = viewer;
 		listeners = new ListenerList();
 		blocks = new TextViewerBlock[] { new TextViewerBlock(viewer) };
 		viewer.addSelectionChangedListener(this);
+
+        if (viewer.getSelection() instanceof TextSelection) {
+            final TextSelection selection = (TextSelection) viewer.getSelection();
+            viewer.setSelection(new TextSelection(selection.getOffset() + selection.getLength(), 0));
+        }
 	}
 
-	public void addTextSourceListener(ITextSourceListener listener) {
+	@Override
+    public void addTextSourceListener(final ITextSourceListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeTextSourceListener(ITextSourceListener listener) {
+	@Override
+    public void removeTextSourceListener(final ITextSourceListener listener) {
 		listeners.add(listener);
 	}
 
-	public void dispose() {
+	@Override
+    public void dispose() {
 		if (!disposed) {
 		    if (selected != null){
 		        selectText(selected);
@@ -75,26 +83,28 @@ public class SourceViewerControl extends BaseTextSource implements
 		}
 	}
 	
-	private void selectText(Match match){
-	    TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
+	private void selectText(final Match match){
+	    final TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
 	    viewer.setSelection(selection, true);
 	}
 
-	public void selectionChanged(SelectionChangedEvent event) {
-		ISelection selection = event.getSelection();
+	@Override
+    public void selectionChanged(final SelectionChangedEvent event) {
+		final ISelection selection = event.getSelection();
 		if (selection instanceof TextSelection) {
-			TextSelection tSelection = (TextSelection) selection;
-			SourceSelection sSelection = new SourceSelection(getBlock(),
+			final TextSelection tSelection = (TextSelection) selection;
+			final SourceSelection sSelection = new SourceSelection(getBlock(),
 					tSelection.getOffset(), tSelection.getLength());
-			Object[] objects = listeners.getListeners();
-			for (Object object : objects) {
-				ITextSourceListener listener = (ITextSourceListener) object;
+			final Object[] objects = listeners.getListeners();
+			for (final Object object : objects) {
+				final ITextSourceListener listener = (ITextSourceListener) object;
 				listener.selectionChanged(sSelection);
 			}
 		}
 	}
 
-	public boolean isDisposed() {
+	@Override
+    public boolean isDisposed() {
 		return disposed;
 	}
 
@@ -102,28 +112,31 @@ public class SourceViewerControl extends BaseTextSource implements
 		return blocks[0];
 	}
 
-	public ITextBlock[] getBlocks() {
+	@Override
+    public ITextBlock[] getBlocks() {
 		return blocks;
 	}
 
-	public SourceSelection getSelection() {
-		Point selection = viewer.getSelectedRange();
+	@Override
+    public SourceSelection getSelection() {
+		final Point selection = viewer.getSelectedRange();
 		return new SourceSelection(getBlock(), selection.x, selection.y);
 	}
 
-	public void select(Match match) {
-	    Annotation[] remove = getAnnotations(true);
-        Map<Annotation, Position> add = match != null ? createAnnotations(new Match[] { match }, true) 
+	@Override
+    public void select(final Match match) {
+	    final Annotation[] remove = getAnnotations(true);
+        final Map<Annotation, Position> add = match != null ? createAnnotations(new Match[] { match }, true) 
             : new HashMap<Annotation, Position>();
-        IAnnotationModel model = viewer.getAnnotationModel();
+        final IAnnotationModel model = viewer.getAnnotationModel();
         if (model instanceof IAnnotationModelExtension) {
-            IAnnotationModelExtension eModel = (IAnnotationModelExtension) model;
+            final IAnnotationModelExtension eModel = (IAnnotationModelExtension) model;
             eModel.replaceAnnotations(remove, add);
         } else {
-            for (Annotation annotation : remove) {
+            for (final Annotation annotation : remove) {
                 model.removeAnnotation(annotation);
             }
-            for (Annotation annotation : add.keySet()) {
+            for (final Annotation annotation : add.keySet()) {
                 model.addAnnotation(annotation, add.get(annotation));
             }
         }
@@ -134,47 +147,48 @@ public class SourceViewerControl extends BaseTextSource implements
         selected = match;
 	}
 
-	public void show(Match[] matches) {
+	@Override
+    public void show(final Match[] matches) {
 		replaceMatches(matches);
 	}
 
-	private void replaceMatches(Match[] matches) {
-		Annotation[] remove = getAnnotations(false);
-		Map<Annotation, Position> add = createAnnotations(matches, false);
-		IAnnotationModel model = viewer.getAnnotationModel();
+	private void replaceMatches(final Match[] matches) {
+		final Annotation[] remove = getAnnotations(false);
+		final Map<Annotation, Position> add = createAnnotations(matches, false);
+		final IAnnotationModel model = viewer.getAnnotationModel();
 		if (model instanceof IAnnotationModelExtension) {
-			IAnnotationModelExtension eModel = (IAnnotationModelExtension) model;
+			final IAnnotationModelExtension eModel = (IAnnotationModelExtension) model;
 			eModel.replaceAnnotations(remove, add);
 		} else {
-			for (Annotation annotation : remove) {
+			for (final Annotation annotation : remove) {
 				model.removeAnnotation(annotation);
 			}
-			for (Annotation annotation : add.keySet()) {
+			for (final Annotation annotation : add.keySet()) {
 				model.addAnnotation(annotation, add.get(annotation));
 			}
 		}
 	}
 
-	private Map<Annotation, Position> createAnnotations(Match[] matches, boolean selected) {
-		Map<Annotation, Position> map = new HashMap<Annotation, Position>();
-		for (Match match : matches) {
-			Annotation annotation = new Annotation(selected ? SELECTED_ANNOTATION_TYPE 
+	private Map<Annotation, Position> createAnnotations(final Match[] matches, final boolean selected) {
+		final Map<Annotation, Position> map = new HashMap<Annotation, Position>();
+		for (final Match match : matches) {
+			final Annotation annotation = new Annotation(selected ? SELECTED_ANNOTATION_TYPE 
 			    : ANNOTATION_TYPE, false, null);
-			Position position = new Position(match.getOffset(), match
+			final Position position = new Position(match.getOffset(), match
 					.getLength());
 			map.put(annotation, position);
 		}
 		return map;
 	}
 
-	private Annotation[] getAnnotations(boolean selected) {
-	    String type = selected ? SELECTED_ANNOTATION_TYPE : ANNOTATION_TYPE;
-		IAnnotationModel model = viewer.getAnnotationModel();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+	private Annotation[] getAnnotations(final boolean selected) {
+	    final String type = selected ? SELECTED_ANNOTATION_TYPE : ANNOTATION_TYPE;
+		final IAnnotationModel model = viewer.getAnnotationModel();
+		final List<Annotation> annotations = new ArrayList<Annotation>();
 		if (model != null) {
-			Iterator<?> it = model.getAnnotationIterator();
+			final Iterator<?> it = model.getAnnotationIterator();
 			while (it.hasNext()) {
-				Annotation annotation = (Annotation) it.next();
+				final Annotation annotation = (Annotation) it.next();
 				if (type.equals(annotation.getType())) {
 					annotations.add(annotation);
 				}

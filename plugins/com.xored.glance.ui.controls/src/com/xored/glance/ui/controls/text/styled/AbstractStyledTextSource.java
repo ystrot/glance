@@ -22,18 +22,23 @@ import com.xored.glance.ui.sources.SourceSelection;
 public abstract class AbstractStyledTextSource extends BaseTextSource implements
 		SelectionListener {
 
-	public AbstractStyledTextSource(StyledText text) {
+	public AbstractStyledTextSource(final StyledText text) {
 		this.text = text;
 		blocks = new StyledTextBlock[] { createTextBlock() };
 		list = new ListenerList();
 		text.addSelectionListener(this);
+
+        if (text.getSelectionCount() > 0) {
+            text.setSelection(text.getSelection().x + text.getSelectionCount());
+        }
 	}
 
 	protected StyledTextBlock createTextBlock() {
 		return new StyledTextBlock(text);
 	}
 
-	public final void dispose() {
+	@Override
+    public final void dispose() {
 		if (text != null && !text.isDisposed() && !disposed) {
 			doDispose();
 		}
@@ -46,53 +51,61 @@ public abstract class AbstractStyledTextSource extends BaseTextSource implements
 	           + selected.getLength());
 	        select(null);
 	    } else {
-	        int x = text.getSelection().x;
+	        final int x = text.getSelection().x;
 	        text.setSelection(x, x);
 	    }
 		text.removeSelectionListener(this);
 	}
 
-	public boolean isDisposed() {
+	@Override
+    public boolean isDisposed() {
 		return disposed;
 	}
 
-	public ITextBlock[] getBlocks() {
+	@Override
+    public ITextBlock[] getBlocks() {
 		return blocks;
 	}
 
-	public void addTextSourceListener(ITextSourceListener listener) {
+	@Override
+    public void addTextSourceListener(final ITextSourceListener listener) {
 		list.add(listener);
 	}
 
-	public void removeTextSourceListener(ITextSourceListener listener) {
+	@Override
+    public void removeTextSourceListener(final ITextSourceListener listener) {
 		list.remove(listener);
 	}
 
-	public void widgetDefaultSelected(SelectionEvent e) {
+	@Override
+    public void widgetDefaultSelected(final SelectionEvent e) {
 		fireSelectionChanged();
 	}
 
-	public void widgetSelected(SelectionEvent e) {
+	@Override
+    public void widgetSelected(final SelectionEvent e) {
 		fireSelectionChanged();
 	}
 
 	private void fireSelectionChanged() {
-		SourceSelection selection = getSelection();
-		Object[] objects = list.getListeners();
-		for (Object object : objects) {
-			ITextSourceListener listener = (ITextSourceListener) object;
+		final SourceSelection selection = getSelection();
+		final Object[] objects = list.getListeners();
+		for (final Object object : objects) {
+			final ITextSourceListener listener = (ITextSourceListener) object;
 			listener.selectionChanged(selection);
 		}
 	}
 
-	public SourceSelection getSelection() {
-		Point point = text.getSelection();
-		SourceSelection selection = new SourceSelection(blocks[0], point.x,
+	@Override
+    public SourceSelection getSelection() {
+		final Point point = text.getSelection();
+		final SourceSelection selection = new SourceSelection(blocks[0], point.x,
 				point.y - point.x);
 		return selection;
 	}
 
-	public void select(Match match) {
+	@Override
+    public void select(final Match match) {
         this.selected = match;
 	}
 
