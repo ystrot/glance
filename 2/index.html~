@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+
+  <title>Glance &mdash; Eclipse plug-in providing extensible useful incremental text search in Eclipse</title>
+
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Add jQuery library -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+  <!-- Add mousewheel plugin (this is optional) -->
+  <script type="text/javascript" src="fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="fancybox/source/jquery.fancybox.css?v=2.0.4" type="text/css" media="screen" />
+  <script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js?v=2.0.4"></script>
+
+  <!-- Optionaly add button and/or thumbnail helpers -->
+  <link rel="stylesheet" href="fancybox/source/helpers/jquery.fancybox-buttons.css?v=2.0.4" type="text/css" media="screen" />
+  <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-buttons.js?v=2.0.4"></script>
+
+  <link rel="stylesheet" href="fancybox/source/helpers/jquery.fancybox-thumbs.css?v=2.0.4" type="text/css" media="screen" />
+  <script type="text/javascript" src="fancybox/source/helpers/jquery.fancybox-thumbs.js?v=2.0.4"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".fancybox").fancybox();
+    });
+  </script>
+</head>
+
+<body>
+  <!--<a href="https://github.com/ystrot/glance"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>-->
+
+<div class="container">
+    <div class="row header">
+        <div class="span5">
+           <a href=""><img src="i/logo_r.png" style="margin-left: -20px;"></a>
+        </div>
+        <div class="span11 header-right">
+            <a href="https://github.com/ystrot/glance/zipball/master"><button class="btn primary">Download</button></a>
+            <a href="https://github.com/ystrot/glance"><button class="btn">Fork on GitHub</button></a>
+        </div>
+    </div>
+
+    <div class="page-header row" style="margin-top: 25px;"><h1>Overview and features</h1></div>
+    <div class="row features">
+        <p>Glance is an Eclipse plug-in providing extensible useful incremental text search in Eclipse.</p>
+        <h3 style="margin-bottom: 20px;">Glance support following features:</h3>
+        <div class="span-one-third">
+          <span class="thumb"><a class="fancybox" href="i/matches.jpg"><img src="i/matches_mini.jpg" alt=""></a></span>
+          <p class="cap">Highlight all found matches</p>
+        </div>
+        <div class="span-one-third">
+          <span class="thumb"><a class="fancybox" href="i/table_trees_1.jpg" rel="group"><img src="i/table_trees_mini.jpg" alt=""></a><a style="display: none;" class="fancybox" href="i/table_trees_2.jpg" rel="group"></a></span>
+          <p class="cap">Search in tables and trees</p>
+        </div>
+        <div class="span-one-third">
+          <span class="thumb"><a class="fancybox" href="i/plugins.jpg"><img src="i/plugins_mini.jpg" alt=""></a></span>
+          <p class="cap">New text containers can be supported through extension points</p>
+        </div>
+    </div>
+
+    <div class="page-header row" style="margin-top: 25px;"><h1>Download</h1></div>
+    <div class="row features">
+        <p>You can download this project in either
+      <a href="https://github.com/ystrot/glance/zipball/master">zip</a> or
+      <a href="https://github.com/ystrot/glance/tarball/master">tar formats.</p>  
+      <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+      by running:
+      <pre>$ git clone git://github.com/ystrot/glance</pre>
+    </p>      
+    </div>
+
+    <div class="page-header row" style="margin-top: 25px;"><h1>Contact authors</h1></div>
+    <div class="row features">
+        <p>Igor Zapletnev (igor.zapletnev@gmail.com), Yuri Strot (ystrot@gmail.com)</p>       
+    </div>
+</div>
+
+</body>
+</html>
