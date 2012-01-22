@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>glance</artifactId>
+    <artifactId>releng</artifactId>
     <groupId>com.xored.glance</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
