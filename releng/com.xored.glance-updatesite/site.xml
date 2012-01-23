@@ -3,5 +3,11 @@
    <feature url="features/com.xored.glance_0.9.0.qualifier.jar" id="com.xored.glance" version="0.9.0.qualifier">
       <category name="com.xored.glance"/>
    </feature>
+   <feature url="features/com.xored.glance.cvs_0.9.0.qualifier.jar" id="com.xored.glance.cvs" version="0.9.0.qualifier">
+      <category name="com.xored.glance"/>
+   </feature>
+   <feature url="features/com.xored.glance.gef_0.9.0.qualifier.jar" id="com.xored.glance.gef" version="0.9.0.qualifier">
+      <category name="com.xored.glance"/>
+   </feature>
    <category-def name="com.xored.glance" label="Glance"/>
 </site>

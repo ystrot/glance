@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.xored.glance.cvs"
+      label="Glance CVS"
+      version="0.9.0.qualifier"
+      provider-name="xored software, Inc.">
+
+   <description url="http://ystrot.github.com/glance/">
+      Incremental text search and highlighting in CVS
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.team.cvs.core"/>
+      <import plugin="org.eclipse.team.core"/>
+      <import plugin="org.eclipse.team.ui"/>
+      <import plugin="org.eclipse.team.cvs.ui"/>
+      <import feature="com.xored.glance" version="0.9.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="com.xored.glance.ui.cvs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

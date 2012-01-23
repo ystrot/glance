@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.xored.glance"
-      label="Glance Search"
+      label="Glance Core"
       version="0.9.0.qualifier"
       provider-name="xored software, Inc.">
 
    <description url="http://ystrot.github.com/glance/">
-      Incremental text search and highlighting
+      Incremental text search and highlighting in rich texts, tables and trees.
    </description>
 
    <copyright url="%copyrightURL">
@@ -18,16 +18,10 @@
    </license>
 
    <requires>
-      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.team.cvs.core"/>
-      <import plugin="org.eclipse.team.core"/>
-      <import plugin="org.eclipse.team.ui"/>
-      <import plugin="org.eclipse.team.cvs.ui"/>
-      <import plugin="org.eclipse.draw2d"/>
-      <import plugin="org.eclipse.gef"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
    </requires>
 
    <plugin
@@ -45,21 +39,7 @@
          unpack="false"/>
 
    <plugin
-         id="com.xored.glance.ui.cvs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.xored.glance.ui.viewers"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.xored.glance.ui.gef"
          download-size="0"
          install-size="0"
          version="0.0.0"
