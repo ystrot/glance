@@ -38,7 +38,7 @@
 }
 
 .cap {
-	padding-top: 10px;
+	padding-top: 5px;
 	font-weight: bold;
 }
 
@@ -53,4 +53,13 @@ H1, H2, H2, H3, H4 {
 
 PRE {
 	color: #444;
+}
+
+H1 {
+	text-shadow: 2px 2px 4px #161616;
+}
+
+.page-header {
+	border-bottom: 1px solid #595959;
+	box-shadow: none;
 }
