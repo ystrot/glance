@@ -10,6 +10,10 @@
 	text-align: center;
 }
 
+/*.span8 {
+	text-align: center;
+}*/
+
 .thumb {
 	display: block;
 	-webkit-box-shadow: 1px 1px 2px #999;
@@ -62,4 +66,12 @@ H1 {
 .page-header {
 	border-bottom: 1px solid #595959;
 	box-shadow: none;
+}
+
+A {
+	color: #4c9ef3;	
+}
+
+A:hover {
+	color: #247edc;
 }
