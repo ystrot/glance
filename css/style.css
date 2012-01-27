@@ -79,6 +79,7 @@ A:hover {
 
 LI {
 	color: #fff;
+	margin-top: 3px;
 }
 
 .footer {
@@ -94,6 +95,11 @@ LI {
 
 .shortcut {
 	font-family: Monaco, Consolas, sans-serif;
-	font-size: 16px;
-	font-weight: bold;	
+	font-size: 16px;	
+	background: #444;
+	padding: 2px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #212121;
 }
