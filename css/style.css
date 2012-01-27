@@ -102,4 +102,5 @@ LI {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	border: 1px solid #212121;
+	display: inline-block;
 }
