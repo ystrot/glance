@@ -78,5 +78,11 @@ A:hover {
 
 .footer {
 	margin: 25px 0 15px 0;
-	text-align: right;	
+	text-align: right;
+	background: #222;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 8px;
+	border: 1px solid #1C1C1C;
 }
