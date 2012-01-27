@@ -96,7 +96,19 @@ LI {
 .shortcut {
 	font-family: Monaco, Consolas, sans-serif;
 	font-size: 14px;	
-	background: #444;
+	background-image: linear-gradient(bottom, rgb(230,230,230) 100%, rgb(153,153,153) 4%);
+	background-image: -o-linear-gradient(bottom, rgb(230,230,230) 100%, rgb(153,153,153) 4%);
+	background-image: -moz-linear-gradient(bottom, rgb(230,230,230) 100%, rgb(153,153,153) 4%);
+	background-image: -webkit-linear-gradient(bottom, rgb(230,230,230) 100%, rgb(153,153,153) 4%);
+	background-image: -ms-linear-gradient(bottom, rgb(230,230,230) 100%, rgb(153,153,153) 4%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(1, rgb(230,230,230)),
+		color-stop(0.04, rgb(153,153,153))
+	);
 	padding: 1px 3px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
