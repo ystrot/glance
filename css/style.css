@@ -77,5 +77,6 @@ A:hover {
 }
 
 .footer {
-	text-align: right;
+	margin: 25px 0 15px 0;
+	text-align: right;	
 }
