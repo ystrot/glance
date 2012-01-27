@@ -75,3 +75,7 @@ A {
 A:hover {
 	color: #247edc;
 }
+
+#footer {
+	text-align: right;
+}
