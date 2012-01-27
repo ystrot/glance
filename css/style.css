@@ -86,3 +86,8 @@ LI {
 	padding: 8px;
 	border: 1px solid #1C1C1C;
 }
+
+.shortcut {
+	font-family: Monaco, Consolas, sans-serif;
+	font-size: 16px;
+}
