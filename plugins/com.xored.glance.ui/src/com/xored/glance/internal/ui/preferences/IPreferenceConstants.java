@@ -36,6 +36,7 @@ public interface IPreferenceConstants {
 	final String SEARCH_WORD_PREFIX = SEARCH_PREFIX + "wordPrefix";
 	final String SEARCH_REGEXP = SEARCH_PREFIX + "regexp";
 	final String SEARCH_CAMEL_CASE = SEARCH_PREFIX + "camelCase";
+	final String SEARCH_INCREMENTAL = PANEL_PREFIX + "incremental";
 
 	final String LABEL_CASE_SENSITIVE = "Case Sensitive";
 	final String LABEL_WORD_PREFIX = "Word Prefix";

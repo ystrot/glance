@@ -39,6 +39,7 @@ public class GlancePreferenceInitializer extends AbstractPreferenceInitializer
 		preferences.setDefault(PANEL_LINK, true);
 		preferences.setDefault(PANEL_STARTUP, false);
 		preferences.setDefault(PANEL_AUTO_INDEXING, false);
+	    preferences.setDefault(SEARCH_INCREMENTAL, true);
 		preferences.setDefault(PANEL_MAX_INDEXING_DEPTH, 4);
 	}
 }

@@ -13,6 +13,7 @@ package com.xored.glance.internal.ui.search;
 import java.util.regex.Matcher;
 
 import com.xored.glance.internal.ui.search.SearchJob.ISearchMonitor;
+import com.xored.glance.ui.sources.ConfigurationManager;
 import com.xored.glance.ui.sources.ITextBlock;
 import com.xored.glance.ui.sources.ITextSource;
 import com.xored.glance.ui.sources.Match;
@@ -163,7 +164,9 @@ public class SearchEngine extends Thread {
 		@Override
 		public void added(SearchScopeEntry entry, Match match) {
 			if (!firstFound) {
-				select(match);
+			    if (ConfigurationManager.getInstance().incremenstalSearch()){
+			        select(match);
+			    }
 				listener.firstFound(match);
 				firstFound = true;
 			}

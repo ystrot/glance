@@ -88,6 +88,8 @@ public class GlancePreferencePage extends FieldEditorPreferencePage implements
 				composite));
 		addField(new BooleanFieldEditor(PANEL_AUTO_INDEXING,
 				"Enable auto indexing", composite));
+	      addField(new BooleanFieldEditor(SEARCH_INCREMENTAL,
+              "Enable incremental search", composite));
 		final IntegerFieldEditor maxIndexingDepthEditor = new IntegerFieldEditor(
 				PANEL_MAX_INDEXING_DEPTH, "Max indexing depth for trees:",
 				composite);

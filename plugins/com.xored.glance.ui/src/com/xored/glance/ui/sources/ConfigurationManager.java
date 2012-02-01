@@ -15,20 +15,25 @@ import com.xored.glance.internal.ui.preferences.IPreferenceConstants;
 
 public final class ConfigurationManager {
 
-	private static ConfigurationManager theInstance;
+	private static ConfigurationManager INSTANCE;
 
 	private ConfigurationManager() {
 	}
 
 	public static ConfigurationManager getInstance() {
-		if (theInstance == null) {
-			theInstance = new ConfigurationManager();
+		if (INSTANCE == null) {
+			INSTANCE = new ConfigurationManager();
 		}
-		return theInstance;
+		return INSTANCE;
 	}
 
 	public int getMaxIndexingDepth() {
 		return GlancePlugin.getDefault().getPreferenceStore().getInt(
 				IPreferenceConstants.PANEL_MAX_INDEXING_DEPTH);
+	}
+	
+	public boolean incremenstalSearch(){
+	    return GlancePlugin.getDefault().getPreferenceStore().getBoolean(
+            IPreferenceConstants.SEARCH_INCREMENTAL);
 	}
 }
