@@ -28,88 +28,103 @@ import com.xored.glance.ui.sources.SourceSelection;
  * @author Yuri Strot
  * 
  */
-public class TextViewerControl extends BaseTextSource implements
-		ISelectionChangedListener {
+public class TextViewerControl extends BaseTextSource implements ISelectionChangedListener {
 
     public TextViewerControl(final TextViewer viewer) {
-		this.viewer = viewer;
-		listeners = new ListenerList();
-		blocks = new ColoredTextViewerBlock[] { new ColoredTextViewerBlock(
-				viewer) };
-		viewer.addSelectionChangedListener(this);
-	}
+        this.viewer = viewer;
+        listeners = new ListenerList();
+        blocks = new ColoredTextViewerBlock[] { new ColoredTextViewerBlock(viewer) };
+    }
 
+    @Override
     public void addTextSourceListener(final ITextSourceListener listener) {
-		listeners.add(listener);
-	}
+        listeners.add(listener);
+    }
 
+    @Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
-		listeners.remove(listener);
-	}
+        listeners.remove(listener);
+    }
 
+    @Override
     public void dispose() {
-		if (!disposed) {
-		    if (getBlock().getSelected() != null){
-		        selectText(getBlock().getSelected());
-		    }
-		    
-			viewer.removeSelectionChangedListener(this);
-			getBlock().dispose();
-			disposed = true;
-		}
-	}
+        if (!disposed) {
+            if (getBlock().getSelected() != null) {
+                selectText(getBlock().getSelected());
+            }
+
+            viewer.removeSelectionChangedListener(this);
+            getBlock().dispose();
+            disposed = true;
+        }
+    }
 
     private void selectText(final Match match) {
         final TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
         viewer.setSelection(selection, true);
-	}
-	
+    }
+
+    @Override
     public void selectionChanged(final SelectionChangedEvent event) {
         final ISelection selection = event.getSelection();
-		if (selection instanceof TextSelection) {
+        if (selection instanceof TextSelection) {
             final TextSelection tSelection = (TextSelection) selection;
-            final SourceSelection sSelection = new SourceSelection(getBlock(),
-					tSelection.getOffset(), tSelection.getLength());
+            final SourceSelection sSelection = new SourceSelection(getBlock(), tSelection.getOffset(),
+                tSelection.getLength());
             final Object[] objects = listeners.getListeners();
             for (final Object object : objects) {
                 final ITextSourceListener listener = (ITextSourceListener) object;
-				listener.selectionChanged(sSelection);
-			}
-		}
-	}
+                listener.selectionChanged(sSelection);
+            }
+        }
+    }
 
+    @Override
     public boolean isDisposed() {
-		return disposed;
-	}
+        return disposed;
+    }
 
-	public ColoredTextViewerBlock getBlock() {
-		return blocks[0];
-	}
+    public ColoredTextViewerBlock getBlock() {
+        return blocks[0];
+    }
 
+    @Override
     public ITextBlock[] getBlocks() {
-		return blocks;
-	}
+        return blocks;
+    }
 
+    @Override
     public SourceSelection getSelection() {
         final Point selection = viewer.getSelectedRange();
-		return new SourceSelection(getBlock(), selection.x, selection.y);
-	}
+        return new SourceSelection(getBlock(), selection.x, selection.y);
+    }
 
+    @Override
     public void select(final Match match) {
-	    getBlock().setSelected(match);
-	    
-		if (match != null){
-			viewer.revealRange(match.getOffset(), match.getLength());
-		}
-	}
+        getBlock().setSelected(match);
 
+        if (match != null) {
+            viewer.revealRange(match.getOffset(), match.getLength());
+        }
+    }
+
+    @Override
     public void show(final Match[] matches) {
         getBlock().setMatches(matches);
-	}
+    }
 
-	private final ListenerList listeners;
-	private boolean disposed;
-	private final ColoredTextViewerBlock[] blocks;
-	private final TextViewer viewer;
+    @Override
+    public void init() {
+        if (viewer.getSelection() instanceof TextSelection) {
+            final TextSelection selection = (TextSelection) viewer.getSelection();
+            viewer.setSelection(new TextSelection(selection.getOffset() + selection.getLength(), 0));
+        }
+        viewer.addSelectionChangedListener(this);
+    }
+
+    private final ListenerList listeners;
+    private boolean disposed;
+    private final ColoredTextViewerBlock[] blocks;
+    private final TextViewer viewer;
 
 }

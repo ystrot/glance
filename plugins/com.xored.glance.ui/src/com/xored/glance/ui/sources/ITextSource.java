@@ -66,6 +66,11 @@ public interface ITextSource {
 	public void show(Match[] matches);
 
 	/**
+	 * Called before search started
+	 */
+	public void init();
+	
+	/**
 	 * @param monitor
 	 */
 	public void index(IProgressMonitor monitor);
