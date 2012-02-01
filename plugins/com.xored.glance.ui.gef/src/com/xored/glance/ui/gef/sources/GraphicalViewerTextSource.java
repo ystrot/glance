@@ -35,7 +35,6 @@ public class GraphicalViewerTextSource extends AbstractGraphicalViewerTextSource
 
     public GraphicalViewerTextSource(final GraphicalViewer viewer) {
         this.viewer = viewer;
-        collectTextBlocks();
     }
 
     private final List<ITextBlock> textBlocks = new ArrayList<ITextBlock>();
@@ -49,18 +48,22 @@ public class GraphicalViewerTextSource extends AbstractGraphicalViewerTextSource
         }
     }
 
+    @Override
     public ITextBlock[] getBlocks() {
         return textBlocks.toArray(new ITextBlock[0]);
     }
 
+    @Override
     public void addTextSourceListener(final ITextSourceListener listener) {
         decorator.addTextSourceListener(listener);
     }
 
+    @Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
         decorator.removeTextSourceListener(listener);
     }
 
+    @Override
     public void select(final Match match) {
         decorator.selectMatch(match);
         if (match == null || !(match.getBlock() instanceof FigureTextBlock<?>)
@@ -99,6 +102,7 @@ public class GraphicalViewerTextSource extends AbstractGraphicalViewerTextSource
         viewerCanvas.scrollSmoothTo(finalLocation.x, finalLocation.y);
     }
 
+    @Override
     public void show(final Match[] matches) {
         if (decorator != null) {
             decorator.showMatches(matches);
@@ -116,5 +120,10 @@ public class GraphicalViewerTextSource extends AbstractGraphicalViewerTextSource
         }
         textBlocks.clear();
         super.dispose();
+    }
+
+    @Override
+    public void init() {
+        collectTextBlocks();
     }
 }

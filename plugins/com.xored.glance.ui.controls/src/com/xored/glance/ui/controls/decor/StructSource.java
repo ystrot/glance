@@ -44,7 +44,6 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 
 	public StructSource(final Composite composite) {
 		this.composite = composite;
-		init();
 		content = createContent();
 		decorator = new StructDecorator(composite, this);
 	}
@@ -233,7 +232,8 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 				bgColor);
 	}
 
-	private void init() {
+	@Override
+	public void init() {
 		blockToMatches = new HashMap<ITextBlock, List<Match>>();
 		blockToCell = new HashMap<ITextBlock, StructCell>();
 		cellToStyles = new HashMap<StructCell, StyleRange[]>();

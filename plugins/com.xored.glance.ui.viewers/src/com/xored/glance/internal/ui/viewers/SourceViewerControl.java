@@ -39,85 +39,86 @@ import com.xored.glance.ui.sources.SourceSelection;
  * @author Yuri Strot
  * 
  */
-public class SourceViewerControl extends BaseTextSource implements
-		ISelectionChangedListener {
+public class SourceViewerControl extends BaseTextSource implements ISelectionChangedListener {
 
-	public static String ANNOTATION_TYPE = ColorManager.ANNOTATION_ID;
+    public static String ANNOTATION_TYPE = ColorManager.ANNOTATION_ID;
 
-	public static String SELECTED_ANNOTATION_TYPE = ColorManager.ANNOTATION_SELECTED_ID;
-	   
-	public SourceViewerControl(final SourceViewer viewer) {
-		this.viewer = viewer;
-		listeners = new ListenerList();
-		blocks = new TextViewerBlock[] { new TextViewerBlock(viewer) };
-		viewer.addSelectionChangedListener(this);
+    public static String SELECTED_ANNOTATION_TYPE = ColorManager.ANNOTATION_SELECTED_ID;
 
-        if (viewer.getSelection() instanceof TextSelection) {
-            final TextSelection selection = (TextSelection) viewer.getSelection();
-            viewer.setSelection(new TextSelection(selection.getOffset() + selection.getLength(), 0));
-        }
-	}
+    public SourceViewerControl(final SourceViewer viewer) {
+        this.viewer = viewer;
+        listeners = new ListenerList();
+        blocks = new TextViewerBlock[] { new TextViewerBlock(viewer) };
+    }
 
+    @Override
     public void addTextSourceListener(final ITextSourceListener listener) {
-		listeners.add(listener);
-	}
+        listeners.add(listener);
+    }
 
+    @Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
-		listeners.add(listener);
-	}
+        listeners.add(listener);
+    }
 
+    @Override
     public void dispose() {
-		if (!disposed) {
-		    if (selected != null){
-		        selectText(selected);
-		    }
-		    select(null);
-			viewer.removeSelectionChangedListener(this);
-			replaceMatches(Match.EMPTY);
-			getBlock().dispose();
-			disposed = true;
-		}
-	}
-	
-	private void selectText(final Match match){
-	    final TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
-	    viewer.setSelection(selection, true);
-	}
+        if (!disposed) {
+            if (selected != null) {
+                selectText(selected);
+            }
+            select(null);
+            viewer.removeSelectionChangedListener(this);
+            replaceMatches(Match.EMPTY);
+            getBlock().dispose();
+            disposed = true;
+        }
+    }
 
+    private void selectText(final Match match) {
+        final TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
+        viewer.setSelection(selection, true);
+    }
+
+    @Override
     public void selectionChanged(final SelectionChangedEvent event) {
-		final ISelection selection = event.getSelection();
-		if (selection instanceof TextSelection) {
-			final TextSelection tSelection = (TextSelection) selection;
-			final SourceSelection sSelection = new SourceSelection(getBlock(),
-					tSelection.getOffset(), tSelection.getLength());
-			final Object[] objects = listeners.getListeners();
-			for (final Object object : objects) {
-				final ITextSourceListener listener = (ITextSourceListener) object;
-				listener.selectionChanged(sSelection);
-			}
-		}
-	}
+        final ISelection selection = event.getSelection();
+        if (selection instanceof TextSelection) {
+            final TextSelection tSelection = (TextSelection) selection;
+            final SourceSelection sSelection = new SourceSelection(getBlock(), tSelection.getOffset(),
+                tSelection.getLength());
+            final Object[] objects = listeners.getListeners();
+            for (final Object object : objects) {
+                final ITextSourceListener listener = (ITextSourceListener) object;
+                listener.selectionChanged(sSelection);
+            }
+        }
+    }
 
+    @Override
     public boolean isDisposed() {
-		return disposed;
-	}
+        return disposed;
+    }
 
-	public TextViewerBlock getBlock() {
-		return blocks[0];
-	}
+    public TextViewerBlock getBlock() {
+        return blocks[0];
+    }
 
+    @Override
     public ITextBlock[] getBlocks() {
-		return blocks;
-	}
+        return blocks;
+    }
 
+    @Override
     public SourceSelection getSelection() {
-		final Point selection = viewer.getSelectedRange();
-		return new SourceSelection(getBlock(), selection.x, selection.y);
-	}
+        final Point selection = viewer.getSelectedRange();
+        return new SourceSelection(getBlock(), selection.x, selection.y);
+    }
 
+    @Override
     public void select(final Match match) {
-	    final Annotation[] remove = getAnnotations(true);
-        final Map<Annotation, Position> add = match != null ? createAnnotations(new Match[] { match }, true) 
+        final Annotation[] remove = getAnnotations(true);
+        final Map<Annotation, Position> add = match != null ? createAnnotations(new Match[] { match }, true)
             : new HashMap<Annotation, Position>();
         final IAnnotationModel model = viewer.getAnnotationModel();
         if (model instanceof IAnnotationModelExtension) {
@@ -131,65 +132,74 @@ public class SourceViewerControl extends BaseTextSource implements
                 model.addAnnotation(annotation, add.get(annotation));
             }
         }
-        
-        if (match != null){
+
+        if (match != null) {
             viewer.revealRange(match.getOffset(), match.getLength());
         }
         selected = match;
-	}
+    }
 
+    @Override
     public void show(final Match[] matches) {
-		replaceMatches(matches);
-	}
+        replaceMatches(matches);
+    }
 
-	private void replaceMatches(final Match[] matches) {
-		final Annotation[] remove = getAnnotations(false);
-		final Map<Annotation, Position> add = createAnnotations(matches, false);
-		final IAnnotationModel model = viewer.getAnnotationModel();
-		if (model instanceof IAnnotationModelExtension) {
-			final IAnnotationModelExtension eModel = (IAnnotationModelExtension) model;
-			eModel.replaceAnnotations(remove, add);
-		} else {
-			for (final Annotation annotation : remove) {
-				model.removeAnnotation(annotation);
-			}
-			for (final Annotation annotation : add.keySet()) {
-				model.addAnnotation(annotation, add.get(annotation));
-			}
-		}
-	}
+    private void replaceMatches(final Match[] matches) {
+        final Annotation[] remove = getAnnotations(false);
+        final Map<Annotation, Position> add = createAnnotations(matches, false);
+        final IAnnotationModel model = viewer.getAnnotationModel();
+        if (model instanceof IAnnotationModelExtension) {
+            final IAnnotationModelExtension eModel = (IAnnotationModelExtension) model;
+            eModel.replaceAnnotations(remove, add);
+        } else {
+            for (final Annotation annotation : remove) {
+                model.removeAnnotation(annotation);
+            }
+            for (final Annotation annotation : add.keySet()) {
+                model.addAnnotation(annotation, add.get(annotation));
+            }
+        }
+    }
 
-	private Map<Annotation, Position> createAnnotations(final Match[] matches, final boolean selected) {
-		final Map<Annotation, Position> map = new HashMap<Annotation, Position>();
-		for (final Match match : matches) {
-			final Annotation annotation = new Annotation(selected ? SELECTED_ANNOTATION_TYPE 
-			    : ANNOTATION_TYPE, false, null);
-			final Position position = new Position(match.getOffset(), match
-					.getLength());
-			map.put(annotation, position);
-		}
-		return map;
-	}
+    private Map<Annotation, Position> createAnnotations(final Match[] matches, final boolean selected) {
+        final Map<Annotation, Position> map = new HashMap<Annotation, Position>();
+        for (final Match match : matches) {
+            final Annotation annotation = new Annotation(selected ? SELECTED_ANNOTATION_TYPE
+                : ANNOTATION_TYPE, false, null);
+            final Position position = new Position(match.getOffset(), match.getLength());
+            map.put(annotation, position);
+        }
+        return map;
+    }
 
-	private Annotation[] getAnnotations(final boolean selected) {
-	    final String type = selected ? SELECTED_ANNOTATION_TYPE : ANNOTATION_TYPE;
-		final IAnnotationModel model = viewer.getAnnotationModel();
-		final List<Annotation> annotations = new ArrayList<Annotation>();
-		if (model != null) {
-			final Iterator<?> it = model.getAnnotationIterator();
-			while (it.hasNext()) {
-				final Annotation annotation = (Annotation) it.next();
-				if (type.equals(annotation.getType())) {
-					annotations.add(annotation);
-				}
-			}
-		}
-		return annotations.toArray(new Annotation[annotations.size()]);
-	}
+    private Annotation[] getAnnotations(final boolean selected) {
+        final String type = selected ? SELECTED_ANNOTATION_TYPE : ANNOTATION_TYPE;
+        final IAnnotationModel model = viewer.getAnnotationModel();
+        final List<Annotation> annotations = new ArrayList<Annotation>();
+        if (model != null) {
+            final Iterator<?> it = model.getAnnotationIterator();
+            while (it.hasNext()) {
+                final Annotation annotation = (Annotation) it.next();
+                if (type.equals(annotation.getType())) {
+                    annotations.add(annotation);
+                }
+            }
+        }
+        return annotations.toArray(new Annotation[annotations.size()]);
+    }
 
-	private final ListenerList listeners;
-	private boolean disposed;
-	private final TextViewerBlock[] blocks;
-	private final SourceViewer viewer;
-	private Match selected;
+    @Override
+    public void init() {
+        if (viewer.getSelection() instanceof TextSelection) {
+            final TextSelection selection = (TextSelection) viewer.getSelection();
+            viewer.setSelection(new TextSelection(selection.getOffset() + selection.getLength(), 0));
+        }
+        viewer.addSelectionChangedListener(this);
+    }
+
+    private final ListenerList listeners;
+    private boolean disposed;
+    private final TextViewerBlock[] blocks;
+    private final SourceViewer viewer;
+    private Match selected;
 }
