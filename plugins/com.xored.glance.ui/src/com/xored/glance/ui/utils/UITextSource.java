@@ -41,17 +41,14 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * 
      * @see com.xored.glance.ui.sources.ITextSource#getSelection()
      */
-    @Override
     public SourceSelection getSelection() {
         return selection;
     }
 
-    @Override
     public boolean isIndexRequired() {
         return source.isIndexRequired();
     }
 
-    @Override
     public void dispose() {
         synchronized (blocks) {
             for (final UITextBlock block : blocks) {
@@ -67,7 +64,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * 
      * @see com.xored.glance.ui.sources.ITextSource#isDisposed()
      */
-    @Override
     public boolean isDisposed() {
         return source.isDisposed();
     }
@@ -77,12 +73,10 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * 
      * @see com.xored.glance.ui.sources.ITextSource#getBlocks()
      */
-    @Override
     public ITextBlock[] getBlocks() {
         return blocks.toArray(new ITextBlock[blocks.size()]);
     }
 
-    @Override
     public void index(final IProgressMonitor monitor) {
         source.index(monitor);
     }
@@ -94,11 +88,9 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * com.xored.glance.ui.sources.ITextSource#select(com.xored.glance.ui.sources
      * .Match)
      */
-    @Override
     public void select(final Match match) {
         UIUtils.asyncExec(control, new Runnable() {
 
-            @Override
             public void run() {
                 if (!source.isDisposed()) {
                     if (match == null)
@@ -119,11 +111,9 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * com.xored.glance.ui.sources.ITextSource#show(com.xored.glance.ui.sources
      * .Match[])
      */
-    @Override
     public void show(final Match[] matches) {
         UIUtils.asyncExec(control, new Runnable() {
 
-            @Override
             public void run() {
                 if (!source.isDisposed()) {
                     final Match[] newMatches = new Match[matches.length];
@@ -145,7 +135,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * com.xored.glance.ui.sources.ITextSource#addTextSourceListener(com.xored
      * .glance.ui.sources.ITextSourceListener)
      */
-    @Override
     public void addTextSourceListener(final ITextSourceListener listener) {
         listeners.add(listener);
     }
@@ -157,7 +146,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * com.xored.glance.ui.sources.ITextSource#removeTextSourceListener(com.
      * xored.glance.ui.sources.ITextSourceListener)
      */
-    @Override
     public void removeTextSourceListener(final ITextSourceListener listener) {
         listeners.remove(listener);
     }
@@ -170,7 +158,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * .glance.ui.sources.ITextBlock[],
      * com.xored.glance.ui.sources.ITextBlock[])
      */
-    @Override
     public void blocksChanged(final ITextBlock[] removed, final ITextBlock[] added) {
         final ITextBlock[] uiRemoved = removeBlocks(removed);
         final ITextBlock[] uiAdded = addBlocks(added);
@@ -181,7 +168,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
         }
     }
 
-    @Override
     public void blocksReplaced(final ITextBlock[] newBlocks) {
         synchronized (this.blocks) {
             for (final UITextBlock uiBlock : blockToBlock.values()) {
@@ -206,7 +192,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
      * com.xored.glance.ui.sources.ITextSourceListener#selectionChanged(com.
      * xored.glance.ui.sources.SourceSelection)
      */
-    @Override
     public void selectionChanged(final SourceSelection selection) {
         final SourceSelection newSelection = updateSelection();
         final Object[] objects = listeners.getListeners();
@@ -257,7 +242,6 @@ public class UITextSource implements ITextSource, ITextSourceListener {
         return selection;
     }
 
-    @Override
     public void init() {
         if (source != null) {
             source.init();

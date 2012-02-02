@@ -232,7 +232,6 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 				bgColor);
 	}
 
-	@Override
 	public void init() {
 		blockToMatches = new HashMap<ITextBlock, List<Match>>();
 		blockToCell = new HashMap<ITextBlock, StructCell>();

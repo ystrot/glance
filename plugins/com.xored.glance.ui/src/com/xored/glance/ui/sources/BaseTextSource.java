@@ -22,7 +22,6 @@ public abstract class BaseTextSource implements ITextSource {
 		return false;
 	}
 	
-	@Override
 	public void init() {
 	}
 }
