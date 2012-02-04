@@ -467,8 +467,8 @@ public abstract class SearchPanel implements ISearchPanel,
 				text = rule.getText();
 			if (text != null && text.length() > 0) {
 				title.setText(text);
-				title.setSelection(new Point(0, text.length() - 1));
-				textChanged();
+				title.setSelection(new Point(0, text.length()));
+				textChanged();  
 			}
 			title.forceFocus();
 		}
