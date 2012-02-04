@@ -160,26 +160,31 @@ public class GlancePreferencePage extends FieldEditorPreferencePage implements
 
 	private Group createColorSettings(final Composite parent) {
 		final Group group = new Group(parent, SWT.NONE);
-		group.setText("Color");
+		group.setText("Colors");
 		group.setLayout(new GridLayout(1, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Composite composite = new Composite(group, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		addField(new ColorEditor(composite, false));
-        addField(new ColorEditor(composite, true));
+		addField(new ColorEditor(composite, "Selected result:", COLOR_SELECTED_BACKGROUND));
+        addField(new ColorEditor(composite, "Highlight:",  COLOR_BACKGROUND));
+        addField(new ColorEditor(composite, "Selection:",  SELECTION_COLOR, GlancePlugin.getDefault().getPreferenceStore()));
         
 		return group;
 	}
 
 	private static class ColorEditor extends ColorFieldEditor {
 
-		public ColorEditor(final Composite parent, final boolean selected) {
-			super(selected ? ColorManager.COLOR_SELECTED_BACKGROUND : ColorManager.COLOR_BACKGROUND, 
-                selected ? "Selection:" : "Highlight:", parent);
-			super.setPreferenceStore(ColorManager.getStore());
+		public ColorEditor(final Composite parent, final String text, final String prefKey) {
+			this(parent, text, prefKey, ColorManager.getStore());
 		}
+		
+		public ColorEditor(final Composite parent, final String text, final String prefKey, IPreferenceStore store) {
+            super(prefKey, text, parent);
+            super.setPreferenceStore(store);
+        }
+        
 
 		@Override
 		public void setPreferenceStore(final IPreferenceStore store) {

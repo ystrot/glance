@@ -26,20 +26,21 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import com.xored.glance.internal.ui.GlancePlugin;
+import com.xored.glance.internal.ui.preferences.IPreferenceConstants;
+
 /**
  * @author Yuri Strot
  * 
  */
-public class ColorManager implements IPropertyChangeListener {
+public class ColorManager implements IPropertyChangeListener, IPreferenceConstants {
 
     public static final String ANNOTATION_ID = "com.xored.glance.ui.highlight";
     public static final String ANNOTATION_SELECTED_ID = "com.xored.glance.ui.select";
     
-    public static final String COLOR_BACKGROUND = "glanceColorBackground";
-    public static final String COLOR_SELECTED_BACKGROUND = "glanceSelectedColorBackground";
-
     private ColorManager() {
         getStore().addPropertyChangeListener(this);
+        GlancePlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
         updateColors();
     }
     
@@ -72,7 +73,8 @@ public class ColorManager implements IPropertyChangeListener {
 
     public void propertyChange(final PropertyChangeEvent event) {
         if (COLOR_BACKGROUND.equals(event.getProperty()) || 
-                COLOR_SELECTED_BACKGROUND.equals(event.getProperty())) {
+            COLOR_SELECTED_BACKGROUND.equals(event.getProperty()) || 
+            SELECTION_COLOR.equals(event.getProperty())) {
             updateColors();
         }
     }
@@ -104,7 +106,9 @@ public class ColorManager implements IPropertyChangeListener {
         final RGB selectedRgb = PreferenceConverter.getColor(store, COLOR_SELECTED_BACKGROUND);
         selectedColor = new Color(display, selectedRgb);
         
-        treeBg = new Color(display, 56, 117, 215);
+        
+        RGB selectionRgb = PreferenceConverter.getColor(GlancePlugin.getDefault().getPreferenceStore(), SELECTION_COLOR);
+        treeBg = new Color(display, selectionRgb);
         treeFg = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 
         toDispose.add(color);
