@@ -52,15 +52,16 @@ public abstract class TreeStructSource extends StructSource {
 	@Override
 	protected abstract TreeContent createContent();
 
-	public SourceSelection getSelection() {
-		TreeItem[] items = getControl().getSelection();
-		if (items.length > 0) {
-			ITextBlock block = content.getContent(createCell(items[0], 0));
-			if (block != null) {
-				return new SourceSelection(block, 0, block.getText().length());
-			}
-		}
-		return null;
+	@Override
+	protected SourceSelection getSourceSelection() {
+	    TreeItem[] items = getControl().getSelection();
+        if (items.length > 0) {
+            ITextBlock block = content.getContent(createCell(items[0], 0));
+            if (block != null) {
+                return new SourceSelection(block, 0, block.getText().length());
+            }
+        }
+        return null;
 	}
 
 }

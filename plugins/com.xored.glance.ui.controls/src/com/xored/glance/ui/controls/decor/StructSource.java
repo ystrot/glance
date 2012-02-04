@@ -86,6 +86,8 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 
 	protected abstract IStructContent createContent();
 
+	protected abstract SourceSelection getSourceSelection();
+	
 	/**
 	 * @return the composite
 	 */
@@ -120,7 +122,7 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 
 	protected void fireSelectionChanged() {
 		discardSelection();
-		final SourceSelection selection = getSelection();
+		final SourceSelection selection = getSourceSelection();
 		final ITextSourceListener[] listeners = content.getListeners();
 		for (final ITextSourceListener listener : listeners) {
 			listener.selectionChanged(selection);
@@ -232,6 +234,10 @@ public abstract class StructSource implements ITextSource, IStructProvider,
 				bgColor);
 	}
 
+	public SourceSelection getSelection() {
+	    return null;
+	}
+	   
 	public void init() {
 		blockToMatches = new HashMap<ITextBlock, List<Match>>();
 		blockToCell = new HashMap<ITextBlock, StructCell>();

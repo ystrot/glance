@@ -45,15 +45,15 @@ public abstract class TableStructSource extends StructSource {
 	@Override
 	protected abstract TableContent createContent();
 
-	public SourceSelection getSelection() {
-		TableItem[] items = getControl().getSelection();
-		if (items.length > 0) {
-			ITextBlock block = content.getContent(createCell(items[0], 0));
-			if (block != null) {
-				return new SourceSelection(block, 0, block.getText().length());
-			}
-		}
-		return null;
+	protected SourceSelection getSourceSelection(){
+	    TableItem[] items = getControl().getSelection();
+        if (items.length > 0) {
+            ITextBlock block = content.getContent(createCell(items[0], 0));
+            if (block != null) {
+                return new SourceSelection(block, 0, block.getText().length());
+            }
+        }
+        return null;
 	}
 
 }
