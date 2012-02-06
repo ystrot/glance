@@ -23,16 +23,16 @@ import com.xored.glance.internal.ui.GlancePlugin;
 public class GlancePreferenceInitializer extends AbstractPreferenceInitializer
 		implements IPreferenceConstants {
 
-    private static final String OS_PROPERY = "os.name";
-    private static final String WINDOWS = "windows";
-    private static final String MAC = "mac";
-    private static final String NIX = "nix";
-    
-    private final String WINDOWS_COLOR = "56,117,215";
-    private final String MAC_COLOR = "56,117,215";
-    private final String NIX_COLOR = "56,117,215";
-    private final String DEF_COLOR = WINDOWS_COLOR;
-    
+	private static final String OS_PROPERY = "os.name";
+	private static final String WINDOWS = "windows";
+	private static final String MAC = "mac";
+	private static final String NIX = "nix";
+
+	private static final String WIN_COLOR = "51,153,255";
+	private static final String MAC_COLOR = "56,117,215";
+	private static final String NIX_COLOR = "56,117,215";
+	private static final String DEF_COLOR = WIN_COLOR;
+
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore preferences = GlancePlugin.getDefault()
@@ -49,23 +49,24 @@ public class GlancePreferenceInitializer extends AbstractPreferenceInitializer
 		preferences.setDefault(PANEL_LINK, true);
 		preferences.setDefault(PANEL_STARTUP, false);
 		preferences.setDefault(PANEL_AUTO_INDEXING, false);
-	    preferences.setDefault(SEARCH_INCREMENTAL, true);
+		preferences.setDefault(SEARCH_INCREMENTAL, true);
 		preferences.setDefault(PANEL_MAX_INDEXING_DEPTH, 4);
-		
-		preferences.setDefault(SELECTION_COLOR, calculateDefSelectionColor());
-	}
-	
-	private String calculateDefSelectionColor(){
-	    String osName = System.getProperty(OS_PROPERY).toLowerCase();
 
-	    if (osName.indexOf(WINDOWS) != -1){
-	        return WINDOWS_COLOR;
-	    } else if (osName.indexOf(MAC) != -1){
-	        return MAC_COLOR;
-	    } else if (osName.indexOf(NIX) != -1){
-	        return NIX_COLOR;
-	    } else {
-	        return DEF_COLOR;
-	    }
+		preferences.setDefault(COLOR_TREE_BG, calculateDefSelectionColor());
+		preferences.setDefault(COLOR_TREE_FG, "255,255,255");
+	}
+
+	private String calculateDefSelectionColor() {
+		String osName = System.getProperty(OS_PROPERY).toLowerCase();
+
+		if (osName.indexOf(WINDOWS) != -1) {
+			return WIN_COLOR;
+		} else if (osName.indexOf(MAC) != -1) {
+			return MAC_COLOR;
+		} else if (osName.indexOf(NIX) != -1) {
+			return NIX_COLOR;
+		} else {
+			return DEF_COLOR;
+		}
 	}
 }

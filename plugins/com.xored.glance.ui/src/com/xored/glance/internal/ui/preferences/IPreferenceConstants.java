@@ -42,9 +42,10 @@ public interface IPreferenceConstants {
 	final String LABEL_WORD_PREFIX = "Word Prefix";
 	final String LABEL_REGEXP = "Regular Expressions";
 	final String LABEL_CAMEL_CASE = "Camel Case";
-	
-	
-	final String COLOR_BACKGROUND = "glanceColorBackground";
-    final String COLOR_SELECTED_BACKGROUND = "glanceSelectedColorBackground";
-    final String SELECTION_COLOR = "glanceSelectionColorBackground";
+
+	final String COLOR_HIGHLIGHT = "glanceColorBackground";
+	final String COLOR_SELECTION = "glanceSelectedColorBackground";
+	final String COLOR_TREE_BG = "glanceTreeBackground";
+	final String COLOR_TREE_FG = "glanceTreeForeground";
+
 }
