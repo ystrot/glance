@@ -37,8 +37,7 @@ import com.xored.glance.ui.sources.SourceSelection;
  * @author Yuri Strot
  * 
  */
-public abstract class ItemSource extends BaseTextSource implements
-		SelectionListener {
+public abstract class ItemSource extends BaseTextSource implements SelectionListener {
 
 	protected ItemDecorator decorator;
 	protected Composite composite;
@@ -191,17 +190,14 @@ public abstract class ItemSource extends BaseTextSource implements
 		Color fgColor, bgColor;
 		if (selection) {
 			// Lighten to avoid search selection on system selection
-			fgColor = ColorManager.lighten(
-					display.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT), 50);
-			bgColor = ColorManager.lighten(
-					display.getSystemColor(SWT.COLOR_LIST_SELECTION), 50);
+			fgColor = ColorManager.lighten(display.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT), 50);
+			bgColor = ColorManager.getInstance().getSelectedBackgroundColor();
 		} else {
 			// To avoid white text on light-green background
 			fgColor = display.getSystemColor(SWT.COLOR_BLACK);
 			bgColor = ColorManager.getInstance().getBackgroundColor();
 		}
-		return new StyleRange(match.getOffset(), match.getLength(), fgColor,
-				bgColor);
+		return new StyleRange(match.getOffset(), match.getLength(), fgColor, bgColor);
 	}
 
 	protected ItemCell getCell(Match match) {

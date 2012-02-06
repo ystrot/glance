@@ -45,7 +45,5 @@ public interface IPreferenceConstants {
 
 	final String COLOR_HIGHLIGHT = "glanceColorBackground";
 	final String COLOR_SELECTION = "glanceSelectedColorBackground";
-	final String COLOR_TREE_BG = "glanceTreeBackground";
-	final String COLOR_TREE_FG = "glanceTreeForeground";
 
 }

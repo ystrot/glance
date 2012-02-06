@@ -11,7 +11,6 @@
  *******************************************************************************/
 package com.xored.glance.internal.ui.preferences;
 
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -146,33 +145,19 @@ public class GlancePreferencePage extends FieldEditorPreferencePage implements I
 		return group;
 	}
 
-	private void createColorSettings(final Composite parent) {
-		final Composite composite = new Composite(parent, SWT.NONE);
-		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
+	private Group createColorSettings(final Composite parent) {
+		final Group group = new Group(parent, SWT.NONE);
+		group.setText("Colors");
+		group.setLayout(new GridLayout(1, false));
+		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Group leftGroup = new Group(composite, SWT.NONE);
-		leftGroup.setText("General Colors");
-		leftGroup.setLayout(new GridLayout(1, false));
-		leftGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		Composite left = new Composite(leftGroup, SWT.NONE);
-		GridLayoutFactory.swtDefaults().applyTo(left);
-
+		final Composite composite = new Composite(group, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		addField(new ColorEditor(left, "Highlight:", COLOR_HIGHLIGHT));
-		addField(new ColorEditor(left, "Selection:", COLOR_SELECTION));
+		addField(new ColorEditor(composite, "Highlight:", COLOR_HIGHLIGHT));
+		addField(new ColorEditor(composite, "Selection:", COLOR_SELECTION));
 
-		final Group rightGroup = new Group(composite, SWT.NONE);
-		rightGroup.setText("Table/Tree Colors");
-		rightGroup.setLayout(new GridLayout(1, false));
-		rightGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		Composite right = new Composite(rightGroup, SWT.NONE);
-		GridLayoutFactory.swtDefaults().applyTo(right);
-
-		addField(new ColorEditor(right, "Background:", COLOR_TREE_BG, GlancePlugin.getDefault().getPreferenceStore()));
-		addField(new ColorEditor(right, "Foreground:", COLOR_TREE_FG, GlancePlugin.getDefault().getPreferenceStore()));
+		return group;
 	}
 
 	private static class ColorEditor extends ColorFieldEditor {

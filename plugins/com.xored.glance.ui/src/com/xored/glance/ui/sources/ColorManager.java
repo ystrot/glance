@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -27,6 +28,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.xored.glance.internal.ui.GlancePlugin;
 import com.xored.glance.internal.ui.preferences.IPreferenceConstants;
+import com.xored.glance.internal.ui.preferences.TreeColors;
 
 /**
  * @author Yuri Strot
@@ -70,9 +72,12 @@ public class ColorManager implements IPropertyChangeListener, IPreferenceConstan
 		return treeFg;
 	}
 
+	public boolean isUseNative() {
+		return useNative;
+	}
+
 	public void propertyChange(final PropertyChangeEvent event) {
-		if (COLOR_HIGHLIGHT.equals(event.getProperty()) || COLOR_SELECTION.equals(event.getProperty())
-				|| COLOR_TREE_BG.equals(event.getProperty()) || COLOR_TREE_FG.equals(event.getProperty())) {
+		if (COLOR_HIGHLIGHT.equals(event.getProperty()) || COLOR_SELECTION.equals(event.getProperty())) {
 			updateColors();
 		}
 	}
@@ -99,13 +104,25 @@ public class ColorManager implements IPropertyChangeListener, IPreferenceConstan
 
 		selection = new Color(display, getColor(store, COLOR_HIGHLIGHT));
 		highlight = new Color(display, getColor(store, COLOR_SELECTION));
-		treeBg = new Color(display, getColor(GlancePlugin.getDefault().getPreferenceStore(), COLOR_TREE_BG));
-		treeFg = new Color(display, getColor(GlancePlugin.getDefault().getPreferenceStore(), COLOR_TREE_FG));
+
+		TreeColors colors = TreeColors.getDefault();
+		useNative = colors.isUseNative();
+		if (colors.getBg() != null) {
+			treeBg = new Color(display, colors.getBg());
+			toDispose.add(treeBg);
+		} else {
+			treeBg = display.getSystemColor(SWT.COLOR_LIST_SELECTION);
+		}
+
+		if (colors.getFg() != null) {
+			treeFg = new Color(display, colors.getFg());
+			toDispose.add(treeFg);
+		} else {
+			treeFg = display.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
+		}
 
 		toDispose.add(selection);
 		toDispose.add(highlight);
-		toDispose.add(treeBg);
-		toDispose.add(treeFg);
 	}
 
 	private static ColorManager INSTANCE;
@@ -114,6 +131,7 @@ public class ColorManager implements IPropertyChangeListener, IPreferenceConstan
 	private Color highlight;
 	private Color treeBg;
 	private Color treeFg;
+	private boolean useNative;
 
 	private List<Color> toDispose = new ArrayList<Color>();
 }

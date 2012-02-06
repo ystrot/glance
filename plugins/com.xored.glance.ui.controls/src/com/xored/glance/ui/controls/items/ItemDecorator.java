@@ -41,8 +41,7 @@ import com.xored.glance.ui.utils.TextUtils;
  */
 public class ItemDecorator implements Listener {
 
-	public static final int DEFAULT_STYLE = SWT.BACKGROUND | SWT.FOREGROUND
-			| SWT.SELECTED | SWT.HOT;
+	public static final int DEFAULT_STYLE = SWT.BACKGROUND | SWT.FOREGROUND | SWT.SELECTED | SWT.HOT;
 
 	protected Composite composite;
 	protected ItemProvider provider;
@@ -135,8 +134,7 @@ public class ItemDecorator implements Listener {
 
 	protected TextLayout getTextLayout() {
 		if (textLayout == null) {
-			int orientation = composite.getStyle()
-					& (SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT);
+			int orientation = composite.getStyle() & (SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT);
 			textLayout = new TextLayout(composite.getDisplay());
 			textLayout.setOrientation(orientation);
 		} else {
@@ -179,8 +177,7 @@ public class ItemDecorator implements Listener {
 			break;
 		case SWT.Dispose:
 			if (event.widget instanceof Item) {
-				ItemCell cell = new ItemCell((Item) event.widget, event.index,
-						provider);
+				ItemCell cell = new ItemCell((Item) event.widget, event.index, provider);
 				blocksChanged(new ItemCell[] { cell }, new ItemCell[0]);
 			}
 			break;
@@ -204,12 +201,9 @@ public class ItemDecorator implements Listener {
 			gc.setBackground(background);
 		}
 
-		if ((event.detail & SWT.SELECTED) != 0) {
+		if (!ColorManager.getInstance().isUseNative() && (event.detail & SWT.SELECTED) != 0) {
 			gc.setBackground(ColorManager.getInstance().getTreeSelectionBg());
 			gc.setForeground(ColorManager.getInstance().getTreeSelectionFg());
-		}
-
-		if ((style & SWT.SELECTED) != 0 || (style & SWT.HOT) != 0) {
 			gc.fillRectangle(provider.getBounds(item, event.index));
 		}
 
@@ -220,10 +214,8 @@ public class ItemDecorator implements Listener {
 				Rectangle bounds = image.getBounds();
 
 				// center the image in the given space
-				int x = imageBounds.x
-						+ Math.max(0, (imageBounds.width - bounds.width) / 2);
-				int y = imageBounds.y
-						+ Math.max(0, (imageBounds.height - bounds.height) / 2);
+				int x = imageBounds.x + Math.max(0, (imageBounds.width - bounds.width) / 2);
+				int y = imageBounds.y + Math.max(0, (imageBounds.height - bounds.height) / 2);
 				gc.drawImage(image, x, y);
 			}
 		}
@@ -240,8 +232,7 @@ public class ItemDecorator implements Listener {
 			}
 			StyleRange[] ranges = getRanges(cell);
 			for (StyleRange range : ranges) {
-				layout.setStyle(range, range.start, range.start + range.length
-						- 1);
+				layout.setStyle(range, range.start, range.start + range.length - 1);
 			}
 
 			Rectangle layoutBounds = layout.getBounds();
@@ -258,7 +249,12 @@ public class ItemDecorator implements Listener {
 	}
 
 	public void erase(Event event) {
-		// event.detail &= style;
+		int style = SWT.BACKGROUND | SWT.FOREGROUND;
+		if (!ColorManager.getInstance().isUseNative()) {
+			style |= SWT.SELECTED | SWT.HOT;
+		}
+
+		event.detail &= ~style;
 	}
 
 	protected void init() {

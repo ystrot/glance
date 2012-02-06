@@ -30,9 +30,6 @@ import com.xored.glance.ui.sources.ColorManager;
 
 public class StructDecorator implements Listener {
 
-	public static final int ERASE_STYLE = SWT.BACKGROUND | SWT.FOREGROUND
-			| SWT.SELECTED | SWT.HOT;
-
 	private Composite composite;
 	private IStructProvider provider;
 
@@ -56,8 +53,7 @@ public class StructDecorator implements Listener {
 
 	protected TextLayout getTextLayout() {
 		if (textLayout == null) {
-			int orientation = composite.getStyle()
-					& (SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT);
+			int orientation = composite.getStyle() & (SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT);
 			textLayout = new TextLayout(composite.getDisplay());
 			textLayout.setOrientation(orientation);
 		} else {
@@ -96,18 +92,9 @@ public class StructDecorator implements Listener {
 			gc.setBackground(background);
 		}
 
-		//
-		// if ((event.detail & SWT.SELECTED) != 0) {
-		//
-		// We can't check event details, because it doesn't
-		// implemented on GTK. Using workaround instead:
-		boolean selected = cell.isSelected();
-		if (selected) {
+		if (!ColorManager.getInstance().isUseNative() && cell.isSelected()) {
 			gc.setBackground(ColorManager.getInstance().getTreeSelectionBg());
 			gc.setForeground(ColorManager.getInstance().getTreeSelectionFg());
-		}
-
-		if (clear || selected) {
 			gc.fillRectangle(cell.getBounds());
 		}
 
@@ -118,10 +105,8 @@ public class StructDecorator implements Listener {
 				Rectangle bounds = image.getBounds();
 
 				// center the image in the given space
-				int x = imageBounds.x
-						+ Math.max(0, (imageBounds.width - bounds.width) / 2);
-				int y = imageBounds.y
-						+ Math.max(0, (imageBounds.height - bounds.height) / 2);
+				int x = imageBounds.x + Math.max(0, (imageBounds.width - bounds.width) / 2);
+				int y = imageBounds.y + Math.max(0, (imageBounds.height - bounds.height) / 2);
 				gc.drawImage(image, x, y);
 			}
 		}
@@ -134,8 +119,7 @@ public class StructDecorator implements Listener {
 
 			StyleRange[] styles = cell.styles;
 			for (StyleRange range : styles) {
-				layout.setStyle(range, range.start, range.start + range.length
-						- 1);
+				layout.setStyle(range, range.start, range.start + range.length - 1);
 			}
 
 			Rectangle layoutBounds = layout.getBounds();
@@ -152,33 +136,50 @@ public class StructDecorator implements Listener {
 	}
 
 	public void erase(Event event) {
-		event.detail &= ~ERASE_STYLE;
+		int style = SWT.BACKGROUND | SWT.FOREGROUND;
+		if (!ColorManager.getInstance().isUseNative()) {
+			style |= SWT.SELECTED | SWT.HOT;
+		}
+
+		event.detail &= ~style;
 	}
 
 	protected void init() {
-		if (composite.getListeners(SWT.EraseItem).length > 0) {
-			clear = true;
-		}
-		if (composite.getListeners(SWT.PaintItem).length > 0) {
-			clear = true;
-		}
-		composite.addListener(SWT.EraseItem, this);
-		composite.addListener(SWT.PaintItem, this);
+		eraseListeners = addListener(SWT.EraseItem);
+		paintListeners = addListener(SWT.PaintItem);
 		redraw();
+	}
+
+	private Listener[] addListener(int event) {
+		Listener[] listeners = composite.getListeners(event);
+		// should never happen, but just in case
+		if (listeners == null) {
+			listeners = new Listener[0];
+		}
+		for (Listener listener : listeners) {
+			composite.removeListener(event, listener);
+		}
+		composite.addListener(event, this);
+		return listeners;
 	}
 
 	public void dispose() {
 		if (!disposed) {
 			disposed = true;
 			if (!composite.isDisposed()) {
-				composite.removeListener(SWT.PaintItem, StructDecorator.this);
 				composite.removeListener(SWT.EraseItem, StructDecorator.this);
+				for (Listener listener : eraseListeners) {
+					composite.addListener(SWT.EraseItem, listener);
+				}
 
-				if ("gtk".equalsIgnoreCase(Platform.getWS())
-						&& composite instanceof Tree) {
+				composite.removeListener(SWT.PaintItem, StructDecorator.this);
+				for (Listener listener : paintListeners) {
+					composite.addListener(SWT.PaintItem, listener);
+				}
+
+				if ("gtk".equalsIgnoreCase(Platform.getWS()) && composite instanceof Tree) {
 					try {
-						Field field = composite.getClass().getDeclaredField(
-								"drawForeground");
+						Field field = composite.getClass().getDeclaredField("drawForeground");
 						field.setAccessible(true);
 						if (field.get(composite) != null) {
 							// System.out.println("Fixed tree drawForeground bug");
@@ -194,11 +195,13 @@ public class StructDecorator implements Listener {
 		}
 	}
 
+	private Listener[] eraseListeners;
+	private Listener[] paintListeners;
+
 	public boolean isDisposed() {
 		return disposed;
 	}
 
 	private boolean disposed;
-	private boolean clear;
 
 }
