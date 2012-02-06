@@ -35,6 +35,7 @@ public class GraphicalViewerTextSource extends AbstractGraphicalViewerTextSource
 
     public GraphicalViewerTextSource(final GraphicalViewer viewer) {
         this.viewer = viewer;
+        collectTextBlocks();
     }
 
     private final List<ITextBlock> textBlocks = new ArrayList<ITextBlock>();
@@ -118,6 +119,5 @@ public class GraphicalViewerTextSource extends AbstractGraphicalViewerTextSource
     }
 
     public void init() {
-        collectTextBlocks();
     }
 }
