@@ -41,7 +41,8 @@ public class TreeColors implements IPreferenceConstants {
 				return new TreeColors(null, null, true);
 			}
 		} else if (osName.contains("mac")) {
-			return new TreeColors(new RGB(56, 117, 215), null, false);
+			return new TreeColors(new RGB(56, 117, 215),
+					new RGB(255, 255, 255), false);
 		}
 		return new TreeColors(null, null, false);
 	}
