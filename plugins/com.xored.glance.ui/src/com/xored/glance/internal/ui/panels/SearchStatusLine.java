@@ -17,6 +17,8 @@ import org.eclipse.jface.action.StatusLineLayoutData;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Image;
@@ -46,7 +48,6 @@ public class SearchStatusLine extends SearchPanel {
     protected Control createText(Composite parent, int style) {
         Control textControl = super.createText(parent, style);
         textControl.addFocusListener(new FocusListener() {
-            
             @Override
             public void focusLost(FocusEvent e) {
                 setKeyFilter(true);
@@ -55,6 +56,12 @@ public class SearchStatusLine extends SearchPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 setKeyFilter(false);
+            }
+        });
+        textControl.addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                setKeyFilter(true);
             }
         });
         return textControl;
