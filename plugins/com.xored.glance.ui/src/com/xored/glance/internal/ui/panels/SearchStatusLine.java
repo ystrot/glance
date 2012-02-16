@@ -48,18 +48,15 @@ public class SearchStatusLine extends SearchPanel {
     protected Control createText(Composite parent, int style) {
         Control textControl = super.createText(parent, style);
         textControl.addFocusListener(new FocusListener() {
-            @Override
             public void focusLost(FocusEvent e) {
                 setKeyFilter(true);
             }
             
-            @Override
             public void focusGained(FocusEvent e) {
                 setKeyFilter(false);
             }
         });
         textControl.addDisposeListener(new DisposeListener() {
-            @Override
             public void widgetDisposed(DisposeEvent e) {
                 setKeyFilter(true);
             }

@@ -264,7 +264,6 @@ public abstract class SearchPanel implements ISearchPanel,
 			setBackground(false);
 		title.addModifyListener(modifyListener);
 		title.addListener(SWT.KeyDown, new Listener() {
-		    @Override
             public void handleEvent(Event event) {
                 GlanceEventDispatcher.INSTANCE.dispatchKeyPressed(event);
             }
