@@ -128,6 +128,26 @@ public class SearchManager {
             panel.findPrevious();
         }
     }
+    
+    public void sourceFocus(){
+        ITextSource source = getSource();
+        if (source instanceof UITextSource){
+           UITextSource uiTextSource = (UITextSource) source;
+           if (uiTextSource.getControl() != null){
+               uiTextSource.getControl().setFocus();
+           }
+        }
+    }
+    
+    public void close(){
+        if (panel != null){
+            panel.closePanel();
+        }
+    }
+    
+    public ITextSource getSource() {
+        return source;
+    }
 
     private boolean update(final TextSourceMaker source, final boolean openNewPanel) {
         updatePanel(source, openNewPanel);

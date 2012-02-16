@@ -44,6 +44,10 @@ public class UITextSource implements ITextSource, ITextSourceListener {
     public SourceSelection getSelection() {
         return selection;
     }
+    
+    public Control getControl() {
+        return control;
+    }
 
     public boolean isIndexRequired() {
         return source.isIndexRequired();

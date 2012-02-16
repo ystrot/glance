@@ -17,8 +17,6 @@ import org.eclipse.jface.action.StatusLineLayoutData;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Image;
@@ -44,6 +42,24 @@ import com.xored.glance.ui.utils.UIUtils;
 @SuppressWarnings("restriction")
 public class SearchStatusLine extends SearchPanel {
 
+    @Override
+    protected Control createText(Composite parent, int style) {
+        Control textControl = super.createText(parent, style);
+        textControl.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                setKeyFilter(true);
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                setKeyFilter(false);
+            }
+        });
+        return textControl;
+    }
+    
 	public static SearchStatusLine getSearchLine(IWorkbenchWindow window) {
 		IStatusLineManager manager = getManager(window);
 		if (manager != null) {
@@ -112,29 +128,6 @@ public class SearchStatusLine extends SearchPanel {
 			}
 			item = null;
 		}
-	}
-
-	@Override
-	protected Control createText(Composite parent, int style) {
-		final Control text = super.createText(parent, style);
-		text.addFocusListener(new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-				setKeyFilter(false);
-			}
-
-			public void focusLost(FocusEvent e) {
-				setKeyFilter(true);
-			}
-
-		});
-		text.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				if (text.isFocusControl())
-					setKeyFilter(true);
-			}
-		});
-		return text;
 	}
 
 	@Override

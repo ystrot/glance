@@ -11,6 +11,7 @@
  *******************************************************************************/
 package com.xored.glance.ui.panels;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,8 +33,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,7 +47,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -56,6 +57,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
+import com.xored.glance.internal.ui.GlanceEventDispatcher;
 import com.xored.glance.internal.ui.GlancePlugin;
 import com.xored.glance.internal.ui.panels.CheckAction;
 import com.xored.glance.internal.ui.panels.ImageAnimation;
@@ -261,20 +263,12 @@ public abstract class SearchPanel implements ISearchPanel,
 		if (text != null && text.length() > 0 && result.length == 0)
 			setBackground(false);
 		title.addModifyListener(modifyListener);
-		title.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == '\r') {
-					if (e.stateMask == 0)
-						findNext();
-					else if (e.stateMask == SWT.SHIFT)
-						findPrevious();
-				}
-				if (e.keyCode == SWT.ESC && e.stateMask == 0) {
-					closePanel();
-				}
-			}
-		});
+		title.addListener(SWT.KeyDown, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                GlanceEventDispatcher.INSTANCE.dispatchKeyPressed(event);
+            }
+        });
 		title.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		title.setEnabled(titleEnabled);
 		return title;
@@ -637,7 +631,7 @@ public abstract class SearchPanel implements ISearchPanel,
 			return item;
 		}
 	}
-
+	
 	private IPreferenceStore getPreferences() {
 		return GlancePlugin.getDefault().getPreferenceStore();
 	}
@@ -645,6 +639,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected void setBackground(final boolean found) {
 		title.setBackground(found ? GOOD_COLOR : BAD_COLOR);
 	}
+
 
 	protected static final Color GOOD_COLOR = Display.getDefault()
 			.getSystemColor(SWT.COLOR_WHITE);

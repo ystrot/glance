@@ -18,10 +18,29 @@
 
 	<extension point="org.eclipse.ui.commands">
 		<command
-			name="Search with Glance"
-			description="Open Glance Search Panel"
-			categoryId="org.eclipse.ui.category.window"
-			id="com.xored.glance.commands.open"/>
+        categoryId="org.eclipse.ui.category.window"
+        description="Open Glance search panel"
+        id="com.xored.glance.commands.open"
+        name="Open Glance">
+  </command>
+  <command
+        categoryId="org.eclipse.ui.category.window"
+        description="Close Glance search panel"
+        id="com.xored.glance.commands.close"
+        name="Close Glance">
+  </command>
+  <command
+        categoryId="org.eclipse.ui.category.window"
+        description="Show next Glance match"
+        id="com.xored.glance.ui.nextResult"
+        name="Next Glance Match">
+  </command>
+  <command
+        categoryId="org.eclipse.ui.category.window"
+        description="Show previous Glance match"
+        id="com.xored.glance.ui.prevResult"
+        name="Previous Glance Match">
+  </command>
 	</extension>
 	
 	<extension point="org.eclipse.ui.bindings">
@@ -30,6 +49,24 @@
 			contextId="org.eclipse.ui.contexts.dialogAndWindow"
 			commandId="com.xored.glance.commands.open"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+  <key
+        commandId="com.xored.glance.commands.close"
+        contextId="com.xored.glance.ui.context"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="ESC">
+  </key>
+  <key
+        commandId="com.xored.glance.ui.nextResult"
+        contextId="com.xored.glance.ui.context"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="ENTER">
+  </key>
+  <key
+        commandId="com.xored.glance.ui.prevResult"
+        contextId="com.xored.glance.ui.context"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M2+ENTER">
+  </key>
 		<sequenceModifier find="M1+M3" replace="M1+M4" platforms="cocoa,carbon"/>
 	</extension>
 
@@ -115,4 +152,11 @@
         verticalRulerPreferenceValue="true">
   </specification>
 	</extension>
+ <extension
+       point="org.eclipse.ui.contexts">
+    <context
+          id="com.xored.glance.ui.context"
+          name="Glance Search Context">
+    </context>
+ </extension>
 </plugin>
