@@ -18,29 +18,40 @@
 
 	<extension point="org.eclipse.ui.commands">
 		<command
-        categoryId="org.eclipse.ui.category.window"
+        categoryId="com.xored.glance.ui.commands"
         description="Open Glance search panel"
         id="com.xored.glance.commands.open"
         name="Open Glance">
   </command>
   <command
-        categoryId="org.eclipse.ui.category.window"
+        categoryId="com.xored.glance.ui.commands"
         description="Close Glance search panel"
         id="com.xored.glance.commands.close"
         name="Close Glance">
   </command>
   <command
-        categoryId="org.eclipse.ui.category.window"
+        categoryId="com.xored.glance.ui.commands"
         description="Show next Glance match"
         id="com.xored.glance.ui.nextResult"
-        name="Next Glance Match">
+        name="Next Match">
   </command>
   <command
-        categoryId="org.eclipse.ui.category.window"
+        categoryId="com.xored.glance.ui.commands"
         description="Show previous Glance match"
         id="com.xored.glance.ui.prevResult"
-        name="Previous Glance Match">
+        name="Previous Match">
   </command>
+  <command
+        categoryId="com.xored.glance.ui.commands"
+        description="Return focus back from Glance search panel to control"
+        id="com.xored.glance.commands.focus"
+        name="Return Focus Back">
+  </command>
+  <category
+        description="Glance search commands"
+        id="com.xored.glance.ui.commands"
+        name="Glance">
+  </category>
 	</extension>
 	
 	<extension point="org.eclipse.ui.bindings">
@@ -49,6 +60,12 @@
 			contextId="org.eclipse.ui.contexts.dialogAndWindow"
 			commandId="com.xored.glance.commands.open"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+  <key
+        commandId="com.xored.glance.commands.focus"
+        contextId="com.xored.glance.ui.context"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+M3+F">
+  </key>
   <key
         commandId="com.xored.glance.commands.close"
         contextId="com.xored.glance.ui.context"
