@@ -8,7 +8,7 @@
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
-package com.xored.glance.ui.controls.tree.content;
+package com.xored.glance.ui.controls.tree;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.ListenerList;
 import com.xored.glance.ui.controls.decor.IPath;
 import com.xored.glance.ui.controls.decor.IStructContent;
 import com.xored.glance.ui.controls.decor.StructCell;
-import com.xored.glance.ui.controls.tree.TreeCell;
 import com.xored.glance.ui.sources.ITextBlock;
 import com.xored.glance.ui.sources.ITextSourceListener;
 

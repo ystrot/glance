@@ -14,7 +14,6 @@ Export-Package: com.xored.glance.ui.controls.decor,
  com.xored.glance.ui.controls.items,
  com.xored.glance.ui.controls.table,
  com.xored.glance.ui.controls.text.styled,
- com.xored.glance.ui.controls.tree,
- com.xored.glance.ui.controls.tree.content
+ com.xored.glance.ui.controls.tree
 Bundle-Activator: com.xored.glance.ui.controls.Activator
 Bundle-ActivationPolicy: lazy

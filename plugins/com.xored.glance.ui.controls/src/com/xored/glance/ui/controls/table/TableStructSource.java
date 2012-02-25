@@ -19,7 +19,7 @@ import com.xored.glance.ui.controls.decor.StructSource;
 import com.xored.glance.ui.sources.ITextBlock;
 import com.xored.glance.ui.sources.SourceSelection;
 
-public abstract class TableStructSource extends StructSource {
+public class TableStructSource extends StructSource {
 
 	public TableStructSource(Table table) {
 		super(table);
@@ -43,17 +43,19 @@ public abstract class TableStructSource extends StructSource {
 	}
 
 	@Override
-	protected abstract TableContent createContent();
+	protected TableContent createContent() {
+		return new TableContent(getControl());
+	}
 
-	protected SourceSelection getSourceSelection(){
-	    TableItem[] items = getControl().getSelection();
-        if (items.length > 0) {
-            ITextBlock block = content.getContent(createCell(items[0], 0));
-            if (block != null) {
-                return new SourceSelection(block, 0, block.getText().length());
-            }
-        }
-        return null;
+	protected SourceSelection getSourceSelection() {
+		TableItem[] items = getControl().getSelection();
+		if (items.length > 0) {
+			ITextBlock block = content.getContent(createCell(items[0], 0));
+			if (block != null) {
+				return new SourceSelection(block, 0, block.getText().length());
+			}
+		}
+		return null;
 	}
 
 }

@@ -33,9 +33,9 @@ import org.eclipse.team.internal.ccvs.ui.repo.RepositoryRoot;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 import com.xored.glance.ui.controls.tree.TreeCell;
-import com.xored.glance.ui.controls.tree.content.TreeContent;
-import com.xored.glance.ui.controls.tree.content.TreeItemContent;
-import com.xored.glance.ui.controls.tree.content.TreeNode;
+import com.xored.glance.ui.controls.tree.TreeContent;
+import com.xored.glance.ui.controls.tree.TreeItemContent;
+import com.xored.glance.ui.controls.tree.TreeNode;
 
 @SuppressWarnings("restriction")
 public class CVSHistorySourceTree extends TreeContent implements

@@ -12,6 +12,7 @@ package com.xored.glance.ui.controls.table;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.swt.widgets.Table;
 
 import com.xored.glance.ui.controls.decor.IPath;
 import com.xored.glance.ui.controls.decor.IStructContent;
@@ -22,6 +23,9 @@ import com.xored.glance.ui.sources.ITextSourceListener;
 public class TableContent implements IStructContent {
 
 	private final ListenerList listeners = new ListenerList();
+
+	public TableContent(Table table) {
+	}
 
 	public void addListener(ITextSourceListener listener) {
 		listeners.add(listener);

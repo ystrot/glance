@@ -25,9 +25,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.xored.glance.ui.controls.tree.content.TreeContent;
-import com.xored.glance.ui.controls.tree.content.TreeItemContent;
-import com.xored.glance.ui.controls.tree.content.TreeNode;
 import com.xored.glance.ui.sources.ConfigurationManager;
 
 public class TreeControlContent extends TreeContent implements TreeListener {

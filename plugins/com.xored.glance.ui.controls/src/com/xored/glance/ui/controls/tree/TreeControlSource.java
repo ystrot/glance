@@ -12,7 +12,6 @@ package com.xored.glance.ui.controls.tree;
 
 import org.eclipse.swt.widgets.Tree;
 
-import com.xored.glance.ui.controls.tree.content.TreeContent;
 
 public class TreeControlSource extends TreeStructSource {
 

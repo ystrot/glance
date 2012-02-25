@@ -8,7 +8,7 @@
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
-package com.xored.glance.ui.controls.tree.content;
+package com.xored.glance.ui.controls.tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 import com.xored.glance.ui.controls.decor.IPath;
-import com.xored.glance.ui.controls.tree.TreeCell;
 
 public class TreePath implements IPath {
 

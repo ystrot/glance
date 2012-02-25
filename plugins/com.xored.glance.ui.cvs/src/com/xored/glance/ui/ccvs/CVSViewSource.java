@@ -12,8 +12,8 @@ package com.xored.glance.ui.ccvs;
 
 import org.eclipse.swt.widgets.Tree;
 
+import com.xored.glance.ui.controls.tree.TreeContent;
 import com.xored.glance.ui.controls.tree.TreeStructSource;
-import com.xored.glance.ui.controls.tree.content.TreeContent;
 
 public class CVSViewSource extends TreeStructSource {
 	public static Tree TREE;

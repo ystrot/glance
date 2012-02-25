@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.xored.glance.ui.controls.decor.StructCell;
 import com.xored.glance.ui.controls.decor.StructSource;
-import com.xored.glance.ui.controls.tree.content.TreeContent;
 import com.xored.glance.ui.sources.ITextBlock;
 import com.xored.glance.ui.sources.SourceSelection;
 

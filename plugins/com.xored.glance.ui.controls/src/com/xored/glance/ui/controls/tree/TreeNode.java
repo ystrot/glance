@@ -8,7 +8,7 @@
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
-package com.xored.glance.ui.controls.tree.content;
+package com.xored.glance.ui.controls.tree;
 
 import java.util.ArrayList;
 import java.util.List;
