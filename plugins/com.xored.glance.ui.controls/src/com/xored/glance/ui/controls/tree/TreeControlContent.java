@@ -18,8 +18,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TreeEvent;
-import org.eclipse.swt.events.TreeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
@@ -27,22 +25,18 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.xored.glance.ui.sources.ConfigurationManager;
 
-public class TreeControlContent extends TreeContent implements TreeListener {
+public class TreeControlContent extends TreeContent {
 
 	private Tree tree;
 	private final Map<TreeCell, TreeItemContent> cellToContent = new HashMap<TreeCell, TreeItemContent>();
 
 	public TreeControlContent(Tree tree) {
 		this.tree = tree;
-		tree.addTreeListener(this);
 		collectCells(this, tree.getItems());
 	}
 
 	@Override
 	public void dispose() {
-		if (tree != null && !tree.isDisposed()) {
-			tree.removeTreeListener(this);
-		}
 		tree = null;
 	}
 
@@ -180,22 +174,6 @@ public class TreeControlContent extends TreeContent implements TreeListener {
 				node.add(nodes.toArray(new TreeNode[nodes.size()]));
 			}
 		}
-	}
-
-	public void treeExpanded(TreeEvent event) {
-		// if (event.item instanceof TreeItem) {
-		// TreeItem item = (TreeItem) event.item;
-		// TreeItemContent content = getContent(item);
-		// collectCells(content.getNode(), item.getItems());
-		// }
-	}
-
-	public void treeCollapsed(TreeEvent event) {
-		// if (event.item instanceof TreeItem) {
-		// TreeItemContent content = getContent((TreeItem) event.item);
-		// TreeNode node = content.getNode();
-		// node.remove(node.getChildren());
-		// }
 	}
 
 	private TreeItemContent getContent(TreeItem item) {
