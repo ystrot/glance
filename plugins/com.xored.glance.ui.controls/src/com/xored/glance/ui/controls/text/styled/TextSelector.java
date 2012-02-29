@@ -40,12 +40,10 @@ public abstract class TextSelector implements FocusListener {
 		showSelection();
 	}
 
-	@Override
 	public void focusLost(FocusEvent e) {
 		hideSelection();
 	}
 
-	@Override
 	public void focusGained(FocusEvent e) {
 		showSelection();
 	}
