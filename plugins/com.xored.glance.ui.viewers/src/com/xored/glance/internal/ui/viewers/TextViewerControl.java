@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.graphics.Point;
 
+import com.xored.glance.ui.controls.text.styled.TextSelector;
 import com.xored.glance.ui.sources.BaseTextSource;
 import com.xored.glance.ui.sources.ITextBlock;
 import com.xored.glance.ui.sources.ITextSourceListener;
@@ -28,94 +29,83 @@ import com.xored.glance.ui.sources.SourceSelection;
  * @author Yuri Strot
  * 
  */
-public class TextViewerControl extends BaseTextSource implements ISelectionChangedListener {
+public class TextViewerControl extends BaseTextSource implements
+		ISelectionChangedListener {
 
-    public TextViewerControl(final TextViewer viewer) {
-        this.viewer = viewer;
-        listeners = new ListenerList();
-        blocks = new ColoredTextViewerBlock[] { new ColoredTextViewerBlock(viewer) };
-    }
+	public TextViewerControl(final TextViewer viewer) {
+		this.viewer = viewer;
+		listeners = new ListenerList();
+		blocks = new ColoredTextViewerBlock[] { new ColoredTextViewerBlock(
+				viewer) };
+	}
 
-    public void addTextSourceListener(final ITextSourceListener listener) {
-        listeners.add(listener);
-    }
+	public void addTextSourceListener(final ITextSourceListener listener) {
+		listeners.add(listener);
+	}
 
-    public void removeTextSourceListener(final ITextSourceListener listener) {
-        listeners.remove(listener);
-    }
+	public void removeTextSourceListener(final ITextSourceListener listener) {
+		listeners.remove(listener);
+	}
 
-    public void dispose() {
-        if (!disposed) {
-            if (getBlock().getSelected() != null) {
-                selectText(getBlock().getSelected());
-            }
+	public void dispose() {
+		if (!disposed) {
+			selector.dispose();
+			viewer.removeSelectionChangedListener(this);
+			getBlock().dispose();
+			disposed = true;
+		}
+	}
 
-            viewer.removeSelectionChangedListener(this);
-            getBlock().dispose();
-            disposed = true;
-        }
-    }
+	public void selectionChanged(final SelectionChangedEvent event) {
+		final ISelection selection = event.getSelection();
+		if (selection instanceof TextSelection) {
+			final TextSelection tSelection = (TextSelection) selection;
+			final SourceSelection sSelection = new SourceSelection(getBlock(),
+					tSelection.getOffset(), tSelection.getLength());
+			final Object[] objects = listeners.getListeners();
+			for (final Object object : objects) {
+				final ITextSourceListener listener = (ITextSourceListener) object;
+				listener.selectionChanged(sSelection);
+			}
+		}
+	}
 
-    private void selectText(final Match match) {
-        final TextSelection selection = new TextSelection(match.getOffset(), match.getLength());
-        viewer.setSelection(selection, true);
-    }
+	public boolean isDisposed() {
+		return disposed;
+	}
 
-    public void selectionChanged(final SelectionChangedEvent event) {
-        final ISelection selection = event.getSelection();
-        if (selection instanceof TextSelection) {
-            final TextSelection tSelection = (TextSelection) selection;
-            final SourceSelection sSelection = new SourceSelection(getBlock(), tSelection.getOffset(),
-                tSelection.getLength());
-            final Object[] objects = listeners.getListeners();
-            for (final Object object : objects) {
-                final ITextSourceListener listener = (ITextSourceListener) object;
-                listener.selectionChanged(sSelection);
-            }
-        }
-    }
+	public ColoredTextViewerBlock getBlock() {
+		return blocks[0];
+	}
 
-    public boolean isDisposed() {
-        return disposed;
-    }
+	public ITextBlock[] getBlocks() {
+		return blocks;
+	}
 
-    public ColoredTextViewerBlock getBlock() {
-        return blocks[0];
-    }
+	public SourceSelection getSelection() {
+		final Point selection = viewer.getSelectedRange();
+		return new SourceSelection(getBlock(), selection.x, selection.y);
+	}
 
-    public ITextBlock[] getBlocks() {
-        return blocks;
-    }
+	public void select(final Match match) {
+		getBlock().setSelected(match);
+		selector.setMatch(match);
+	}
 
-    public SourceSelection getSelection() {
-        final Point selection = viewer.getSelectedRange();
-        return new SourceSelection(getBlock(), selection.x, selection.y);
-    }
+	public void show(final Match[] matches) {
+		getBlock().setMatches(matches);
+	}
 
-    public void select(final Match match) {
-        getBlock().setSelected(match);
+	@Override
+	public void init() {
+		selector = new ViewerSelector(viewer);
+		viewer.addSelectionChangedListener(this);
+	}
 
-        if (match != null) {
-            viewer.revealRange(match.getOffset(), match.getLength());
-        }
-    }
-
-    public void show(final Match[] matches) {
-        getBlock().setMatches(matches);
-    }
-
-    @Override
-    public void init() {
-        if (viewer.getSelection() instanceof TextSelection) {
-            final TextSelection selection = (TextSelection) viewer.getSelection();
-            viewer.setSelection(new TextSelection(selection.getOffset() + selection.getLength(), 0));
-        }
-        viewer.addSelectionChangedListener(this);
-    }
-
-    private final ListenerList listeners;
-    private boolean disposed;
-    private final ColoredTextViewerBlock[] blocks;
-    private final TextViewer viewer;
+	private TextSelector selector;
+	private final ListenerList listeners;
+	private boolean disposed;
+	private final ColoredTextViewerBlock[] blocks;
+	private final TextViewer viewer;
 
 }
