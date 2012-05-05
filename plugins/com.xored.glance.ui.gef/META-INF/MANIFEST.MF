@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Glance GEF
 Bundle-SymbolicName: com.xored.glance.ui.gef;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0
 Bundle-Activator: com.xored.glance.ui.gef.Activator
 Bundle-Vendor: xored software, Inc.
 Require-Bundle: org.eclipse.ui,

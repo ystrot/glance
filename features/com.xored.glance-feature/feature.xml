@@ -2,7 +2,7 @@
 <feature
       id="com.xored.glance"
       label="Glance Core"
-      version="1.0.0.qualifier"
+      version="1.1.0"
       provider-name="xored software, Inc.">
 
    <description url="http://ystrot.github.com/glance/">
