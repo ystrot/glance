@@ -12,9 +12,13 @@ package com.xored.glance.ui.gef.controls;
 
 import org.eclipse.draw2d.IFigure;
 
+import com.xored.glance.ui.sources.Match;
+
 public interface IHighlightFigure {
 
     IFigure getHighlightedFigure();
+
+    Match getMatch();
 
     void updateBounds();
 

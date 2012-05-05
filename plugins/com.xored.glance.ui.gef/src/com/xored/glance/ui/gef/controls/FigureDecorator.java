@@ -24,7 +24,6 @@ import org.eclipse.draw2d.LayoutListener;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.text.TextFlow;
 
-import com.xored.glance.ui.gef.blocks.FigureTextBlock;
 import com.xored.glance.ui.gef.blocks.LabelTextBlock;
 import com.xored.glance.ui.gef.blocks.TextFlowBlock;
 import com.xored.glance.ui.sources.ITextBlock;
@@ -111,12 +110,7 @@ public class FigureDecorator implements IFigureDecorator {
     }
 
     public void selectMatch(final Match match) {
-        if (match != null && match.getBlock() instanceof FigureTextBlock<?>) {
-            final FigureTextBlock<?> figureBlock = (FigureTextBlock<?>) match.getBlock();
-            highLightLayer.setSelected(figureBlock.getFigure());
-        } else {
-            highLightLayer.setSelected(null);
-        }
+        highLightLayer.setSelected(match);
     }
 
     protected void updateHighlightFigureBounds() {

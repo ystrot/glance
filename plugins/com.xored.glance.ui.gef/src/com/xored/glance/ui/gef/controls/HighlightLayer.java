@@ -18,6 +18,8 @@ import org.eclipse.draw2d.Layer;
 import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.ui.PlatformUI;
 
+import com.xored.glance.ui.sources.Match;
+
 public class HighlightLayer extends Layer {
 
     @Override
@@ -44,9 +46,9 @@ public class HighlightLayer extends Layer {
         }
     }
 
-    public void setSelected(final IFigure label) {
+    public void setSelected(final Match match) {
         for (final IHighlightFigure figure : getHighlighFigures()) {
-            figure.select(figure.getHighlightedFigure() == label);
+            figure.select(figure.getMatch() != null ? figure.getMatch().equals(match) : false);
         }
         refresh();
     }

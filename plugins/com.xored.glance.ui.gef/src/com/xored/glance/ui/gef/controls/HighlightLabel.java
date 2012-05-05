@@ -22,8 +22,13 @@ import com.xored.glance.ui.sources.Match;
 
 public class HighlightLabel extends HighlightFigure<Label> {
 
+    private static String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    private final int fontHeight;
+
     public HighlightLabel(final Label label, final Match match) {
         super(label, match);
+        fontHeight = delegate.getTextUtilities().getTextExtents("", getFont()).height;
     }
 
     @Override
@@ -57,11 +62,24 @@ public class HighlightLabel extends HighlightFigure<Label> {
         final Point origin = bounds.getTopLeft();
         final Point caret = origin.getCopy();
 
-        final String beforHighligt = originalText.substring(0, match.getOffset());
-        caret.x += getTextExtents(beforHighligt).width;
+        final String suffix = originalText.substring(0, match.getOffset());
+        caret.x += widthExtent(suffix);
+        caret.y += heightExtent(suffix);
 
         final Dimension highlightExtent = getTextExtents(originalText.substring(match.getOffset(),
             match.getOffset() + match.getLength()));
-        setBounds(new Rectangle(caret.x, origin.y, highlightExtent.width, highlightExtent.height));
+        setBounds(new Rectangle(caret.x, caret.y, highlightExtent.width, highlightExtent.height));
+    }
+
+    private int widthExtent(final String text) {
+        if (text.endsWith(LINE_SEPARATOR)) {
+            return 0;
+        }
+        final String[] lines = text.split(LINE_SEPARATOR);
+        return getTextExtents(lines[lines.length - 1]).width;
+    }
+
+    private int heightExtent(final String text) {
+        return getTextExtents(text).height - fontHeight;
     }
 }

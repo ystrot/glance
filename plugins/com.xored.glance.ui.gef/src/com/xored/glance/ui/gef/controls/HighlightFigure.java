@@ -40,6 +40,10 @@ public abstract class HighlightFigure<T extends Figure> extends Figure implement
         return delegate;
     }
 
+    public Match getMatch() {
+        return match;
+    }
+
     public boolean isSelected() {
         return selected;
     }
