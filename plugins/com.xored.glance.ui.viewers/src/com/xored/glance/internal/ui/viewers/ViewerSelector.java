@@ -13,22 +13,24 @@ package com.xored.glance.internal.ui.viewers;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.TextViewer;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.custom.StyledText;
 
 import com.xored.glance.ui.controls.text.styled.TextSelector;
 
 public class ViewerSelector extends TextSelector {
 
 	private final TextViewer viewer;
+	private final StyledText control;
 
 	public ViewerSelector(TextViewer viewer) {
 		this.viewer = viewer;
+		this.control = viewer.getTextWidget();
 		init();
 	}
 
 	@Override
-	protected Control getControl() {
-		return viewer.getTextWidget();
+	protected StyledText getControl() {
+		return control;
 	}
 
 	@Override
