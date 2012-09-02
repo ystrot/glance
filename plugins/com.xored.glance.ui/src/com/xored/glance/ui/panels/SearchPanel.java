@@ -174,13 +174,13 @@ public abstract class SearchPanel implements ISearchPanel,
 			bIndexing.setEnabled(false);
 			if (bIndexing.getImage() == null) {
 				bIndexing.setImage(GlancePlugin
-						.createImage(GlancePlugin.IMG_START_INDEXING));
+						.getImage(GlancePlugin.IMG_START_INDEXING));
 			}
 		} else if (indexState == INDEXING_STATE_INITIAL) {
 			bIndexing.setToolTipText("Index component");
 			bIndexing.setSelection(false);
 			bIndexing.setImage(GlancePlugin
-					.createImage(GlancePlugin.IMG_START_INDEXING));
+					.getImage(GlancePlugin.IMG_START_INDEXING));
 			bIndexing.setEnabled(true);
 		} else if (indexState == INDEXING_STATE_FINISHED) {
 			bIndexing.setToolTipText("Index finished");
@@ -251,7 +251,7 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	protected Label createIcon(final Composite parent) {
 		final Label label = new Label(parent, SWT.NONE);
-		label.setImage(GlancePlugin.createImage(GlancePlugin.IMG_SEARCH));
+		label.setImage(GlancePlugin.getImage(GlancePlugin.IMG_SEARCH));
 		return label;
 	}
 
@@ -314,7 +314,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	private void createIndexing(final ToolBar bar) {
 		bIndexing = new ToolItem(bar, SWT.CHECK);
 		bIndexing.setDisabledImage(GlancePlugin
-				.createImage(GlancePlugin.IMG_INDEXING_FINISHED));
+				.getImage(GlancePlugin.IMG_INDEXING_FINISHED));
 		bIndexing.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void selected(final SelectionEvent e) {
@@ -331,7 +331,7 @@ public abstract class SearchPanel implements ISearchPanel,
 			final String image, final SelectionListener listener) {
 		final ToolItem item = new ToolItem(bar, SWT.PUSH);
 		item.setToolTipText(tip);
-		item.setImage(GlancePlugin.createImage(image));
+		item.setImage(GlancePlugin.getImage(image));
 		item.addSelectionListener(listener);
 		return item;
 	}

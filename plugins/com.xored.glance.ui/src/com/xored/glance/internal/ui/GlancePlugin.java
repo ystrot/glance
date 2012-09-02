@@ -88,7 +88,7 @@ public class GlancePlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public static Image createImage(String path) {
+	public static Image getImage(String path) {
 		Image image = getDefault().getImageRegistry().get(path);
 		if (image == null) {
 			ImageDescriptor imageDescriptor = getImageDescriptor(path, false);
