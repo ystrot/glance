@@ -44,26 +44,26 @@ import com.xored.glance.ui.utils.UIUtils;
 @SuppressWarnings("restriction")
 public class SearchStatusLine extends SearchPanel {
 
-    @Override
-    protected Control createText(Composite parent, int style) {
-        Control textControl = super.createText(parent, style);
-        textControl.addFocusListener(new FocusListener() {
-            public void focusLost(FocusEvent e) {
-                setKeyFilter(true);
-            }
-            
-            public void focusGained(FocusEvent e) {
-                setKeyFilter(false);
-            }
-        });
-        textControl.addDisposeListener(new DisposeListener() {
-            public void widgetDisposed(DisposeEvent e) {
-                setKeyFilter(true);
-            }
-        });
-        return textControl;
-    }
-    
+	@Override
+	protected Control createText(Composite parent, int style) {
+		Control textControl = super.createText(parent, style);
+		textControl.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				setKeyFilter(true);
+			}
+
+			public void focusGained(FocusEvent e) {
+				setKeyFilter(false);
+			}
+		});
+		textControl.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				setKeyFilter(true);
+			}
+		});
+		return textControl;
+	}
+
 	public static SearchStatusLine getSearchLine(IWorkbenchWindow window) {
 		IStatusLineManager manager = getManager(window);
 		if (manager != null) {
@@ -165,7 +165,9 @@ public class SearchStatusLine extends SearchPanel {
 	protected void setKeyFilter(boolean enabled) {
 		IBindingService service = (IBindingService) PlatformUI.getWorkbench()
 				.getService(IBindingService.class);
-		service.setKeyFilterEnabled(enabled);
+		if (service != null) {
+			service.setKeyFilterEnabled(enabled);
+		}
 	}
 
 	private class SearchItem extends ContributionItem implements IStatusField,

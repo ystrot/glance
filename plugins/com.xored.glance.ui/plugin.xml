@@ -47,6 +47,12 @@
         id="com.xored.glance.commands.focus"
         name="Return Focus Back">
   </command>
+  <command
+        categoryId="com.xored.glance.ui.commands"
+        description="Clear Glance search history"
+        id="com.xored.glance.commands.clearHistory"
+        name="Clear History">
+  </command>
   <category
         description="Glance search commands"
         id="com.xored.glance.ui.commands"
@@ -83,6 +89,12 @@
         contextId="com.xored.glance.ui.context"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M2+ENTER">
+  </key>
+  <key
+  		commandId="com.xored.glance.commands.clearHistory"
+  		contextId="com.xored.glance.ui.context"
+  		schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+M2+BS">
   </key>
 		<sequenceModifier find="M1+M3" replace="M1+M4" platforms="cocoa,carbon"/>
 	</extension>

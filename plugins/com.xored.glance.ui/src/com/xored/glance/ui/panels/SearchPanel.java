@@ -11,7 +11,6 @@
  *******************************************************************************/
 package com.xored.glance.ui.panels;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		getPreferences().addPropertyChangeListener(this);
 	}
 
-    public void setIndexingState(final int state) {
+	public void setIndexingState(final int state) {
 		indexState = state;
 
 		if (updateInfoThread != null) {
@@ -102,18 +101,18 @@ public abstract class SearchPanel implements ISearchPanel,
 			}
 		} else {
 			UIUtils.asyncExec(toolBar, new Runnable() {
-                public void run() {
+				public void run() {
 					updateInfo(null);
 				}
 			});
 		}
 	}
 
-    public void updateIndexingPercent(final double percent) {
+	public void updateIndexingPercent(final double percent) {
 		indexPercent = percent;
 	}
 
-    public void newTask(final String name) {
+	public void newTask(final String name) {
 		this.taskName = name;
 		indexPercent = 0;
 	}
@@ -134,7 +133,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		final Display display = PlatformUI.getWorkbench().getDisplay();
 		final Color[] color = new Color[1];
 		display.syncExec(new Runnable() {
-            public void run() {
+			public void run() {
 				color[0] = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			}
 		});
@@ -169,19 +168,20 @@ public abstract class SearchPanel implements ISearchPanel,
 			return;
 		}
 
-        if (indexState == INDEXING_STATE_DISABLE) {
-            bIndexing.setToolTipText("Index component");
-            bIndexing.setSelection(false);
-            bIndexing.setEnabled(false);
-            if (bIndexing.getImage() == null) {
-                bIndexing.setImage(GlancePlugin.createImage(GlancePlugin.IMG_START_INDEXING));
-            }
-        } else if (indexState == INDEXING_STATE_INITIAL) {
+		if (indexState == INDEXING_STATE_DISABLE) {
+			bIndexing.setToolTipText("Index component");
+			bIndexing.setSelection(false);
+			bIndexing.setEnabled(false);
+			if (bIndexing.getImage() == null) {
+				bIndexing.setImage(GlancePlugin
+						.createImage(GlancePlugin.IMG_START_INDEXING));
+			}
+		} else if (indexState == INDEXING_STATE_INITIAL) {
 			bIndexing.setToolTipText("Index component");
 			bIndexing.setSelection(false);
 			bIndexing.setImage(GlancePlugin
 					.createImage(GlancePlugin.IMG_START_INDEXING));
-            bIndexing.setEnabled(true);
+			bIndexing.setEnabled(true);
 		} else if (indexState == INDEXING_STATE_FINISHED) {
 			bIndexing.setToolTipText("Index finished");
 			bIndexing.setSelection(false);
@@ -200,7 +200,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-    public void propertyChange(final PropertyChangeEvent event) {
+	public void propertyChange(final PropertyChangeEvent event) {
 		final String property = event.getProperty();
 		if (property != null && property.startsWith(SEARCH_PREFIX)) {
 			updateRule();
@@ -220,7 +220,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		initSize(container);
 	}
 
-    public Control getControl() {
+	public Control getControl() {
 		return container;
 	}
 
@@ -229,24 +229,24 @@ public abstract class SearchPanel implements ISearchPanel,
 		return container;
 	}
 
-    public void firstFound(final Match match) {
+	public void firstFound(final Match match) {
 		UIUtils.asyncExec(title, new Runnable() {
-            public void run() {
+			public void run() {
 				setBackground(match != null);
 			}
 		});
 	}
 
-    public void allFound(final Match[] matches) {
+	public void allFound(final Match[] matches) {
 		result = matches;
 		UIUtils.asyncExec(title, new Runnable() {
-            public void run() {
+			public void run() {
 				setBackground(result.length > 0);
 			}
 		});
 	}
 
-    public void finished() {
+	public void finished() {
 	}
 
 	protected Label createIcon(final Composite parent) {
@@ -264,10 +264,10 @@ public abstract class SearchPanel implements ISearchPanel,
 			setBackground(false);
 		title.addModifyListener(modifyListener);
 		title.addListener(SWT.KeyDown, new Listener() {
-            public void handleEvent(Event event) {
-                GlanceEventDispatcher.INSTANCE.dispatchKeyPressed(event);
-            }
-        });
+			public void handleEvent(Event event) {
+				GlanceEventDispatcher.INSTANCE.dispatchKeyPressed(event);
+			}
+		});
 		title.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		title.setEnabled(titleEnabled);
 		return title;
@@ -275,8 +275,8 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	protected ToolBar createToolBar(final Composite parent) {
 		toolBar = new ToolBar(parent, SWT.FLAT);
-		GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(
-				toolBar);
+		GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER)
+				.applyTo(toolBar);
 		if (getPreferences().getBoolean(PANEL_DIRECTIONS)) {
 			createNextItem(toolBar);
 			createPreviousItem(toolBar);
@@ -327,8 +327,8 @@ public abstract class SearchPanel implements ISearchPanel,
 		});
 	}
 
-	private ToolItem createTool(final ToolBar bar, final String tip, final String image,
-			final SelectionListener listener) {
+	private ToolItem createTool(final ToolBar bar, final String tip,
+			final String image, final SelectionListener listener) {
 		final ToolItem item = new ToolItem(bar, SWT.PUSH);
 		item.setToolTipText(tip);
 		item.setImage(GlancePlugin.createImage(image));
@@ -353,7 +353,8 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	protected ToolItem createClose(final ToolBar bar) {
 		final ToolItem close = new ToolItem(bar, SWT.PUSH);
-		final ImageDescriptor image = PlatformUI.getWorkbench().getSharedImages()
+		final ImageDescriptor image = PlatformUI.getWorkbench()
+				.getSharedImages()
 				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE);
 		if (image != null)
 			close.setImage(image.createImage());
@@ -380,24 +381,15 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected void fillMenu(final IMenuManager menu) {
 		menu.add(new Separator());
 		newAction(menu, SEARCH_CASE_SENSITIVE, LABEL_CASE_SENSITIVE, true);
-		final boolean regExp = newAction(menu, SEARCH_REGEXP, LABEL_REGEXP, true)
-				.isChecked();
+		final boolean regExp = newAction(menu, SEARCH_REGEXP, LABEL_REGEXP,
+				true).isChecked();
 		newAction(menu, SEARCH_CAMEL_CASE, LABEL_CAMEL_CASE, !regExp);
 		newAction(menu, SEARCH_WORD_PREFIX, LABEL_WORD_PREFIX, !regExp);
 		menu.add(new Separator());
 		menu.add(new Action("Clear search history") {
 			@Override
 			public void run() {
-				if (title != null && !title.isDisposed()) {
-					title.removeModifyListener(modifyListener);
-					try {
-						title.removeAll();
-						findHistory.clear();
-					} finally {
-						title.addModifyListener(modifyListener);
-						historyDirty = false;
-					}
-				}
+				clearHistory();
 			}
 		});
 		menu.add(new Separator());
@@ -410,13 +402,13 @@ public abstract class SearchPanel implements ISearchPanel,
 		});
 	}
 
-	private CheckAction newAction(final IMenuManager menu, final String name, final String label,
-			final boolean enable) {
+	private CheckAction newAction(final IMenuManager menu, final String name,
+			final String label, final boolean enable) {
 		return newAction(menu, name, label, enable, null);
 	}
 
-	private CheckAction newAction(final IMenuManager menu, final String name, final String label,
-			final boolean enable, final String path) {
+	private CheckAction newAction(final IMenuManager menu, final String name,
+			final String label, final boolean enable, final String path) {
 		final CheckAction action = new CheckAction(name, label);
 		if (path != null) {
 			action.setImageDescriptor(GlancePlugin.getImageDescriptor(path));
@@ -450,24 +442,24 @@ public abstract class SearchPanel implements ISearchPanel,
 	/**
 	 * @return the rule
 	 */
-    public SearchRule getRule() {
+	public SearchRule getRule() {
 		return rule;
 	}
 
-    public void setFocus(String text) {
+	public void setFocus(String text) {
 		if (isReady()) {
 			if (text == null || text.length() == 0)
 				text = rule.getText();
 			if (text != null && text.length() > 0) {
 				title.setText(text);
 				title.setSelection(new Point(0, text.length()));
-				textChanged();  
+				textChanged();
 			}
 			title.forceFocus();
 		}
 	}
 
-    public void setEnabled(final boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		if (isReady()) {
 			title.setEnabled(enabled);
 			titleEnabled = enabled;
@@ -478,11 +470,11 @@ public abstract class SearchPanel implements ISearchPanel,
 		return title != null && !title.isDisposed();
 	}
 
-    public void addPanelListener(final ISearchPanelListener listener) {
+	public void addPanelListener(final ISearchPanelListener listener) {
 		listeners.add(listener);
 	}
 
-    public void removePanelListener(final ISearchPanelListener listener) {
+	public void removePanelListener(final ISearchPanelListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -503,7 +495,7 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-    public void findNext() {
+	public void findNext() {
 		updateHistory();
 		final Object[] objects = listeners.getListeners();
 		for (final Object object : objects) {
@@ -512,12 +504,25 @@ public abstract class SearchPanel implements ISearchPanel,
 		}
 	}
 
-    public void findPrevious() {
+	public void findPrevious() {
 		updateHistory();
 		final Object[] objects = listeners.getListeners();
 		for (final Object object : objects) {
 			final ISearchPanelListener listener = (ISearchPanelListener) object;
 			listener.findPrevious();
+		}
+	}
+
+	public void clearHistory() {
+		if (title != null && !title.isDisposed()) {
+			title.removeModifyListener(modifyListener);
+			try {
+				title.removeAll();
+				findHistory.clear();
+			} finally {
+				title.addModifyListener(modifyListener);
+				historyDirty = false;
+			}
 		}
 	}
 
@@ -630,7 +635,7 @@ public abstract class SearchPanel implements ISearchPanel,
 			return item;
 		}
 	}
-	
+
 	private IPreferenceStore getPreferences() {
 		return GlancePlugin.getDefault().getPreferenceStore();
 	}
@@ -638,7 +643,6 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected void setBackground(final boolean found) {
 		title.setBackground(found ? GOOD_COLOR : BAD_COLOR);
 	}
-
 
 	protected static final Color GOOD_COLOR = Display.getDefault()
 			.getSystemColor(SWT.COLOR_WHITE);
@@ -651,7 +655,7 @@ public abstract class SearchPanel implements ISearchPanel,
 
 	private final ListenerList listeners = new ListenerList();
 	private final ModifyListener modifyListener = new ModifyListener() {
-        public void modifyText(final ModifyEvent e) {
+		public void modifyText(final ModifyEvent e) {
 			textChanged();
 		}
 	};

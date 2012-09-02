@@ -1,9 +1,7 @@
 package com.xored.glance.internal.ui;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.jface.bindings.Binding;
 import org.eclipse.jface.bindings.BindingManager;
@@ -26,14 +24,7 @@ public class GlanceEventDispatcher {
 	public static final String PREV_COMMAND = "com.xored.glance.ui.prevResult";
 	public static final String FOCUS_COMMAND = "com.xored.glance.commands.focus";
 	public static final String CLOSE_COMMAND = "com.xored.glance.commands.close";
-
-	public static Set<String> COMMANDS = new HashSet<String>();
-	static {
-		COMMANDS.add(FOCUS_COMMAND);
-		COMMANDS.add(NEXT_COMMAND);
-		COMMANDS.add(PREV_COMMAND);
-		COMMANDS.add(CLOSE_COMMAND);
-	}
+	public static final String CLEAR_COMMAND = "com.xored.glance.commands.clearHistory";
 
 	public static GlanceEventDispatcher INSTANCE = new GlanceEventDispatcher();
 
@@ -64,15 +55,17 @@ public class GlanceEventDispatcher {
 			SearchManager.getIntance().findPrevious();
 		} else if (CLOSE_COMMAND.equals(commandID)) {
 			SearchManager.getIntance().close();
+		} else if (CLEAR_COMMAND.equals(commandID)) {
+			SearchManager.getIntance().clearHistory();
 		}
 	}
 
 	public String getBindCommand(KeySequence keySequence) {
 		Map<?, ?> map = bindingManager.getActiveBindingsDisregardingContext();
-		List<?> bindings = (List<?>)map.get(keySequence);
+		List<?> bindings = (List<?>) map.get(keySequence);
 		if (bindings != null) {
 			for (Object obj : bindings) {
-				Binding binding = (Binding)obj;
+				Binding binding = (Binding) obj;
 				if (GLANCE_CTX.equals(binding.getContextId())) {
 					return binding.getParameterizedCommand().getId();
 				}

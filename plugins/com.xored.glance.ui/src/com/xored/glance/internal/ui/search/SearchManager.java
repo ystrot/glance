@@ -41,413 +41,430 @@ import com.xored.glance.ui.utils.UITextSource;
  */
 public class SearchManager {
 
-    /** Searching from the current position */
-    public static final int FIND_HERE = 0;
-    /** Searching next occurrence of the string */
-    public static final int FIND_NEXT = 1;
-    /** Searching previous occurrence of the string */
-    public static final int FIND_PREVIOUS = 2;
+	/** Searching from the current position */
+	public static final int FIND_HERE = 0;
+	/** Searching next occurrence of the string */
+	public static final int FIND_NEXT = 1;
+	/** Searching previous occurrence of the string */
+	public static final int FIND_PREVIOUS = 2;
 
-    public static SearchManager getIntance() {
-        if (manager == null) {
-            manager = new SearchManager();
-        }
-        return manager;
-    }
+	public static SearchManager getIntance() {
+		if (manager == null) {
+			manager = new SearchManager();
+		}
+		return manager;
+	}
 
-    public boolean activate() {
-        final TextSourceMaker source = TextSourceManager.getInstance().getSource();
-        if (update(source, true)) {
-            forceFocus();
-            return true;
-        }
-        return false;
-    }
+	public boolean activate() {
+		final TextSourceMaker source = TextSourceManager.getInstance()
+				.getSource();
+		if (update(source, true)) {
+			forceFocus();
+			return true;
+		}
+		return false;
+	}
 
-    public void startup() {
-        PlatformUI.getWorkbench().addWindowListener(new IWindowListener() {
-            public void windowOpened(final IWorkbenchWindow window) {
-                setStatusLine(window, true);
-            }
+	public void startup() {
+		PlatformUI.getWorkbench().addWindowListener(new IWindowListener() {
+			public void windowOpened(final IWorkbenchWindow window) {
+				setStatusLine(window, true);
+			}
 
-            public void windowDeactivated(final IWorkbenchWindow window) {
-            }
+			public void windowDeactivated(final IWorkbenchWindow window) {
+			}
 
-            public void windowClosed(final IWorkbenchWindow window) {
-            }
+			public void windowClosed(final IWorkbenchWindow window) {
+			}
 
-            public void windowActivated(final IWorkbenchWindow window) {
-            }
-        });
-        for (final IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
-            setStatusLine(window, true);
-        }
-    }
+			public void windowActivated(final IWorkbenchWindow window) {
+			}
+		});
+		for (final IWorkbenchWindow window : PlatformUI.getWorkbench()
+				.getWorkbenchWindows()) {
+			setStatusLine(window, true);
+		}
+	}
 
-    public void setStatusLine(final IWorkbenchWindow window, final boolean open) {
-        final ISearchPanel panel = SearchStatusLine.getSearchLine(window);
-        if (!open) {
-            panel.closePanel();
-            return;
-        }
-        panels.add(panel);
-        final SearchPanelListener listener = new SearchPanelListener(panel);
-        panel.addPanelListener(listener);
-        panelToListener.put(panel, listener);
-        updateSourceListener();
+	public void setStatusLine(final IWorkbenchWindow window, final boolean open) {
+		final ISearchPanel panel = SearchStatusLine.getSearchLine(window);
+		if (!open) {
+			panel.closePanel();
+			return;
+		}
+		panels.add(panel);
+		final SearchPanelListener listener = new SearchPanelListener(panel);
+		panel.addPanelListener(listener);
+		panelToListener.put(panel, listener);
+		updateSourceListener();
 
-        final TextSourceMaker source = TextSourceManager.getInstance().getSource();
-        if (source != null && source.getControl() != null && panel.isApplicable(source.getControl())) {
-            this.panel = panel;
-            rule = panel.getRule();
-            if (setDescription(source))
-                updateEnabling();
-        }
-    }
+		final TextSourceMaker source = TextSourceManager.getInstance()
+				.getSource();
+		if (source != null && source.getControl() != null
+				&& panel.isApplicable(source.getControl())) {
+			this.panel = panel;
+			rule = panel.getRule();
+			if (setDescription(source))
+				updateEnabling();
+		}
+	}
 
-    public boolean isInWindow(final IWorkbenchWindow window) {
-        for (final ISearchPanel panel : panels) {
-            if (panel instanceof SearchStatusLine) {
-                final SearchStatusLine sl = ((SearchStatusLine) panel);
-                if (sl.getWindow() == window) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	public boolean isInWindow(final IWorkbenchWindow window) {
+		for (final ISearchPanel panel : panels) {
+			if (panel instanceof SearchStatusLine) {
+				final SearchStatusLine sl = ((SearchStatusLine) panel);
+				if (sl.getWindow() == window) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-    public void findNext() {
-        if (panel != null) {
-            panel.findNext();
-        }
-    }
+	public void findNext() {
+		if (panel != null) {
+			panel.findNext();
+		}
+	}
 
-    public void findPrevious() {
-        if (panel != null) {
-            panel.findPrevious();
-        }
-    }
-    
-    public void sourceFocus(){
-        ITextSource source = getSource();
-        if (source instanceof UITextSource){
-           UITextSource uiTextSource = (UITextSource) source;
-           if (uiTextSource.getControl() != null){
-               uiTextSource.getControl().setFocus();
-           }
-        }
-    }
-    
-    public void close(){
-        if (panel != null){
-            panel.closePanel();
-        }
-    }
-    
-    public ITextSource getSource() {
-        return source;
-    }
+	public void findPrevious() {
+		if (panel != null) {
+			panel.findPrevious();
+		}
+	}
 
-    private boolean update(final TextSourceMaker source, final boolean openNewPanel) {
-        updatePanel(source, openNewPanel);
-        if (panel != null) {
-            rule = panel.getRule();
-            updateSourceListener();
-            if (setDescription(source))
-                updateEnabling();
-            return true;
-        }
-        return false;
-    }
+	public void clearHistory() {
+		if (panel != null) {
+			panel.clearHistory();
+		}
+	}
 
-    private void updatePanel(final TextSourceMaker source, final boolean openNewPanel) {
-        final Control control = source.getControl();
-        if (panel != null) {
-            if (panel.isApplicable(control))
-                return;
-            if (this.source != null) {
-                this.source.dispose();
-                this.source = null;
-            }
-            creator = null;
-            panel = null;
-        }
-        for (final ISearchPanel panel : panels) {
-            if (panel.isApplicable(control)) {
-                this.panel = panel;
-                break;
-            }
-        }
-        if (panel == null && openNewPanel) {
-            panel = SearchPanelManager.getInstance().getPanel(control);
-            if (panel != null) {
-                panels.add(panel);
-                final SearchPanelListener listener = new SearchPanelListener(panel);
-                panel.addPanelListener(listener);
-                panelToListener.put(panel, listener);
-            }
-        }
-    }
+	public void sourceFocus() {
+		ITextSource source = getSource();
+		if (source instanceof UITextSource) {
+			UITextSource uiTextSource = (UITextSource) source;
+			if (uiTextSource.getControl() != null) {
+				uiTextSource.getControl().setFocus();
+			}
+		}
+	}
 
-    private void forceFocus() {
-        String text = "";
-        if (source != null) {
-            final SourceSelection selection = source.getSelection();
-            if (selection != null) {
-                text = selection.getBlock().getText();
-                final int offset = selection.getOffset();
-                final int length = selection.getLength();
-                if (offset + length <= text.length())
-                    text = text.substring(offset, offset + length);
-                else
-                    text = "";
-            }
-        }
-        panel.setFocus(text);
-    }
+	public void close() {
+		if (panel != null) {
+			panel.closePanel();
+		}
+	}
 
-    private void find(final SearchRule rule, final int type) {
-        this.type = type;
-        if (rule != null) {
-            final boolean textEquals = rule.isTextEquals(this.rule);
-            final boolean settingsEqual = rule.isSettingsEqual(this.rule);
-            if (textEquals) {
-                if (settingsEqual) {
-                    updateSelection();
-                } else {
-                    updateSearch(rule, false);
-                }
-            } else {
-                updateSearch(rule, true);
-            }
-        } else {
-            updateSearch(rule, false);
-        }
-        this.rule = rule;
-    }
+	public ITextSource getSource() {
+		return source;
+	}
 
-    protected void dispose(final ISearchPanel panel) {
-        panels.remove(panel);
-        final SearchPanelListener listener = panelToListener.remove(panel);
-        panel.removePanelListener(listener);
-        if (panel == this.panel) {
-            this.panel = null;
-            if (source != null) {
-                source.dispose();
-                source = null;
-            }
-            if (creator != null) {
-                final Control control = creator.getControl();
-                if (control != null && !control.isDisposed())
-                    control.forceFocus();
-                creator = null;
-            }
-            rule = null;
-        }
-        if (panels.size() == 0) {
-            if (engine != null) {
-                engine.exit();
-                engine = null;
-            }
-            if (sourceListener != null) {
-                TextSourceManager.getInstance().removeSourceProviderListener(sourceListener);
-                sourceListener = null;
-            }
-        } else {
-            updateSourceListener();
-        }
-    }
+	private boolean update(final TextSourceMaker source,
+			final boolean openNewPanel) {
+		updatePanel(source, openNewPanel);
+		if (panel != null) {
+			rule = panel.getRule();
+			updateSourceListener();
+			if (setDescription(source))
+				updateEnabling();
+			return true;
+		}
+		return false;
+	}
 
-    protected void updateSearch(final SearchRule rule, final boolean paused) {
-        getSearchEngine().setRule(rule);
-    }
+	private void updatePanel(final TextSourceMaker source,
+			final boolean openNewPanel) {
+		final Control control = source.getControl();
+		if (panel != null) {
+			if (panel.isApplicable(control))
+				return;
+			if (this.source != null) {
+				this.source.dispose();
+				this.source = null;
+			}
+			creator = null;
+			panel = null;
+		}
+		for (final ISearchPanel panel : panels) {
+			if (panel.isApplicable(control)) {
+				this.panel = panel;
+				break;
+			}
+		}
+		if (panel == null && openNewPanel) {
+			panel = SearchPanelManager.getInstance().getPanel(control);
+			if (panel != null) {
+				panels.add(panel);
+				final SearchPanelListener listener = new SearchPanelListener(
+						panel);
+				panel.addPanelListener(listener);
+				panelToListener.put(panel, listener);
+			}
+		}
+	}
 
-    protected void updateSelection() {
-        if (type == FIND_NEXT) {
-            getSearchEngine().selectNext();
-        } else if (type == FIND_PREVIOUS) {
-            getSearchEngine().selectPrev();
-        }
-    }
+	private void forceFocus() {
+		String text = "";
+		if (source != null) {
+			final SourceSelection selection = source.getSelection();
+			if (selection != null) {
+				text = selection.getBlock().getText();
+				final int offset = selection.getOffset();
+				final int length = selection.getLength();
+				if (offset + length <= text.length())
+					text = text.substring(offset, offset + length);
+				else
+					text = "";
+			}
+		}
+		panel.setFocus(text);
+	}
 
-    protected boolean setDescription(final TextSourceMaker descriptor) {
-        // ignore panel controls
-        if (descriptor != null && panel != null && panel.getControl() != null) {
-            if (isParent(panel.getControl(), descriptor.getControl()))
-                return false;
-        }
-        // ignore the same source
-        if (descriptor == null) {
-            if (this.creator == null)
-                return false;
-        } else if (descriptor.equals(this.creator)) {
-            return false;
-        }
-        if (source != null) {
-            source.dispose();
-            source = null;
-            this.creator = null;
-        }
-        if (descriptor != null && descriptor.isValid()) {
-            this.creator = descriptor;
-            source = new UITextSource(descriptor.create(), descriptor.getControl());
-            getSearchEngine().setSource(rule, source, true);
-            source.init();
-            updateIndexingState();
-        }
-        return true;
-    }
+	private void find(final SearchRule rule, final int type) {
+		this.type = type;
+		if (rule != null) {
+			final boolean textEquals = rule.isTextEquals(this.rule);
+			final boolean settingsEqual = rule.isSettingsEqual(this.rule);
+			if (textEquals) {
+				if (settingsEqual) {
+					updateSelection();
+				} else {
+					updateSearch(rule, false);
+				}
+			} else {
+				updateSearch(rule, true);
+			}
+		} else {
+			updateSearch(rule, false);
+		}
+		this.rule = rule;
+	}
 
-    private void updateIndexingState() {
-        if (monitor != null) {
-            monitor.setCanceled(true);
-            monitor = null;
-        }
+	protected void dispose(final ISearchPanel panel) {
+		panels.remove(panel);
+		final SearchPanelListener listener = panelToListener.remove(panel);
+		panel.removePanelListener(listener);
+		if (panel == this.panel) {
+			this.panel = null;
+			if (source != null) {
+				source.dispose();
+				source = null;
+			}
+			if (creator != null) {
+				final Control control = creator.getControl();
+				if (control != null && !control.isDisposed())
+					control.forceFocus();
+				creator = null;
+			}
+			rule = null;
+		}
+		if (panels.size() == 0) {
+			if (engine != null) {
+				engine.exit();
+				engine = null;
+			}
+			if (sourceListener != null) {
+				TextSourceManager.getInstance().removeSourceProviderListener(
+						sourceListener);
+				sourceListener = null;
+			}
+		} else {
+			updateSourceListener();
+		}
+	}
 
-        final boolean indexRequired = source != null && !source.isDisposed() && source.isIndexRequired();
-        if (GlancePlugin.getDefault().getPreferenceStore()
-            .getBoolean(IPreferenceConstants.PANEL_AUTO_INDEXING)
-            && indexRequired) {
-            index();
-        } else {
-            panel.setIndexingState(indexRequired ? ISearchPanel.INDEXING_STATE_INITIAL
-                : ISearchPanel.INDEXING_STATE_DISABLE);
-        }
-    }
+	protected void updateSearch(final SearchRule rule, final boolean paused) {
+		getSearchEngine().setRule(rule);
+	}
 
-    public void index() {
-        if (panel != null && source != null && !source.isDisposed()) {
-            monitor = new SearchProgressMonitor(panel);
-            new Thread() {
-                @Override
-                public void run() {
-                    panel.setIndexingState(ISearchPanel.INDEXING_STATE_IN_PROGRESS);
-                    if (source != null) {
-                        source.index(monitor);
-                    }
-                }
-            }.start();
-        }
-    }
+	protected void updateSelection() {
+		if (type == FIND_NEXT) {
+			getSearchEngine().selectNext();
+		} else if (type == FIND_PREVIOUS) {
+			getSearchEngine().selectPrev();
+		}
+	}
 
-    private IProgressMonitor monitor;
+	protected boolean setDescription(final TextSourceMaker descriptor) {
+		// ignore panel controls
+		if (descriptor != null && panel != null && panel.getControl() != null) {
+			if (isParent(panel.getControl(), descriptor.getControl()))
+				return false;
+		}
+		// ignore the same source
+		if (descriptor == null) {
+			if (this.creator == null)
+				return false;
+		} else if (descriptor.equals(this.creator)) {
+			return false;
+		}
+		if (source != null) {
+			source.dispose();
+			source = null;
+			this.creator = null;
+		}
+		if (descriptor != null && descriptor.isValid()) {
+			this.creator = descriptor;
+			source = new UITextSource(descriptor.create(),
+					descriptor.getControl());
+			getSearchEngine().setSource(rule, source, true);
+			source.init();
+			updateIndexingState();
+		}
+		return true;
+	}
 
-    protected void updateEnabling() {
-        if (panel != null) {
-            panel.setEnabled(source != null);
-            if (source == null) {
-                panel.setIndexingState(ISearchPanel.INDEXING_STATE_FINISHED);
-            }
-        }
-    }
+	private void updateIndexingState() {
+		if (monitor != null) {
+			monitor.setCanceled(true);
+			monitor = null;
+		}
 
-    protected boolean isParent(final Control parent, Control child) {
-        while (child != null) {
-            if (child.equals(parent))
-                return true;
-            child = child.getParent();
-        }
-        return false;
-    }
+		final boolean indexRequired = source != null && !source.isDisposed()
+				&& source.isIndexRequired();
+		if (GlancePlugin.getDefault().getPreferenceStore()
+				.getBoolean(IPreferenceConstants.PANEL_AUTO_INDEXING)
+				&& indexRequired) {
+			index();
+		} else {
+			panel.setIndexingState(indexRequired ? ISearchPanel.INDEXING_STATE_INITIAL
+					: ISearchPanel.INDEXING_STATE_DISABLE);
+		}
+	}
 
-    private SearchEngine getSearchEngine() {
-        if (engine == null) {
-            engine = new SearchEngine(searchListener);
-            engine.start();
-        }
-        return engine;
-    }
+	public void index() {
+		if (panel != null && source != null && !source.isDisposed()) {
+			monitor = new SearchProgressMonitor(panel);
+			new Thread() {
+				@Override
+				public void run() {
+					panel.setIndexingState(ISearchPanel.INDEXING_STATE_IN_PROGRESS);
+					if (source != null) {
+						source.index(monitor);
+					}
+				}
+			}.start();
+		}
+	}
 
-    private void updateSourceListener() {
-        if (sourceListener == null) {
-            sourceListener = new SourceListener();
-            TextSourceManager.getInstance().addSourceProviderListener(sourceListener);
-        }
-    }
+	private IProgressMonitor monitor;
 
-    private class SearchListener implements ISearchListener {
+	protected void updateEnabling() {
+		if (panel != null) {
+			panel.setEnabled(source != null);
+			if (source == null) {
+				panel.setIndexingState(ISearchPanel.INDEXING_STATE_FINISHED);
+			}
+		}
+	}
 
-        public void allFound(final Match[] matches) {
-            if (panel != null)
-                panel.allFound(matches);
-        }
+	protected boolean isParent(final Control parent, Control child) {
+		while (child != null) {
+			if (child.equals(parent))
+				return true;
+			child = child.getParent();
+		}
+		return false;
+	}
 
-        public void finished() {
-            if (panel != null)
-                panel.finished();
-        }
+	private SearchEngine getSearchEngine() {
+		if (engine == null) {
+			engine = new SearchEngine(searchListener);
+			engine.start();
+		}
+		return engine;
+	}
 
-        public void firstFound(final Match match) {
-            if (panel != null)
-                panel.firstFound(match);
-        }
-    }
+	private void updateSourceListener() {
+		if (sourceListener == null) {
+			sourceListener = new SourceListener();
+			TextSourceManager.getInstance().addSourceProviderListener(
+					sourceListener);
+		}
+	}
 
-    private class SourceListener implements ISourceProviderListener {
-        public void sourceChanged(final TextSourceMaker source) {
-            update(source, false);
-        }
-    }
+	private class SearchListener implements ISearchListener {
 
-    private class SearchPanelListener implements ISearchPanelListener {
+		public void allFound(final Match[] matches) {
+			if (panel != null)
+				panel.allFound(matches);
+		}
 
-        public SearchPanelListener(final ISearchPanel panel) {
-            this.panel = panel;
-        }
+		public void finished() {
+			if (panel != null)
+				panel.finished();
+		}
 
-        protected boolean isCurrent() {
-            return panel.equals(SearchManager.this.panel);
-        }
+		public void firstFound(final Match match) {
+			if (panel != null)
+				panel.firstFound(match);
+		}
+	}
 
-        public void ruleChanged(final SearchRule rule) {
-            if (isCurrent())
-                find(rule, SearchManager.FIND_HERE);
-        }
+	private class SourceListener implements ISourceProviderListener {
+		public void sourceChanged(final TextSourceMaker source) {
+			update(source, false);
+		}
+	}
 
-        public void findNext() {
-            if (isCurrent())
-                find(rule, SearchManager.FIND_NEXT);
-        }
+	private class SearchPanelListener implements ISearchPanelListener {
 
-        public void findPrevious() {
-            if (isCurrent())
-                find(rule, SearchManager.FIND_PREVIOUS);
-        }
+		public SearchPanelListener(final ISearchPanel panel) {
+			this.panel = panel;
+		}
 
-        public void close() {
-            dispose(panel);
-        }
+		protected boolean isCurrent() {
+			return panel.equals(SearchManager.this.panel);
+		}
 
-        public void indexCanceled() {
-            if (monitor != null) {
-                monitor.setCanceled(true);
-                monitor = null;
-            }
-        }
+		public void ruleChanged(final SearchRule rule) {
+			if (isCurrent())
+				find(rule, SearchManager.FIND_HERE);
+		}
 
-        private final ISearchPanel panel;
+		public void findNext() {
+			if (isCurrent())
+				find(rule, SearchManager.FIND_NEXT);
+		}
 
-    }
+		public void findPrevious() {
+			if (isCurrent())
+				find(rule, SearchManager.FIND_PREVIOUS);
+		}
 
-    private static SearchManager manager;
+		public void close() {
+			dispose(panel);
+		}
 
-    private SearchManager() {
-        panels = new ArrayList<ISearchPanel>();
-        searchListener = new SearchListener();
-        panelToListener = new HashMap<ISearchPanel, SearchPanelListener>();
-    }
+		public void indexCanceled() {
+			if (monitor != null) {
+				monitor.setCanceled(true);
+				monitor = null;
+			}
+		}
 
-    private final SearchListener searchListener;
-    private SourceListener sourceListener;
-    private final Map<ISearchPanel, SearchPanelListener> panelToListener;
-    private SearchEngine engine;
-    private final List<ISearchPanel> panels;
-    private ISearchPanel panel;
-    private ITextSource source;
-    private TextSourceMaker creator;
+		private final ISearchPanel panel;
 
-    private int type;
-    private SearchRule rule;
+	}
+
+	private static SearchManager manager;
+
+	private SearchManager() {
+		panels = new ArrayList<ISearchPanel>();
+		searchListener = new SearchListener();
+		panelToListener = new HashMap<ISearchPanel, SearchPanelListener>();
+	}
+
+	private final SearchListener searchListener;
+	private SourceListener sourceListener;
+	private final Map<ISearchPanel, SearchPanelListener> panelToListener;
+	private SearchEngine engine;
+	private final List<ISearchPanel> panels;
+	private ISearchPanel panel;
+	private ITextSource source;
+	private TextSourceMaker creator;
+
+	private int type;
+	private SearchRule rule;
 
 }
