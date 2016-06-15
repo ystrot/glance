@@ -1,6 +1,5 @@
 # Glance Eclipse Plugin
-Supports the Eclipse Neon 4.6 or grater.  
-This plugin forked from [ystrot/glance](https://github.com/ystrot/glance).  
+Supports the Eclipse Neon 4.6 or grater. This plugin forked from [ystrot/glance](https://github.com/ystrot/glance).  
 
 ## Installation
 **Update Site**  
