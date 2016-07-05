@@ -23,7 +23,7 @@ import com.xored.glance.ui.sources.SourceSelection;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public class TableSource extends ItemSource {
 
@@ -39,7 +39,10 @@ public class TableSource extends ItemSource {
 
 	@Override
 	public void dispose() {
-		getControl().removeSelectionListener(this);
+		Table table = getControl();
+		if (!table.isDisposed()) {
+			table.removeSelectionListener(this);
+		}
 		super.dispose();
 	}
 

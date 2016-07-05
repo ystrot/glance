@@ -23,8 +23,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.xored.glance.ui.controls.Activator;
 import com.xored.glance.ui.sources.ConfigurationManager;
 
+/**
+ * @author Yuri Strot
+ * @author Shinji Kashihara
+ */
 public class TreeControlContent extends TreeContent {
 
 	private Tree tree;
@@ -119,7 +124,11 @@ public class TreeControlContent extends TreeContent {
 							event.type = SWT.Expand;
 							event.widget = item.getParent();
 							event.display = display;
-							event.widget.notifyListeners(SWT.Expand, event);
+							try {
+								event.widget.notifyListeners(SWT.Expand, event);
+							} catch (ClassCastException e) {
+								Activator.log(e);
+							}
 						}
 						TreeItem[] kids = item.getItems();
 						TreeItemContent content = getContent(item);
