@@ -204,8 +204,11 @@ public class ItemDecorator implements Listener {
 		if (!ColorManager.getInstance().isUseNative() && (event.detail & SWT.SELECTED) != 0) {
 			gc.setBackground(ColorManager.getInstance().getTreeSelectionBg());
 			gc.setForeground(ColorManager.getInstance().getTreeSelectionFg());
-			gc.fillRectangle(provider.getBounds(item, event.index));
+		} else {
+			gc.setBackground(oldBackground);
+			gc.setForeground(oldForeground);
 		}
+		gc.fillRectangle(provider.getBounds(item, event.index));
 
 		Image image = provider.getImage(item, event.index);
 		if (image != null) {
