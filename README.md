@@ -6,9 +6,9 @@ Supports the Eclipse Neon 4.6 or grater. This plugin forked from [ystrot/glance]
 https://raw.githubusercontent.com/cypher256/glance/master/releng/com.xored.glance-updatesite/site.xml
 
 ## Changes
-* Fixed overlapping text like the EGit history view
+* Fixed overlapping text like the EGit history view ([Issue#13](https://github.com/ystrot/glance/issues/13))
 * Fixed status bar freeze bug
-* Supports the Eclipse Neon 4.6 or grater
+* Supports the Eclipse Neon 4.6 or grater ([Issue#36](https://github.com/ystrot/glance/issues/36))
 
 ## License
 [Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)  
