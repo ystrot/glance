@@ -28,5 +28,6 @@ from http://ystrot.github.io/glance/
 ![](http://ystrot.github.io/glance/i/dia.jpg)
 
 ![](http://ystrot.github.io/glance/i/index.jpg)
-
+<!--
 ![](http://ystrot.github.io/glance/i/plugins.jpg)
+-->
