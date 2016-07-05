@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2008 xored software, Inc.  
- * 
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0 
- * which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html  
- * 
- * Contributors: 
- *     xored software, Inc. - initial API and Implementation (Yuri Strot) 
+/*******************************************************************************
+ * Copyright (c) 2008 xored software, Inc.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and Implementation (Yuri Strot)
  *******************************************************************************/
 package com.xored.glance.internal.ui.panels;
 
@@ -31,7 +31,7 @@ import com.xored.glance.ui.utils.UIUtils;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public class PopupSearchDialog extends SearchPanel {
 
@@ -61,18 +61,13 @@ public class PopupSearchDialog extends SearchPanel {
 		UIUtils.asyncExec(popup.getShell(), new Runnable() {
 
 			public void run() {
-				StringBuffer buffer = new StringBuffer();
 				if (matchCount == 0) {
-					buffer.append("No matches");
+					popup.setInfoText("No matches");
 				} else if (matchCount == 1) {
-					buffer.append("1 match");
+					popup.setInfoText("1 match found");
 				} else {
-					buffer.append(matchCount);
-					buffer.append(" matches");
+					popup.setInfoText(String.format("%d matches found", matchCount));
 				}
-				buffer.append(" found");
-
-				popup.setInfoText(buffer.toString());
 			}
 		});
 	}
