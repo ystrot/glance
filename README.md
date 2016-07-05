@@ -21,7 +21,7 @@ from http://ystrot.github.io/glance/
 
 ![](http://ystrot.github.io/glance/i/history.jpg)
 
-![](http://ystrot.github.io/glance/i/table_trees_1.jpg")
+![](http://ystrot.github.io/glance/i/table_trees_1.jpg)
 
 ![](http://ystrot.github.io/glance/i/dialogs.jpg)
 
