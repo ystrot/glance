@@ -6,6 +6,7 @@ Supports the Eclipse Neon 4.6 or grater. This plugin forked from [ystrot/glance]
 https://raw.githubusercontent.com/cypher256/glance/master/releng/com.xored.glance-updatesite/site.xml
 
 ## Changes
+* Fixed missing handle exception
 * Fixed overlapping text like the EGit history view ([Issue#13](https://github.com/ystrot/glance/issues/13))
 * Supports the Eclipse Neon 4.6 or grater ([Issue#36](https://github.com/ystrot/glance/issues/36))
 
