@@ -58,7 +58,9 @@ public class TableContent implements IStructContent {
 	}
 
 	public void index(IProgressMonitor monitor) {
-		monitor.done();
+		if (monitor != null) {
+			monitor.done();
+		}
 	}
 
 }

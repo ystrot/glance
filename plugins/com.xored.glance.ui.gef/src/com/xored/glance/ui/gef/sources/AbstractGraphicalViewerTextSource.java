@@ -18,7 +18,9 @@ import com.xored.glance.ui.sources.SourceSelection;
 public abstract class AbstractGraphicalViewerTextSource implements ITextSource {
 
     public void index(final IProgressMonitor monitor) {
-        monitor.done();
+		if (monitor != null) {
+			monitor.done();
+		}
     }
 
     public boolean isIndexRequired() {

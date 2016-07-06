@@ -15,7 +15,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public abstract class BaseTextSource implements ITextSource {
 
 	public void index(IProgressMonitor monitor) {
-		monitor.done();
+		if (monitor != null) {
+			monitor.done();
+		}
 	}
 
 	public boolean isIndexRequired() {

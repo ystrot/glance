@@ -36,8 +36,11 @@ public abstract class TextSelector implements FocusListener {
 	}
 
 	public void dispose() {
-		getControl().removeFocusListener(this);
-		showSelection();
+		Control control = getControl();
+		if (!control.isDisposed()) {
+			control.removeFocusListener(this);
+			showSelection();
+		}
 	}
 
 	public void focusLost(FocusEvent e) {
