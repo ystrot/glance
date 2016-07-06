@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2008 xored software, Inc.  
- * 
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0 
- * which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html  
- * 
- * Contributors: 
- *     xored software, Inc. - initial API and Implementation (Yuri Strot) 
+/*******************************************************************************
+ * Copyright (c) 2008 xored software, Inc.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and Implementation (Yuri Strot)
  *******************************************************************************/
 package com.xored.glance.ui.controls.items;
 
@@ -37,7 +37,7 @@ import com.xored.glance.ui.utils.TextUtils;
 
 /**
  * @author Yuri Strot
- * 
+ *
  */
 public class ItemDecorator implements Listener {
 
@@ -205,6 +205,7 @@ public class ItemDecorator implements Listener {
 			gc.setBackground(ColorManager.getInstance().getTreeSelectionBg());
 			gc.setForeground(ColorManager.getInstance().getTreeSelectionFg());
 		} else {
+			// Fixed overlapping text bug like the EGit history view
 			gc.setBackground(oldBackground);
 			gc.setForeground(oldForeground);
 		}

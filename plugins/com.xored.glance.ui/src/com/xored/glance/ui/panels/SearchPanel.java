@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2008 xored software, Inc.  
- * 
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0 
- * which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html  
- * 
- * Contributors: 
- *     xored software, Inc. - initial API and Implementation (Yuri Strot) 
+/*******************************************************************************
+ * Copyright (c) 2008 xored software, Inc.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and Implementation (Yuri Strot)
  *******************************************************************************/
 package com.xored.glance.ui.panels;
 
@@ -69,7 +69,7 @@ import com.xored.glance.ui.utils.UIUtils;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public abstract class SearchPanel implements ISearchPanel,
 		IPreferenceConstants, IPropertyChangeListener {
@@ -225,7 +225,17 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected Composite createContainer(final Composite parent) {
-		container = new Composite(parent, SWT.NONE);
+		container = new Composite(parent, SWT.NONE) {
+			// Fixed status line freeze, StatusLineManager#update
+			@Override
+			public Object getData() {
+				if (isDisposed()) {
+					GlancePlugin.info("getData: Already disposed Composite");
+					return null;
+				}
+				return super.getData();
+			}
+		};
 		return container;
 	}
 

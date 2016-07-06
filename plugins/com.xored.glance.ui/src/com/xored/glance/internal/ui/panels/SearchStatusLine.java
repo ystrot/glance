@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
@@ -33,13 +33,14 @@ import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.texteditor.IStatusField;
 import org.eclipse.ui.texteditor.IStatusFieldExtension;
 
+import com.xored.glance.internal.ui.GlancePlugin;
 import com.xored.glance.ui.panels.SearchPanel;
 import com.xored.glance.ui.sources.Match;
 import com.xored.glance.ui.utils.UIUtils;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 @SuppressWarnings("restriction")
 public class SearchStatusLine extends SearchPanel {
@@ -154,7 +155,17 @@ public class SearchStatusLine extends SearchPanel {
 	private void createMatchLabel(Composite parent) {
 		Label separator = new Label(parent, SWT.SEPARATOR);
 		setLayoutData(separator);
-		matchLabel = new CLabel(parent, SWT.SHADOW_NONE);
+		matchLabel = new CLabel(parent, SWT.SHADOW_NONE) {
+			// Fixed status line freeze, StatusLineManager#update
+			@Override
+			public Object getData() {
+				if (isDisposed()) {
+					GlancePlugin.info("getData: Already disposed CLabel");
+					return null;
+				}
+				return super.getData();
+			}
+		};
 		StatusLineLayoutData data = new StatusLineLayoutData();
 		data.widthHint = getTextWidth(parent, 10) + 15;
 		data.heightHint = getPreferredHeight();

@@ -11,7 +11,7 @@
  *******************************************************************************/
 package com.xored.glance.ui.sources;
 
-import static org.eclipse.jface.preference.PreferenceConverter.getColor;
+import static org.eclipse.jface.preference.PreferenceConverter.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,7 @@ public class ColorManager implements IPropertyChangeListener, IPreferenceConstan
 	}
 
 	public static IPreferenceStore getStore() {
+		// Supports the Eclipse Neon 4.6 or grater
 		return EditorsPlugin.getDefault().getPreferenceStore();
 	}
 

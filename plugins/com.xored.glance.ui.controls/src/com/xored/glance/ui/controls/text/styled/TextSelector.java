@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
@@ -21,9 +21,9 @@ import com.xored.glance.ui.sources.Match;
  * For all rich text components we remove native selection (make it empty) to
  * draw our own colorful current match. However if focus was moved back to text
  * component, selection should be drawn as usually.
- * 
+ *
  * TextSelector manages this behavior.
- * 
+ *
  * @author Yuri Strot
  */
 public abstract class TextSelector implements FocusListener {
@@ -39,8 +39,8 @@ public abstract class TextSelector implements FocusListener {
 		Control control = getControl();
 		if (!control.isDisposed()) {
 			control.removeFocusListener(this);
-			showSelection();
 		}
+		showSelection();
 	}
 
 	public void focusLost(FocusEvent e) {
