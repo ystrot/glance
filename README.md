@@ -7,7 +7,6 @@ https://raw.githubusercontent.com/cypher256/glance/master/releng/com.xored.glanc
 
 ## Changes
 * Fixed overlapping text like the EGit history view ([Issue#13](https://github.com/ystrot/glance/issues/13))
-* Fixed status bar freeze bug
 * Supports the Eclipse Neon 4.6 or grater ([Issue#36](https://github.com/ystrot/glance/issues/36))
 
 ## License
