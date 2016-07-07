@@ -123,8 +123,11 @@ public class ItemDecorator implements Listener {
 	}
 
 	public void redraw() {
-		Rectangle rect = composite.getClientArea();
-		composite.redraw(rect.x, rect.y, rect.width, rect.height, true);
+		// Fixed default search view not shown
+		if (!composite.isDisposed()) {
+			Rectangle rect = composite.getClientArea();
+			composite.redraw(rect.x, rect.y, rect.width, rect.height, true);
+		}
 	}
 
 	public void redraw(ItemCell cell) {
@@ -271,8 +274,11 @@ public class ItemDecorator implements Listener {
 	public void dispose() {
 		if (!disposed) {
 			clearStyles();
-			composite.removeListener(SWT.PaintItem, this);
-			composite.removeListener(SWT.EraseItem, this);
+			// Fixed default search view not shown
+			if (!composite.isDisposed()) {
+				composite.removeListener(SWT.PaintItem, this);
+				composite.removeListener(SWT.EraseItem, this);
+			}
 			disposed = true;
 			redraw();
 		}
