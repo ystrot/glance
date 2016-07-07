@@ -16,6 +16,7 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.StatusLineLayoutData;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -159,11 +160,12 @@ public class SearchStatusLine extends SearchPanel {
 			// Fixed status line freeze, StatusLineManager#update
 			@Override
 			public Object getData() {
-				if (isDisposed()) {
-					GlancePlugin.info("getData: Already disposed CLabel");
+				try {
+					return super.getData();
+				} catch (SWTException e) {
+					GlancePlugin.info("getData: Already disposed CLabel", e);
 					return null;
 				}
-				return super.getData();
 			}
 		};
 		StatusLineLayoutData data = new StatusLineLayoutData();
@@ -236,7 +238,8 @@ public class SearchStatusLine extends SearchPanel {
 		IStatusLineManager manager = getManager();
 		if (manager != null) {
 			manager.remove(item);
-			manager.appendToGroup(StatusLineManager.BEGIN_GROUP, item);
+			// Modified position BEGIN to END for fixed position
+			manager.appendToGroup(StatusLineManager.END_GROUP, item);
 			manager.update(true);
 		}
 	}

@@ -121,6 +121,10 @@ public class GlancePlugin extends AbstractUIPlugin {
 		log(new Status(Status.INFO, PLUGIN_ID, message));
 	}
 
+	public static void info(String message, Throwable t) {
+		log(new Status(Status.INFO, PLUGIN_ID, message, t));
+	}
+
 	public static void log(String message) {
 		log(message, null);
 	}

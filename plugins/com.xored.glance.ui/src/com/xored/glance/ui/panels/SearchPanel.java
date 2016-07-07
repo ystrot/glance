@@ -32,6 +32,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -229,11 +230,12 @@ public abstract class SearchPanel implements ISearchPanel,
 			// Fixed status line freeze, StatusLineManager#update
 			@Override
 			public Object getData() {
-				if (isDisposed()) {
-					GlancePlugin.info("getData: Already disposed Composite");
+				try {
+					return super.getData();
+				} catch (SWTException e) {
+					GlancePlugin.info("getData: Already disposed Composite", e);
 					return null;
 				}
-				return super.getData();
 			}
 		};
 		return container;
