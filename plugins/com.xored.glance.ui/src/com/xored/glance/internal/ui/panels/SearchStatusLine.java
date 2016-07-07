@@ -236,7 +236,8 @@ public class SearchStatusLine extends SearchPanel {
 		IStatusLineManager manager = getManager();
 		if (manager != null) {
 			manager.remove(item);
-			manager.appendToGroup(StatusLineManager.BEGIN_GROUP, item);
+			// Modified position BEGIN to END for fixed position
+			manager.appendToGroup(StatusLineManager.END_GROUP, item);
 			manager.update(true);
 		}
 	}
