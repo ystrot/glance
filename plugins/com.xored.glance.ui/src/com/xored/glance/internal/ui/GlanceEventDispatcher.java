@@ -1,5 +1,6 @@
 package com.xored.glance.internal.ui;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,10 @@ import org.eclipse.ui.keys.IBindingService;
 
 import com.xored.glance.internal.ui.search.SearchManager;
 
+/**
+ * @author Yuri Strot
+ * @author Shinji Kashihara
+ */
 @SuppressWarnings("restriction")
 public class GlanceEventDispatcher {
 
@@ -37,14 +42,11 @@ public class GlanceEventDispatcher {
 
 	public void dispatchKeyPressed(Event event) {
 		@SuppressWarnings("unchecked")
-		List<Object> potentialKeyStrokes = WorkbenchKeyboard
-				.generatePossibleKeyStrokes(event);
+		List<Object> potentialKeyStrokes = WorkbenchKeyboard.generatePossibleKeyStrokes(event);
 		if (potentialKeyStrokes.isEmpty()) {
 			return;
 		}
-
-		String commandID = getBindCommand(KeySequence
-				.getInstance((KeyStroke) potentialKeyStrokes.get(0)));
+		String commandID = getBindCommand(KeySequence.getInstance((KeyStroke) potentialKeyStrokes.get(0)));
 		if (commandID == null) {
 			return;
 		} else if (FOCUS_COMMAND.equals(commandID)) {
@@ -61,11 +63,11 @@ public class GlanceEventDispatcher {
 	}
 
 	public String getBindCommand(KeySequence keySequence) {
-		Map<?, ?> map = bindingManager.getActiveBindingsDisregardingContext();
-		List<?> bindings = (List<?>) map.get(keySequence);
+		@SuppressWarnings("unchecked")
+		Map<KeySequence, List<Binding>> map = bindingManager.getActiveBindingsDisregardingContext();
+		List<Binding> bindings = map.get(keySequence);
 		if (bindings != null) {
-			for (Object obj : bindings) {
-				Binding binding = (Binding) obj;
+			for (Binding binding : bindings) {
 				if (GLANCE_CTX.equals(binding.getContextId())) {
 					return binding.getParameterizedCommand().getId();
 				}
@@ -73,5 +75,15 @@ public class GlanceEventDispatcher {
 		}
 		return null;
 	}
-
+	
+	public String createBindingLabel(String label, String commandId) {
+		@SuppressWarnings("unchecked")
+		Collection<Binding> bindings = bindingManager.getActiveBindingsDisregardingContextFlat();
+		for (Binding b : bindings) {
+			if (b.getParameterizedCommand().getId().equals(commandId)) {
+				return label + " (" + b.getTriggerSequence().format() + ")";
+			}
+		}
+		return label;
+	}
 }

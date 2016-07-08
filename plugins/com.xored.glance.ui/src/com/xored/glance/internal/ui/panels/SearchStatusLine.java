@@ -16,7 +16,6 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.StatusLineLayoutData;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -34,7 +33,6 @@ import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.texteditor.IStatusField;
 import org.eclipse.ui.texteditor.IStatusFieldExtension;
 
-import com.xored.glance.internal.ui.GlancePlugin;
 import com.xored.glance.ui.panels.SearchPanel;
 import com.xored.glance.ui.sources.Match;
 import com.xored.glance.ui.utils.UIUtils;
@@ -156,18 +154,7 @@ public class SearchStatusLine extends SearchPanel {
 	private void createMatchLabel(Composite parent) {
 		Label separator = new Label(parent, SWT.SEPARATOR);
 		setLayoutData(separator);
-		matchLabel = new CLabel(parent, SWT.SHADOW_NONE) {
-			// Fixed status line freeze, StatusLineManager#update
-			@Override
-			public Object getData() {
-				try {
-					return super.getData();
-				} catch (SWTException e) {
-					GlancePlugin.info("getData: Already disposed CLabel", e);
-					return null;
-				}
-			}
-		};
+		matchLabel = new CLabel(parent, SWT.SHADOW_NONE);
 		StatusLineLayoutData data = new StatusLineLayoutData();
 		data.widthHint = getTextWidth(parent, 10) + 15;
 		data.heightHint = getPreferredHeight();

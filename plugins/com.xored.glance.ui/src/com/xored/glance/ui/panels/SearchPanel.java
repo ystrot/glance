@@ -32,7 +32,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -174,14 +173,12 @@ public abstract class SearchPanel implements ISearchPanel,
 			bIndexing.setSelection(false);
 			bIndexing.setEnabled(false);
 			if (bIndexing.getImage() == null) {
-				bIndexing.setImage(GlancePlugin
-						.getImage(GlancePlugin.IMG_START_INDEXING));
+				bIndexing.setImage(GlancePlugin.getImage(GlancePlugin.IMG_START_INDEXING));
 			}
 		} else if (indexState == INDEXING_STATE_INITIAL) {
 			bIndexing.setToolTipText("Index component");
 			bIndexing.setSelection(false);
-			bIndexing.setImage(GlancePlugin
-					.getImage(GlancePlugin.IMG_START_INDEXING));
+			bIndexing.setImage(GlancePlugin.getImage(GlancePlugin.IMG_START_INDEXING));
 			bIndexing.setEnabled(true);
 		} else if (indexState == INDEXING_STATE_FINISHED) {
 			bIndexing.setToolTipText("Index finished");
@@ -226,18 +223,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected Composite createContainer(final Composite parent) {
-		container = new Composite(parent, SWT.NONE) {
-			// Fixed status line freeze, StatusLineManager#update
-			@Override
-			public Object getData() {
-				try {
-					return super.getData();
-				} catch (SWTException e) {
-					GlancePlugin.info("getData: Already disposed Composite", e);
-					return null;
-				}
-			}
-		};
+		container = new Composite(parent, SWT.NONE);
 		return container;
 	}
 
@@ -302,7 +288,8 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected ToolItem createNextItem(final ToolBar bar) {
-		bNext = createTool(bar, "Next", GlancePlugin.IMG_NEXT,
+		String label = GlanceEventDispatcher.INSTANCE.createBindingLabel("Next", GlanceEventDispatcher.NEXT_COMMAND);
+		bNext = createTool(bar, label, GlancePlugin.IMG_NEXT,
 				new SelectionAdapter() {
 					@Override
 					public void selected(final SelectionEvent e) {
@@ -313,7 +300,8 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected ToolItem createPreviousItem(final ToolBar bar) {
-		bPrev = createTool(bar, "Previous", GlancePlugin.IMG_PREV,
+		String label = GlanceEventDispatcher.INSTANCE.createBindingLabel("Previous", GlanceEventDispatcher.PREV_COMMAND);
+		bPrev = createTool(bar, label, GlancePlugin.IMG_PREV,
 				new SelectionAdapter() {
 					@Override
 					public void selected(final SelectionEvent e) {
@@ -370,7 +358,8 @@ public abstract class SearchPanel implements ISearchPanel,
 				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE);
 		if (image != null)
 			close.setImage(image.createImage());
-		close.setToolTipText("Close"); //$NON-NLS-1$
+		String label = GlanceEventDispatcher.INSTANCE.createBindingLabel("Close", GlanceEventDispatcher.CLOSE_COMMAND);
+		close.setToolTipText(label);
 		close.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void selected(final SelectionEvent e) {
