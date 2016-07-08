@@ -32,7 +32,7 @@ import com.xored.glance.ui.sources.Match;
 
 public class FigureDecorator implements IFigureDecorator {
 
-    private final ListenerList listeners = new ListenerList();
+    private final ListenerList<ITextSourceListener> listeners = new ListenerList<ITextSourceListener>();
 
     private final List<ITextBlock> cachedBlocks = new ArrayList<ITextBlock>();
 

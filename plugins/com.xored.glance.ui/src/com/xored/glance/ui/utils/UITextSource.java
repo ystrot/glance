@@ -30,7 +30,7 @@ public class UITextSource implements ITextSource, ITextSourceListener {
 
         blocks = new ArrayList<UITextBlock>();
         blockToBlock = new HashMap<ITextBlock, UITextBlock>();
-        listeners = new ListenerList();
+        listeners = new ListenerList<ITextSourceListener>();
         source.addTextSourceListener(this);
         addBlocks(source.getBlocks());
         updateSelection();
@@ -254,7 +254,7 @@ public class UITextSource implements ITextSource, ITextSourceListener {
 
     private SourceSelection selection;
     private Map<ITextBlock, UITextBlock> blockToBlock;
-    private final ListenerList listeners;
+    private final ListenerList<ITextSourceListener> listeners;
     private List<UITextBlock> blocks;
     private final ITextSource source;
     private final Control control;

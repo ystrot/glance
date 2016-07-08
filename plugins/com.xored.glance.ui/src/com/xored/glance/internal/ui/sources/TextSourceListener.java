@@ -74,7 +74,7 @@ public class TextSourceListener implements Listener {
 	}
 
 	private TextSourceMaker selection;
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<ISourceProviderListener> listeners = new ListenerList<ISourceProviderListener>();
 	private ITextSourceDescriptor[] descriptors;
 
 }

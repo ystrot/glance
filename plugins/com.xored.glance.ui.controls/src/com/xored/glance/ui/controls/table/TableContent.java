@@ -22,7 +22,7 @@ import com.xored.glance.ui.sources.ITextSourceListener;
 
 public class TableContent implements IStructContent {
 
-	private final ListenerList listeners = new ListenerList();
+	private final ListenerList<ITextSourceListener> listeners = new ListenerList<ITextSourceListener>();
 
 	public TableContent(Table table) {
 	}

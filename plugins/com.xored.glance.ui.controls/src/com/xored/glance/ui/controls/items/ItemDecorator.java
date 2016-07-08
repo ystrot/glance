@@ -53,7 +53,7 @@ public class ItemDecorator implements Listener {
 	protected List<ItemCell> cells;
 	protected HashSet<ItemCell> cellSet;
 
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<ITextSourceListener> listeners = new ListenerList<ITextSourceListener>();
 
 	public ItemDecorator(Composite composite, ItemProvider provider) {
 		this(composite, provider, DEFAULT_STYLE);

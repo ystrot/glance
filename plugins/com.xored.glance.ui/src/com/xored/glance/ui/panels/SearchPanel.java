@@ -665,7 +665,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected Combo title;
 	private boolean titleEnabled = true;
 
-	private final ListenerList listeners = new ListenerList();
+	private final ListenerList<ISearchPanelListener> listeners = new ListenerList<ISearchPanelListener>();
 	private final ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(final ModifyEvent e) {
 			textChanged();

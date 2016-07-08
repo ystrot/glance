@@ -93,7 +93,7 @@ public class UITextBlock implements ITextBlock, ITextBlockListener {
 		return "UI(" + block + ")";
 	}
 
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<ITextBlockListener> listeners = new ListenerList<ITextBlockListener>();
 	private ITextBlock block;
 	private String text;
 

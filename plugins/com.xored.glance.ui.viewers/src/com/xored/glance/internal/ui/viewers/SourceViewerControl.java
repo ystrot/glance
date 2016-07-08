@@ -48,7 +48,7 @@ public class SourceViewerControl extends BaseTextSource implements ISelectionCha
 
 	public SourceViewerControl(final SourceViewer viewer) {
 		this.viewer = viewer;
-		listeners = new ListenerList();
+		listeners = new ListenerList<ITextSourceListener>();
 		blocks = new TextViewerBlock[] { new TextViewerBlock(viewer) };
 	}
 
@@ -182,7 +182,7 @@ public class SourceViewerControl extends BaseTextSource implements ISelectionCha
 	}
 
 	private TextSelector selector;
-	private final ListenerList listeners;
+	private final ListenerList<ITextSourceListener> listeners;
 	private boolean disposed;
 	private final TextViewerBlock[] blocks;
 	private final SourceViewer viewer;

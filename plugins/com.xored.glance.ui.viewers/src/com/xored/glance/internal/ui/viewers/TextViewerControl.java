@@ -34,7 +34,7 @@ public class TextViewerControl extends BaseTextSource implements
 
 	public TextViewerControl(final TextViewer viewer) {
 		this.viewer = viewer;
-		listeners = new ListenerList();
+		listeners = new ListenerList<ITextSourceListener>();
 		blocks = new ColoredTextViewerBlock[] { new ColoredTextViewerBlock(
 				viewer) };
 	}
@@ -103,7 +103,7 @@ public class TextViewerControl extends BaseTextSource implements
 	}
 
 	private TextSelector selector;
-	private final ListenerList listeners;
+	private final ListenerList<ITextSourceListener> listeners;
 	private boolean disposed;
 	private final ColoredTextViewerBlock[] blocks;
 	private final TextViewer viewer;

@@ -20,7 +20,7 @@ public class StyledTextBlock implements ITextBlock, ExtendedModifyListener {
 
 	public StyledTextBlock(StyledText text) {
 		this.text = text;
-		listeners = new ListenerList();
+		listeners = new ListenerList<ITextBlockListener>();
 		text.addExtendedModifyListener(this);
 	}
 
@@ -52,6 +52,6 @@ public class StyledTextBlock implements ITextBlock, ExtendedModifyListener {
 	}
 
 	private StyledText text;
-	private ListenerList listeners;
+	private ListenerList<ITextBlockListener> listeners;
 
 }

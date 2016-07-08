@@ -37,7 +37,7 @@ import com.xored.glance.ui.controls.tree.TreeContent;
 import com.xored.glance.ui.controls.tree.TreeItemContent;
 import com.xored.glance.ui.controls.tree.TreeNode;
 
-@SuppressWarnings("restriction")
+@SuppressWarnings({ "restriction", "deprecation" })
 public class CVSHistorySourceTree extends TreeContent implements
 		ITreeExpandUpdater {
 	private List<CVSHistoryTree> trees = new ArrayList<CVSHistoryTree>();
@@ -124,8 +124,7 @@ public class CVSHistorySourceTree extends TreeContent implements
 						monitor.beginTask("", repositories.length);
 						// for (final ICVSRemoteFolder folder : folders) {
 						for (final RepositoryRoot repoRoot : repositories) {
-							SubProgressMonitor subMonitor = new SubProgressMonitor(
-									monitor, 1);
+							SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
 							HistoryFetcher fetcher = new HistoryFetcher();
 							try {
 
@@ -200,7 +199,6 @@ public class CVSHistorySourceTree extends TreeContent implements
 
 	public Map<TreeItem, ICVSHistoryNode> treeItemToCVSNode = new HashMap<TreeItem, ICVSHistoryNode>();
 
-	@SuppressWarnings("restriction")
 	private ICVSHistoryNode findCVSTreeElement(TreeItem item) {
 		Object data = item.getData();
 		if (data == null || data instanceof PendingUpdateAdapter) {
@@ -252,7 +250,6 @@ public class CVSHistorySourceTree extends TreeContent implements
 	 * 
 	 * @param item
 	 */
-	@SuppressWarnings("restriction")
 	public void updateOnExpand(final TreeItem item) {
 		Object data = item.getData();
 		if (data != null && data instanceof RepositoryRoot
@@ -290,7 +287,6 @@ public class CVSHistorySourceTree extends TreeContent implements
 
 	}
 
-	@SuppressWarnings("restriction")
 	private void init() {
 		this.tree.addTreeListener(getListener());
 	}

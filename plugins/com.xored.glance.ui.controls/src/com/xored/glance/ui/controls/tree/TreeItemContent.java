@@ -20,7 +20,7 @@ public class TreeItemContent implements ITextBlock {
 
 	private TreeNode node;
 	private String text;
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<ITextBlockListener> listeners = new ListenerList<ITextBlockListener>();
 	private int column;
 
 	public TreeItemContent(TreeNode node, String text, int column) {

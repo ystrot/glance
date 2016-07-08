@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
+@SuppressWarnings("deprecation")
 public abstract class UnknownTreeVisitor {
 
 	public void visit(IProgressMonitor monitor) {
@@ -54,8 +55,7 @@ public abstract class UnknownTreeVisitor {
 		if (remains > size) {
 			breadthVisit(next.toArray(), monitor, level + 1);
 		} else {
-			SubProgressMonitor subMonitor = new SubProgressMonitor(monitor,
-					remains);
+			SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, remains);
 			try {
 				subMonitor.beginTask("", size);
 				for (Object element : next) {

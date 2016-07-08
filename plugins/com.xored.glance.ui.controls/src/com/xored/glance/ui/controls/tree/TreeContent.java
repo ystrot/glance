@@ -24,7 +24,7 @@ import com.xored.glance.ui.sources.ITextSourceListener;
 
 public abstract class TreeContent extends TreeNode implements IStructContent {
 
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<ITextSourceListener> listeners = new ListenerList<ITextSourceListener>();
 
 	public TreeContent() {
 		super(null);
