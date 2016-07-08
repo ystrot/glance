@@ -12,7 +12,7 @@ https://raw.githubusercontent.com/cypher256/glance/master/releng/com.xored.glanc
 * Fixed Eclipse default search view tree contents not shown
 * Fixed missing handle exception
 * Fixed overlapping text like the EGit history view ([Issue#13](https://github.com/ystrot/glance/issues/13))
-* Supports the Eclipse Neon 4.6 or grater ([Issue#36](https://github.com/ystrot/glance/issues/36))
+* Fixed not working on Eclipse 4.6 Neon ([Issue#36](https://github.com/ystrot/glance/issues/36))
 
 ## License
 [Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)  
