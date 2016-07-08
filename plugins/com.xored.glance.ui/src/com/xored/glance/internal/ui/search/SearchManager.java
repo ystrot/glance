@@ -70,18 +70,14 @@ public class SearchManager {
 			public void windowOpened(final IWorkbenchWindow window) {
 				setStatusLine(window, true);
 			}
-
 			public void windowDeactivated(final IWorkbenchWindow window) {
 			}
-
 			public void windowClosed(final IWorkbenchWindow window) {
 			}
-
 			public void windowActivated(final IWorkbenchWindow window) {
 			}
 		});
-		for (final IWorkbenchWindow window : PlatformUI.getWorkbench()
-				.getWorkbenchWindows()) {
+		for (final IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
 			setStatusLine(window, true);
 		}
 	}
@@ -98,10 +94,8 @@ public class SearchManager {
 		panelToListener.put(panel, listener);
 		updateSourceListener();
 
-		final TextSourceMaker source = TextSourceManager.getInstance()
-				.getSource();
-		if (source != null && source.getControl() != null
-				&& panel.isApplicable(source.getControl())) {
+		final TextSourceMaker source = TextSourceManager.getInstance().getSource();
+		if (source != null && source.getControl() != null && panel.isApplicable(source.getControl())) {
 			this.panel = panel;
 			rule = panel.getRule();
 			if (setDescription(source))
@@ -195,8 +189,7 @@ public class SearchManager {
 			panel = SearchPanelManager.getInstance().getPanel(control);
 			if (panel != null) {
 				panels.add(panel);
-				final SearchPanelListener listener = new SearchPanelListener(
-						panel);
+				final SearchPanelListener listener = new SearchPanelListener(panel);
 				panel.addPanelListener(listener);
 				panelToListener.put(panel, listener);
 			}
@@ -264,8 +257,7 @@ public class SearchManager {
 				engine = null;
 			}
 			if (sourceListener != null) {
-				TextSourceManager.getInstance().removeSourceProviderListener(
-						sourceListener);
+				TextSourceManager.getInstance().removeSourceProviderListener(sourceListener);
 				sourceListener = null;
 			}
 		} else {
@@ -305,8 +297,7 @@ public class SearchManager {
 		}
 		if (descriptor != null && descriptor.isValid()) {
 			this.creator = descriptor;
-			source = new UITextSource(descriptor.create(),
-					descriptor.getControl());
+			source = new UITextSource(descriptor.create(), descriptor.getControl());
 			getSearchEngine().setSource(rule, source, true);
 			source.init();
 			updateIndexingState();
@@ -389,12 +380,10 @@ public class SearchManager {
 			if (panel != null)
 				panel.allFound(matches);
 		}
-
 		public void finished() {
 			if (panel != null)
 				panel.finished();
 		}
-
 		public void firstFound(final Match match) {
 			if (panel != null)
 				panel.firstFound(match);
@@ -466,5 +455,4 @@ public class SearchManager {
 
 	private int type;
 	private SearchRule rule;
-
 }

@@ -51,7 +51,6 @@ public class SearchStatusLine extends SearchPanel {
 			public void focusLost(FocusEvent e) {
 				setKeyFilter(true);
 			}
-
 			public void focusGained(FocusEvent e) {
 				setKeyFilter(false);
 			}
@@ -78,8 +77,7 @@ public class SearchStatusLine extends SearchPanel {
 
 	public static IWorkbenchWindow getWindow(Control control) {
 		Shell shell = control.getShell();
-		IWorkbenchWindow[] windows = PlatformUI.getWorkbench()
-				.getWorkbenchWindows();
+		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
 		for (IWorkbenchWindow window : windows) {
 			if (shell.equals(window.getShell()))
 				return window;
@@ -105,17 +103,15 @@ public class SearchStatusLine extends SearchPanel {
 	}
 
 	private void updateInfo() {
-		StringBuffer buffer = new StringBuffer();
-
+		StringBuilder buffer = new StringBuilder();
 		if (matchCount == 0) {
 			buffer.append(DEFAULT_MATCH_LABEL);
 		} else {
 			buffer.append(matchCount);
 		}
-
 		matchText = buffer.toString();
+		
 		UIUtils.asyncExec(matchLabel, new Runnable() {
-
 			public void run() {
 				matchLabel.setText(matchText);
 			}
@@ -170,8 +166,7 @@ public class SearchStatusLine extends SearchPanel {
 		}
 	}
 
-	private class SearchItem extends ContributionItem implements IStatusField,
-			IStatusFieldExtension {
+	private class SearchItem extends ContributionItem implements IStatusField, IStatusFieldExtension {
 
 		public void setImage(Image image) {
 		}
@@ -206,7 +201,6 @@ public class SearchStatusLine extends SearchPanel {
 		public void dispose() {
 			fireClose();
 		}
-
 	}
 
 	private void setLayoutData(Label separator) {
@@ -249,5 +243,4 @@ public class SearchStatusLine extends SearchPanel {
 	private CLabel matchLabel;
 	private SearchItem item;
 	private final IWorkbenchWindow window;
-
 }
