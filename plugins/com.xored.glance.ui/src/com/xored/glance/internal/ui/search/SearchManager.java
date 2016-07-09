@@ -37,7 +37,7 @@ import com.xored.glance.ui.utils.UITextSource;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public class SearchManager {
 
@@ -81,7 +81,7 @@ public class SearchManager {
 			setStatusLine(window, true);
 		}
 	}
-
+	
 	public void setStatusLine(final IWorkbenchWindow window, final boolean open) {
 		final ISearchPanel panel = SearchStatusLine.getSearchLine(window);
 		if (!open) {
@@ -153,8 +153,7 @@ public class SearchManager {
 		return source;
 	}
 
-	private boolean update(final TextSourceMaker source,
-			final boolean openNewPanel) {
+	private boolean update(final TextSourceMaker source, final boolean openNewPanel) {
 		updatePanel(source, openNewPanel);
 		if (panel != null) {
 			rule = panel.getRule();
@@ -166,12 +165,13 @@ public class SearchManager {
 		return false;
 	}
 
-	private void updatePanel(final TextSourceMaker source,
-			final boolean openNewPanel) {
+	private void updatePanel(final TextSourceMaker source, final boolean openNewPanel) {
 		final Control control = source.getControl();
 		if (panel != null) {
-			if (panel.isApplicable(control))
+			if (panel.isApplicable(control)) {
+				panel.updatePanelLayout();
 				return;
+			}
 			if (this.source != null) {
 				this.source.dispose();
 				this.source = null;

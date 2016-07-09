@@ -9,6 +9,6 @@
   </parent>
   <groupId>com.xored.glance</groupId>
   <artifactId>com.xored.glance.ui.cvs</artifactId>
-  <version>1.2.3-SNAPSHOT</version>
+  <version>1.2.4-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>

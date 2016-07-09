@@ -10,7 +10,7 @@ import com.xored.glance.internal.ui.search.SearchRule;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public interface ISearchPanel extends ISearchListener {
 
@@ -52,4 +52,6 @@ public interface ISearchPanel extends ISearchListener {
 	public void findPrevious();
 
 	public void clearHistory();
+
+	void updatePanelLayout();
 }

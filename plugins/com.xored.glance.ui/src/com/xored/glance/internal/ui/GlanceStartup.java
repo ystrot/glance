@@ -18,7 +18,7 @@ import com.xored.glance.internal.ui.preferences.IPreferenceConstants;
 import com.xored.glance.internal.ui.search.SearchManager;
 
 public class GlanceStartup implements IStartup, IPreferenceConstants {
-
+	
 	public void earlyStartup() {
 		IPreferenceStore store = GlancePlugin.getDefault().getPreferenceStore();
 		if (store.getBoolean(PANEL_STARTUP)) {
