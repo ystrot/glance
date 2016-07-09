@@ -101,16 +101,24 @@ public class SearchStatusLine extends SearchPanel {
 		matchCount = matches.length;
 		updateInfo();
 	}
-
-	private void updateInfo() {
-		StringBuilder buffer = new StringBuilder();
-		if (matchCount == 0) {
-			buffer.append(DEFAULT_MATCH_LABEL);
-		} else {
-			buffer.append(matchCount);
+	
+	// Modified position BEGIN to END for fixed position
+	@Override
+	public void updatePanelLayout() {
+		IStatusLineManager manager = getManager();
+		if (manager != null && item != null) {
+			manager.remove(item);
+			manager.appendToGroup(StatusLineManager.END_GROUP, item);
+			manager.update(true);
 		}
-		matchText = buffer.toString();
-		
+	}
+	
+	private void updateInfo() {
+		if (matchCount == 0) {
+			matchText = DEFAULT_MATCH_LABEL;
+		} else {
+			matchText = String.valueOf(matchCount);
+		}
 		UIUtils.asyncExec(matchLabel, new Runnable() {
 			public void run() {
 				matchLabel.setText(matchText);
@@ -216,13 +224,7 @@ public class SearchStatusLine extends SearchPanel {
 
 	private void init() {
 		item = new SearchItem();
-		IStatusLineManager manager = getManager();
-		if (manager != null) {
-			manager.remove(item);
-			// Modified position BEGIN to END for fixed position
-			manager.appendToGroup(StatusLineManager.END_GROUP, item);
-			manager.update(true);
-		}
+		updatePanelLayout();
 	}
 
 	private IStatusLineManager getManager() {

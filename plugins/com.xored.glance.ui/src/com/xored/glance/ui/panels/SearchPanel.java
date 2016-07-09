@@ -112,6 +112,10 @@ public abstract class SearchPanel implements ISearchPanel,
 		indexPercent = percent;
 	}
 
+	@Override
+	public void updatePanelLayout() {
+	}
+	
 	public void newTask(final String name) {
 		this.taskName = name;
 		indexPercent = 0;
