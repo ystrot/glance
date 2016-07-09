@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.xored.glance_1.2.4.201607091217.jar" id="com.xored.glance" version="1.2.4.201607091217">
+   <feature url="features/com.xored.glance_1.2.5.201607092302.jar" id="com.xored.glance" version="1.2.5.201607092302">
       <category name="com.xored.glance"/>
    </feature>
-   <feature url="features/com.xored.glance.cvs_1.2.4.201607091217.jar" id="com.xored.glance.cvs" version="1.2.4.201607091217">
+   <feature url="features/com.xored.glance.cvs_1.2.5.201607092302.jar" id="com.xored.glance.cvs" version="1.2.5.201607092302">
       <category name="com.xored.glance"/>
    </feature>
-   <feature url="features/com.xored.glance.gef_1.2.4.201607091217.jar" id="com.xored.glance.gef" version="1.2.4.201607091217">
+   <feature url="features/com.xored.glance.gef_1.2.5.201607092302.jar" id="com.xored.glance.gef" version="1.2.5.201607092302">
       <category name="com.xored.glance"/>
    </feature>
    <category-def name="com.xored.glance" label="Glance"/>

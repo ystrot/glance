@@ -280,6 +280,8 @@ public class SearchManager {
 	protected boolean setDescription(final TextSourceMaker descriptor) {
 		// ignore panel controls
 		if (descriptor != null && panel != null && panel.getControl() != null) {
+			if (panel.getControl().isDisposed() || descriptor.getControl().isDisposed())
+				return false;
 			if (isParent(panel.getControl(), descriptor.getControl()))
 				return false;
 		}
