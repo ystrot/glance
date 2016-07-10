@@ -101,18 +101,7 @@ public class SearchStatusLine extends SearchPanel {
 		matchCount = matches.length;
 		updateInfo();
 	}
-	
-	// Modified position BEGIN to END for fixed position
-	@Override
-	public void updatePanelLayout() {
-		IStatusLineManager manager = getManager();
-		if (manager != null && item != null) {
-			manager.remove(item);
-			manager.appendToGroup(StatusLineManager.END_GROUP, item);
-			manager.update(true);
-		}
-	}
-	
+
 	private void updateInfo() {
 		if (matchCount == 0) {
 			matchText = DEFAULT_MATCH_LABEL;
@@ -224,7 +213,22 @@ public class SearchStatusLine extends SearchPanel {
 
 	private void init() {
 		item = new SearchItem();
-		updatePanelLayout();
+		IStatusLineManager manager = getManager();
+		if (manager != null) {
+			manager.remove(item);
+			manager.appendToGroup(StatusLineManager.END_GROUP, item);
+			manager.update(true);
+		}
+	}
+
+	// Modified position BEGIN to END for fixed position
+	@Override
+	public void updatePanelLayout() {
+		IStatusLineManager manager = getManager();
+		if (manager != null && item != null) {
+			manager.remove(item);
+			manager.appendToGroup(StatusLineManager.END_GROUP, item);
+		}
 	}
 
 	private IStatusLineManager getManager() {
