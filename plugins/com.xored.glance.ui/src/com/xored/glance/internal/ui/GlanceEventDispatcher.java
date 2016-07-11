@@ -62,7 +62,7 @@ public class GlanceEventDispatcher {
 		}
 	}
 
-	public String getBindCommand(KeySequence keySequence) {
+	private String getBindCommand(KeySequence keySequence) {
 		@SuppressWarnings("unchecked")
 		Map<KeySequence, List<Binding>> map = bindingManager.getActiveBindingsDisregardingContext();
 		List<Binding> bindings = map.get(keySequence);

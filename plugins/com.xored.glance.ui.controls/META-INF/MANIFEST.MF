@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Glance Controls
 Bundle-SymbolicName: com.xored.glance.ui.controls;singleton:=true
-Bundle-Version: 1.2.6.qualifier
+Bundle-Version: 1.2.7.qualifier
 Bundle-Vendor: xored software, Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: com.xored.glance.ui,

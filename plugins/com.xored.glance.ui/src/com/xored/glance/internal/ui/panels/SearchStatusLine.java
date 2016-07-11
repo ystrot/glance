@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.xored.glance.internal.ui.panels;
 
+import java.lang.reflect.Field;
+
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IStatusLineManager;
@@ -221,13 +223,27 @@ public class SearchStatusLine extends SearchPanel {
 		}
 	}
 
-	// Modified position BEGIN to END for fixed position
 	@Override
 	public void updatePanelLayout() {
 		IStatusLineManager manager = getManager();
 		if (manager != null && item != null) {
+			
+			// Modified position BEGIN to END for fixed position
 			manager.remove(item);
 			manager.appendToGroup(StatusLineManager.END_GROUP, item);
+			
+			// Workaround disposed widget in org.eclipse.jface.action.StatusLineManager#update - Control#getData
+			try {
+				Field statusLineManagerField = WorkbenchWindow.class.getDeclaredField("statusLineManager");
+				statusLineManagerField.setAccessible(true);
+				Object statusLineManager = statusLineManagerField.get(window);
+				if (statusLineManager != null && (statusLineManager instanceof StatusLineManagerProxy) == false) {
+					StatusLineManagerProxy proxy = new StatusLineManagerProxy((StatusLineManager) statusLineManager);
+					statusLineManagerField.set(window, proxy);
+				}
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
+			}
 		}
 	}
 
@@ -237,8 +253,7 @@ public class SearchStatusLine extends SearchPanel {
 
 	private static IStatusLineManager getManager(IWorkbenchWindow window) {
 		if (window != null) {
-			WorkbenchWindow ww = (WorkbenchWindow) window;
-			return ww.getActionBars().getStatusLineManager();
+			return ((WorkbenchWindow) window).getStatusLineManager();
 		}
 		return null;
 	}
