@@ -2,7 +2,7 @@
 <feature
       id="com.xored.glance.gef"
       label="Glance GEF"
-      version="1.2.7.qualifier"
+      version="1.2.8.qualifier"
       provider-name="xored software, Inc.">
 
    <description url="http://ystrot.github.com/glance/">
@@ -20,7 +20,7 @@
    <requires>
       <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.gef"/>
-      <import feature="com.xored.glance" version="1.2.7.qualifier"/>
+      <import feature="com.xored.glance" version="1.2.8.qualifier"/>
    </requires>
 
    <plugin

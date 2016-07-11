@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Glance Viewers
 Bundle-SymbolicName: com.xored.glance.ui.viewers;singleton:=true
-Bundle-Version: 1.2.7.qualifier
+Bundle-Version: 1.2.8.qualifier
 Bundle-Vendor: xored software, Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: com.xored.glance.ui,

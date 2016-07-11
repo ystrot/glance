@@ -51,7 +51,7 @@ public class StatusLineManagerProxy extends StatusLineManager {
 
 					// Workaround disposed widget in org.eclipse.jface.action.StatusLineManager#update
 					if (w.isDisposed()) {
-						String message = "Status line item was disposed. " + w.getClass().getName();
+						String message = "Status line item was disposed: " + w.getClass().getName();
 						if (w instanceof CLabel) {
 							message += " " + ((CLabel) w).getText();
 						}
@@ -83,7 +83,7 @@ public class StatusLineManagerProxy extends StatusLineManager {
 			}
 		}
 	}
-
+	
 	private boolean statusLineExist() {
 		Composite statusLine = getStatusLine();
 		return statusLine != null && !statusLine.isDisposed();
