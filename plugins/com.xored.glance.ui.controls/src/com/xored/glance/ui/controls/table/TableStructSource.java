@@ -39,7 +39,10 @@ public class TableStructSource extends StructSource {
 	@Override
 	public void dispose() {
 		super.dispose();
-		getControl().removeSelectionListener(this);
+		Table control = getControl();
+		if (!control.isDisposed()) {
+			control.removeSelectionListener(this);
+		}
 	}
 
 	@Override

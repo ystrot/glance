@@ -126,7 +126,7 @@ public class ItemCell implements ITextBlock {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("{");
 		buffer.append(item);
 		buffer.append(", ");

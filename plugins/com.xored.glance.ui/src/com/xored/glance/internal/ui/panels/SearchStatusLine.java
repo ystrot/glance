@@ -4,11 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
 package com.xored.glance.internal.ui.panels;
+
+import java.lang.reflect.Field;
 
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IContributionItem;
@@ -39,7 +41,7 @@ import com.xored.glance.ui.utils.UIUtils;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 @SuppressWarnings("restriction")
 public class SearchStatusLine extends SearchPanel {
@@ -51,7 +53,6 @@ public class SearchStatusLine extends SearchPanel {
 			public void focusLost(FocusEvent e) {
 				setKeyFilter(true);
 			}
-
 			public void focusGained(FocusEvent e) {
 				setKeyFilter(false);
 			}
@@ -78,8 +79,7 @@ public class SearchStatusLine extends SearchPanel {
 
 	public static IWorkbenchWindow getWindow(Control control) {
 		Shell shell = control.getShell();
-		IWorkbenchWindow[] windows = PlatformUI.getWorkbench()
-				.getWorkbenchWindows();
+		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
 		for (IWorkbenchWindow window : windows) {
 			if (shell.equals(window.getShell()))
 				return window;
@@ -105,17 +105,12 @@ public class SearchStatusLine extends SearchPanel {
 	}
 
 	private void updateInfo() {
-		StringBuffer buffer = new StringBuffer();
-
 		if (matchCount == 0) {
-			buffer.append(DEFAULT_MATCH_LABEL);
+			matchText = DEFAULT_MATCH_LABEL;
 		} else {
-			buffer.append(matchCount);
+			matchText = String.valueOf(matchCount);
 		}
-
-		matchText = buffer.toString();
 		UIUtils.asyncExec(matchLabel, new Runnable() {
-
 			public void run() {
 				matchLabel.setText(matchText);
 			}
@@ -170,8 +165,7 @@ public class SearchStatusLine extends SearchPanel {
 		}
 	}
 
-	private class SearchItem extends ContributionItem implements IStatusField,
-			IStatusFieldExtension {
+	private class SearchItem extends ContributionItem implements IStatusField, IStatusFieldExtension {
 
 		public void setImage(Image image) {
 		}
@@ -206,7 +200,6 @@ public class SearchStatusLine extends SearchPanel {
 		public void dispose() {
 			fireClose();
 		}
-
 	}
 
 	private void setLayoutData(Label separator) {
@@ -225,8 +218,18 @@ public class SearchStatusLine extends SearchPanel {
 		IStatusLineManager manager = getManager();
 		if (manager != null) {
 			manager.remove(item);
-			manager.appendToGroup(StatusLineManager.BEGIN_GROUP, item);
+			manager.add(item);
 			manager.update(true);
+		}
+	}
+
+	// Modified position BEGIN to END for fixed position
+	@Override
+	public void updatePanelLayout() {
+		StatusLineManager manager = (StatusLineManager) getManager();
+		if (manager != null && item != null) {
+			manager.remove(item);
+			manager.add(item);
 		}
 	}
 
@@ -235,11 +238,22 @@ public class SearchStatusLine extends SearchPanel {
 	}
 
 	private static IStatusLineManager getManager(IWorkbenchWindow window) {
-		if (window != null) {
-			WorkbenchWindow ww = (WorkbenchWindow) window;
-			return ww.getActionBars().getStatusLineManager();
+		if (window == null) {
+			return null;
 		}
-		return null;
+		StatusLineManager manager = ((WorkbenchWindow) window).getStatusLineManager();
+		if (manager != null && (manager instanceof StatusLineManagerProxy) == false) {
+			try {
+				// Workaround disposed widget in org.eclipse.jface.action.StatusLineManager#update - Control#getData
+				Field statusLineManagerField = WorkbenchWindow.class.getDeclaredField("statusLineManager");
+				statusLineManagerField.setAccessible(true);
+				manager = new StatusLineManagerProxy(manager);
+				statusLineManagerField.set(window, manager);
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
+			}
+		}
+		return manager;
 	}
 
 	private static final String DEFAULT_MATCH_LABEL = "no matches";
@@ -248,5 +262,4 @@ public class SearchStatusLine extends SearchPanel {
 	private CLabel matchLabel;
 	private SearchItem item;
 	private final IWorkbenchWindow window;
-
 }

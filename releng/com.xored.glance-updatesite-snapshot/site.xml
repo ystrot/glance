@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Glance update site snapshot" url="https://raw.githubusercontent.com/cypher256/glance/master/releng/com.xored.glance-updatesite-snapshot/site.xml">
+      An update site snapshot for Glance Eclipse plugin.
+   </description>
+   <feature url="features/com.xored.glance_1.2.8.201607122247.jar" id="com.xored.glance" version="1.2.8.201607122247">
+      <category name="com.xored.glance"/>
+   </feature>
+   <feature url="features/com.xored.glance.cvs_1.2.8.201607122247.jar" id="com.xored.glance.cvs" version="1.2.8.201607122247">
+      <category name="com.xored.glance"/>
+   </feature>
+   <feature url="features/com.xored.glance.gef_1.2.8.201607122247.jar" id="com.xored.glance.gef" version="1.2.8.201607122247">
+      <category name="com.xored.glance"/>
+   </feature>
+   <category-def name="com.xored.glance" label="Glance"/>
+</site>

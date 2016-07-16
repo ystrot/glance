@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     xored software, Inc. - initial API and implementation (Yuri Strot)
  ******************************************************************************/
@@ -23,6 +23,8 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ * @author Yuri Strot
+ * @author Shinji Kashihara
  */
 public class GlancePlugin extends AbstractUIPlugin {
 
@@ -55,7 +57,7 @@ public class GlancePlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
 	 * )
@@ -68,7 +70,7 @@ public class GlancePlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
 	 * )
@@ -81,7 +83,7 @@ public class GlancePlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static GlancePlugin getDefault() {
@@ -113,6 +115,14 @@ public class GlancePlugin extends AbstractUIPlugin {
 			}
 		}
 		return imageDescriptor;
+	}
+
+	public static void info(String message) {
+		log(new Status(Status.INFO, PLUGIN_ID, message));
+	}
+
+	public static void info(String message, Throwable t) {
+		log(new Status(Status.INFO, PLUGIN_ID, message, t));
 	}
 
 	public static void log(String message) {

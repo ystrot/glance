@@ -30,7 +30,7 @@ public class TextViewerBlock implements ITextBlock, ITextListener {
 
     public TextViewerBlock(TextViewer viewer) {
         this.viewer = viewer;
-        listeners = new ListenerList();
+        listeners = new ListenerList<ITextBlockListener>();
         addListeners();
     }
 
@@ -104,7 +104,7 @@ public class TextViewerBlock implements ITextBlock, ITextListener {
         return 0;
     }
 
-    private ListenerList listeners;
+    private ListenerList<ITextBlockListener> listeners;
     protected TextViewer viewer;
 
 }

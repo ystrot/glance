@@ -1,22 +1,21 @@
-/******************************************************************************* 
- * Copyright (c) 2008 xored software, Inc.  
- * 
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0 
- * which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html  
- * 
- * Contributors: 
- *     xored software, Inc. - initial API and Implementation (Yuri Strot) 
+/*******************************************************************************
+ * Copyright (c) 2008 xored software, Inc.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and Implementation (Yuri Strot)
  *******************************************************************************/
 package com.xored.glance.ui.sources;
 
-import static org.eclipse.jface.preference.PreferenceConverter.getColor;
+import static org.eclipse.jface.preference.PreferenceConverter.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -24,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 
 import com.xored.glance.internal.ui.GlancePlugin;
 import com.xored.glance.internal.ui.preferences.IPreferenceConstants;
@@ -32,8 +31,9 @@ import com.xored.glance.internal.ui.preferences.TreeColors;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
+@SuppressWarnings("restriction")
 public class ColorManager implements IPropertyChangeListener, IPreferenceConstants {
 
 	public static final String ANNOTATION_ID = "com.xored.glance.ui.highlight";
@@ -45,9 +45,9 @@ public class ColorManager implements IPropertyChangeListener, IPreferenceConstan
 		updateColors();
 	}
 
-	@SuppressWarnings("deprecation")
 	public static IPreferenceStore getStore() {
-		return ((AbstractUIPlugin) Platform.getPlugin("org.eclipse.ui.editors")).getPreferenceStore();
+		// Supports the Eclipse Neon 4.6 or grater
+		return EditorsPlugin.getDefault().getPreferenceStore();
 	}
 
 	public static ColorManager getInstance() {

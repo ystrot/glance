@@ -31,7 +31,7 @@ public abstract class AbstractStyledTextSource extends BaseTextSource implements
 	public AbstractStyledTextSource(final StyledText text) {
 		this.text = text;
 		blocks = new StyledTextBlock[] { createTextBlock() };
-		list = new ListenerList();
+		list = new ListenerList<ITextSourceListener>();
 	}
 
 	protected StyledTextBlock createTextBlock() {
@@ -108,7 +108,7 @@ public abstract class AbstractStyledTextSource extends BaseTextSource implements
 	private final StyledText text;
 
 	private boolean disposed;
-	private final ListenerList list;
+	private final ListenerList<ITextSourceListener> list;
 	private final StyledTextBlock[] blocks;
 	protected Match selected;
 }

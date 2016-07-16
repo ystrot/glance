@@ -50,7 +50,7 @@ public class SearchUtils {
 	private static String substituteLinebreak(String findString)
 			throws PatternSyntaxException {
 		int length = findString.length();
-		StringBuffer buf = new StringBuffer(length);
+		StringBuilder buf = new StringBuilder(length);
 
 		int inCharGroup = 0;
 		int inBraces = 0;
@@ -129,7 +129,7 @@ public class SearchUtils {
 	 * @return the string converted to a regex pattern
 	 */
 	private static String asRegPattern(String string, RegExpBulder builder) {
-		StringBuffer out = new StringBuffer(string.length());
+		StringBuilder out = new StringBuilder(string.length());
 		boolean quoting = false;
 
 		for (int i = 0, length = string.length(); i < length; i++) {

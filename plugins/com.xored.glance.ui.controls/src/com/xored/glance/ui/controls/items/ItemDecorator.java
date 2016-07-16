@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2008 xored software, Inc.  
- * 
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0 
- * which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html  
- * 
- * Contributors: 
- *     xored software, Inc. - initial API and Implementation (Yuri Strot) 
+/*******************************************************************************
+ * Copyright (c) 2008 xored software, Inc.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and Implementation (Yuri Strot)
  *******************************************************************************/
 package com.xored.glance.ui.controls.items;
 
@@ -37,7 +37,7 @@ import com.xored.glance.ui.utils.TextUtils;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public class ItemDecorator implements Listener {
 
@@ -53,7 +53,7 @@ public class ItemDecorator implements Listener {
 	protected List<ItemCell> cells;
 	protected HashSet<ItemCell> cellSet;
 
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<ITextSourceListener> listeners = new ListenerList<ITextSourceListener>();
 
 	public ItemDecorator(Composite composite, ItemProvider provider) {
 		this(composite, provider, DEFAULT_STYLE);
@@ -123,8 +123,11 @@ public class ItemDecorator implements Listener {
 	}
 
 	public void redraw() {
-		Rectangle rect = composite.getClientArea();
-		composite.redraw(rect.x, rect.y, rect.width, rect.height, true);
+		// Fixed default search view not shown
+		if (!composite.isDisposed()) {
+			Rectangle rect = composite.getClientArea();
+			composite.redraw(rect.x, rect.y, rect.width, rect.height, true);
+		}
 	}
 
 	public void redraw(ItemCell cell) {
@@ -204,8 +207,12 @@ public class ItemDecorator implements Listener {
 		if (!ColorManager.getInstance().isUseNative() && (event.detail & SWT.SELECTED) != 0) {
 			gc.setBackground(ColorManager.getInstance().getTreeSelectionBg());
 			gc.setForeground(ColorManager.getInstance().getTreeSelectionFg());
-			gc.fillRectangle(provider.getBounds(item, event.index));
+		} else {
+			// Fixed overlapping text bug like the EGit history view
+			gc.setBackground(oldBackground);
+			gc.setForeground(oldForeground);
 		}
+		gc.fillRectangle(provider.getBounds(item, event.index));
 
 		Image image = provider.getImage(item, event.index);
 		if (image != null) {
@@ -267,8 +274,11 @@ public class ItemDecorator implements Listener {
 	public void dispose() {
 		if (!disposed) {
 			clearStyles();
-			composite.removeListener(SWT.PaintItem, this);
-			composite.removeListener(SWT.EraseItem, this);
+			// Fixed default search view not shown
+			if (!composite.isDisposed()) {
+				composite.removeListener(SWT.PaintItem, this);
+				composite.removeListener(SWT.EraseItem, this);
+			}
 			disposed = true;
 			redraw();
 		}

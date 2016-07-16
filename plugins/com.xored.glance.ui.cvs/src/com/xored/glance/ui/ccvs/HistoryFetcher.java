@@ -35,10 +35,10 @@ import org.eclipse.team.internal.ccvs.core.ICVSRepositoryLocation;
 import org.eclipse.team.internal.ccvs.core.ICVSResource;
 import org.eclipse.team.internal.ccvs.core.Policy;
 import org.eclipse.team.internal.ccvs.core.client.Command;
-import org.eclipse.team.internal.ccvs.core.client.Session;
-import org.eclipse.team.internal.ccvs.core.client.Update;
 import org.eclipse.team.internal.ccvs.core.client.Command.GlobalOption;
 import org.eclipse.team.internal.ccvs.core.client.Command.LocalOption;
+import org.eclipse.team.internal.ccvs.core.client.Session;
+import org.eclipse.team.internal.ccvs.core.client.Update;
 import org.eclipse.team.internal.ccvs.core.client.listeners.ICommandOutputListener;
 
 @SuppressWarnings("restriction")
@@ -92,12 +92,12 @@ public class HistoryFetcher {
 			throws CVSException {
 		final List<String> res = new ArrayList<String>();
 		// Build the local options
-		final List localOptions = new ArrayList();
+		final List<LocalOption> localOptions = new ArrayList<LocalOption>();
 		localOptions.add(Update.RETRIEVE_ABSENT_DIRECTORIES);
 
 		Command.UPDATE.execute(session,
 				new GlobalOption[] { Command.DO_NOT_CHANGE },
-				(LocalOption[]) localOptions
+				localOptions
 						.toArray(new LocalOption[localOptions.size()]),
 				new ICVSResource[] { parentFolder },
 				new ICommandOutputListener() {

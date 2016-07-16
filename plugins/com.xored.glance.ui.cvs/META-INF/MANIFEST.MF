@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Glance CVS
 Bundle-SymbolicName: com.xored.glance.ui.cvs;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.2.8.qualifier
 Bundle-Activator: com.xored.glance.ui.ccvs.GlanceCVSPlugin
 Bundle-Vendor: xored software, Inc.
 Require-Bundle: org.eclipse.core.runtime,
@@ -13,5 +13,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.team.core,
  org.eclipse.team.ui,
  org.eclipse.team.cvs.ui
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

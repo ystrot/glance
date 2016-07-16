@@ -37,7 +37,7 @@ import com.xored.glance.ui.utils.UITextSource;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public class SearchManager {
 
@@ -70,22 +70,18 @@ public class SearchManager {
 			public void windowOpened(final IWorkbenchWindow window) {
 				setStatusLine(window, true);
 			}
-
 			public void windowDeactivated(final IWorkbenchWindow window) {
 			}
-
 			public void windowClosed(final IWorkbenchWindow window) {
 			}
-
 			public void windowActivated(final IWorkbenchWindow window) {
 			}
 		});
-		for (final IWorkbenchWindow window : PlatformUI.getWorkbench()
-				.getWorkbenchWindows()) {
+		for (final IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
 			setStatusLine(window, true);
 		}
 	}
-
+	
 	public void setStatusLine(final IWorkbenchWindow window, final boolean open) {
 		final ISearchPanel panel = SearchStatusLine.getSearchLine(window);
 		if (!open) {
@@ -98,10 +94,8 @@ public class SearchManager {
 		panelToListener.put(panel, listener);
 		updateSourceListener();
 
-		final TextSourceMaker source = TextSourceManager.getInstance()
-				.getSource();
-		if (source != null && source.getControl() != null
-				&& panel.isApplicable(source.getControl())) {
+		final TextSourceMaker source = TextSourceManager.getInstance().getSource();
+		if (source != null && source.getControl() != null && panel.isApplicable(source.getControl())) {
 			this.panel = panel;
 			rule = panel.getRule();
 			if (setDescription(source))
@@ -159,8 +153,7 @@ public class SearchManager {
 		return source;
 	}
 
-	private boolean update(final TextSourceMaker source,
-			final boolean openNewPanel) {
+	private boolean update(final TextSourceMaker source, final boolean openNewPanel) {
 		updatePanel(source, openNewPanel);
 		if (panel != null) {
 			rule = panel.getRule();
@@ -172,12 +165,13 @@ public class SearchManager {
 		return false;
 	}
 
-	private void updatePanel(final TextSourceMaker source,
-			final boolean openNewPanel) {
+	private void updatePanel(final TextSourceMaker source, final boolean openNewPanel) {
 		final Control control = source.getControl();
 		if (panel != null) {
-			if (panel.isApplicable(control))
+			if (panel.isApplicable(control)) {
+				panel.updatePanelLayout();
 				return;
+			}
 			if (this.source != null) {
 				this.source.dispose();
 				this.source = null;
@@ -195,8 +189,7 @@ public class SearchManager {
 			panel = SearchPanelManager.getInstance().getPanel(control);
 			if (panel != null) {
 				panels.add(panel);
-				final SearchPanelListener listener = new SearchPanelListener(
-						panel);
+				final SearchPanelListener listener = new SearchPanelListener(panel);
 				panel.addPanelListener(listener);
 				panelToListener.put(panel, listener);
 			}
@@ -264,8 +257,7 @@ public class SearchManager {
 				engine = null;
 			}
 			if (sourceListener != null) {
-				TextSourceManager.getInstance().removeSourceProviderListener(
-						sourceListener);
+				TextSourceManager.getInstance().removeSourceProviderListener(sourceListener);
 				sourceListener = null;
 			}
 		} else {
@@ -288,6 +280,8 @@ public class SearchManager {
 	protected boolean setDescription(final TextSourceMaker descriptor) {
 		// ignore panel controls
 		if (descriptor != null && panel != null && panel.getControl() != null) {
+			if (panel.getControl().isDisposed() || descriptor.getControl().isDisposed())
+				return false;
 			if (isParent(panel.getControl(), descriptor.getControl()))
 				return false;
 		}
@@ -305,8 +299,7 @@ public class SearchManager {
 		}
 		if (descriptor != null && descriptor.isValid()) {
 			this.creator = descriptor;
-			source = new UITextSource(descriptor.create(),
-					descriptor.getControl());
+			source = new UITextSource(descriptor.create(), descriptor.getControl());
 			getSearchEngine().setSource(rule, source, true);
 			source.init();
 			updateIndexingState();
@@ -389,12 +382,10 @@ public class SearchManager {
 			if (panel != null)
 				panel.allFound(matches);
 		}
-
 		public void finished() {
 			if (panel != null)
 				panel.finished();
 		}
-
 		public void firstFound(final Match match) {
 			if (panel != null)
 				panel.firstFound(match);
@@ -466,5 +457,4 @@ public class SearchManager {
 
 	private int type;
 	private SearchRule rule;
-
 }

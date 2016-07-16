@@ -52,10 +52,10 @@ public class CVSHistoryTree/* extends TreeContent */implements ICVSHistoryNode {
 	public ICVSHistoryNode[] getNodeChildren() {
 		ICVSHistoryNode[] res = elements.values().toArray(
 				new ICVSHistoryNode[0]);
-		Arrays.sort(res, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				return ((ICVSHistoryNode) arg0).getElementName().compareTo(
-						((ICVSHistoryNode) arg1).getElementName());
+		Arrays.sort(res, new Comparator<ICVSHistoryNode>() {
+			public int compare(ICVSHistoryNode arg0, ICVSHistoryNode arg1) {
+				return arg0.getElementName().compareTo(
+						arg1.getElementName());
 			}
 		});
 		return res;

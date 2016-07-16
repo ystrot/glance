@@ -22,10 +22,10 @@ public abstract class FigureTextBlock<T extends IFigure> implements ITextBlock, 
 
     private final T figure;
 
-    private final ListenerList listeners;
+    private final ListenerList<ITextBlockListener> listeners;
 
     public FigureTextBlock(final T fig) {
-        listeners = new ListenerList();
+        listeners = new ListenerList<ITextBlockListener>();
         figure = fig;
         figure.addFigureListener(this);
     }

@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2008 xored software, Inc.  
- * 
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0 
- * which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html  
- * 
- * Contributors: 
- *     xored software, Inc. - initial API and Implementation (Yuri Strot) 
+/*******************************************************************************
+ * Copyright (c) 2008 xored software, Inc.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and Implementation (Yuri Strot)
  *******************************************************************************/
 package com.xored.glance.ui.panels;
 
@@ -69,7 +69,7 @@ import com.xored.glance.ui.utils.UIUtils;
 
 /**
  * @author Yuri Strot
- * 
+ * @author Shinji Kashihara
  */
 public abstract class SearchPanel implements ISearchPanel,
 		IPreferenceConstants, IPropertyChangeListener {
@@ -112,6 +112,10 @@ public abstract class SearchPanel implements ISearchPanel,
 		indexPercent = percent;
 	}
 
+	@Override
+	public void updatePanelLayout() {
+	}
+	
 	public void newTask(final String name) {
 		this.taskName = name;
 		indexPercent = 0;
@@ -173,21 +177,19 @@ public abstract class SearchPanel implements ISearchPanel,
 			bIndexing.setSelection(false);
 			bIndexing.setEnabled(false);
 			if (bIndexing.getImage() == null) {
-				bIndexing.setImage(GlancePlugin
-						.getImage(GlancePlugin.IMG_START_INDEXING));
+				bIndexing.setImage(GlancePlugin.getImage(GlancePlugin.IMG_START_INDEXING));
 			}
 		} else if (indexState == INDEXING_STATE_INITIAL) {
 			bIndexing.setToolTipText("Index component");
 			bIndexing.setSelection(false);
-			bIndexing.setImage(GlancePlugin
-					.getImage(GlancePlugin.IMG_START_INDEXING));
+			bIndexing.setImage(GlancePlugin.getImage(GlancePlugin.IMG_START_INDEXING));
 			bIndexing.setEnabled(true);
 		} else if (indexState == INDEXING_STATE_FINISHED) {
 			bIndexing.setToolTipText("Index finished");
 			bIndexing.setSelection(false);
 			bIndexing.setEnabled(false);
 		} else {
-			final StringBuffer buffer = new StringBuffer();
+			final StringBuilder buffer = new StringBuilder();
 			bIndexing.setSelection(true);
 			bIndexing.setImage(image);
 			if (taskName != null && taskName.length() > 0) {
@@ -290,7 +292,8 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected ToolItem createNextItem(final ToolBar bar) {
-		bNext = createTool(bar, "Next", GlancePlugin.IMG_NEXT,
+		String label = GlanceEventDispatcher.INSTANCE.createBindingLabel("Next", GlanceEventDispatcher.NEXT_COMMAND);
+		bNext = createTool(bar, label, GlancePlugin.IMG_NEXT,
 				new SelectionAdapter() {
 					@Override
 					public void selected(final SelectionEvent e) {
@@ -301,7 +304,8 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	protected ToolItem createPreviousItem(final ToolBar bar) {
-		bPrev = createTool(bar, "Previous", GlancePlugin.IMG_PREV,
+		String label = GlanceEventDispatcher.INSTANCE.createBindingLabel("Previous", GlanceEventDispatcher.PREV_COMMAND);
+		bPrev = createTool(bar, label, GlancePlugin.IMG_PREV,
 				new SelectionAdapter() {
 					@Override
 					public void selected(final SelectionEvent e) {
@@ -358,7 +362,8 @@ public abstract class SearchPanel implements ISearchPanel,
 				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE);
 		if (image != null)
 			close.setImage(image.createImage());
-		close.setToolTipText("Close"); //$NON-NLS-1$
+		String label = GlanceEventDispatcher.INSTANCE.createBindingLabel("Close", GlanceEventDispatcher.CLOSE_COMMAND);
+		close.setToolTipText(label);
 		close.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void selected(final SelectionEvent e) {
@@ -381,8 +386,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected void fillMenu(final IMenuManager menu) {
 		menu.add(new Separator());
 		newAction(menu, SEARCH_CASE_SENSITIVE, LABEL_CASE_SENSITIVE, true);
-		final boolean regExp = newAction(menu, SEARCH_REGEXP, LABEL_REGEXP,
-				true).isChecked();
+		final boolean regExp = newAction(menu, SEARCH_REGEXP, LABEL_REGEXP, true).isChecked();
 		newAction(menu, SEARCH_CAMEL_CASE, LABEL_CAMEL_CASE, !regExp);
 		newAction(menu, SEARCH_WORD_PREFIX, LABEL_WORD_PREFIX, !regExp);
 		menu.add(new Separator());
@@ -601,7 +605,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	}
 
 	private void saveHistory() {
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < findHistory.size() && i < 8; i++) {
 			final String item = findHistory.get(i);
 			if (i > 0) {
@@ -653,7 +657,7 @@ public abstract class SearchPanel implements ISearchPanel,
 	protected Combo title;
 	private boolean titleEnabled = true;
 
-	private final ListenerList listeners = new ListenerList();
+	private final ListenerList<ISearchPanelListener> listeners = new ListenerList<ISearchPanelListener>();
 	private final ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(final ModifyEvent e) {
 			textChanged();
