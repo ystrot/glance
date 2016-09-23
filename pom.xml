@@ -9,6 +9,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<properties>
+		<tycho-version>0.21.0</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
     <modules>
         <module>plugins</module>
         <module>features</module>
@@ -17,37 +22,31 @@
 
 	<repositories>
 		<repository>
-			<id>helios</id>
+			<id>neon</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/helios/</url>
+			<url>http://download.eclipse.org/releases/neon/</url>
 		</repository>
 	</repositories>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
-				<version>0.9.0</version>
+				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
 
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
-				<version>0.9.0</version>
-				<configuration>
-					<resolver>p2</resolver>
-				</configuration>
-			</plugin>
+				<version>${tycho-version}</version>
+			</plugin> 
 
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
-				<artifactId>maven-osgi-packaging-plugin</artifactId>
-				<version>0.9.0</version>
-				<configuration>
-					<archiveSite>true</archiveSite>
-				</configuration>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho-version}</version>
 			</plugin>
 		</plugins>
 	</build>

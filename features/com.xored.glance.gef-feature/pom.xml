@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.xored.glance</groupId>
-  <artifactId>com.xored.glance.gef-feature</artifactId>
+  <artifactId>com.xored.glance.gef</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 </project>
