@@ -16,7 +16,6 @@ import static org.eclipse.jface.preference.PreferenceConverter.getColor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -24,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.editors.text.EditorsUI;
 
 import com.xored.glance.internal.ui.GlancePlugin;
 import com.xored.glance.internal.ui.preferences.IPreferenceConstants;
@@ -45,9 +44,8 @@ public class ColorManager implements IPropertyChangeListener, IPreferenceConstan
 		updateColors();
 	}
 
-	@SuppressWarnings("deprecation")
 	public static IPreferenceStore getStore() {
-		return ((AbstractUIPlugin) Platform.getPlugin("org.eclipse.ui.editors")).getPreferenceStore();
+		return EditorsUI.getPreferenceStore();
 	}
 
 	public static ColorManager getInstance() {
